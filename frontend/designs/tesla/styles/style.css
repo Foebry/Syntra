@@ -1,0 +1,79 @@
+/*
+    resetten van de standaard marge op alle elementen.
+*/
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #000;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+main {
+    width: 80%;
+    max-width: 1080px;
+    background-color: #fff;
+    margin: 0 auto;
+    padding: 48px 70px 28px 70px;
+}
+
+h1,
+h2 {
+    font-weight: bold;
+}
+
+h1 {
+    color: #000;
+    font-size: 35px;
+    margin-bottom: 5px;
+}
+
+h2 {
+    color: #ff1b30;
+    font-size: 28px;
+    margin-bottom: 26px;
+}
+
+img {
+    display: block;
+    margin: 0 auto;
+}
+
+img.car {
+    width: 100%;
+}
+
+p {
+    color: black;
+    font-size: 16px;
+    line-height: 22px;
+    padding: 12px;
+}
+
+ul {
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+}
+
+/*
+ * list-style-image werkt zowel bij ul als bij li. Speciaal voor ul beter?
+ * Aangezien list-style: none om bolletjes weg te werken enkel voor ul werkt.
+*/
+
+li {
+    line-height: 30px;
+    font-size: 16px;
+    list-style-image: url("../images/bg_listitem.jpg");
+}
+
+@media screen and (max-width: 800px) {
+    main {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}

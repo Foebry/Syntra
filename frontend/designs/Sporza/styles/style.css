@@ -1,0 +1,126 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: black;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+}
+
+main {
+    background-color: #fff;
+    width: 80%;
+    max-width: 1200;
+    margin: 50px auto;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+section {
+    width: calc(75% - 10px);
+}
+
+aside {
+    width: 25%;
+}
+
+section article {
+    display: flex;
+    margin-bottom: 30px;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+section article img {
+    width: 41%;
+    border-radius: 3px;
+}
+section article div {
+    width: calc(59% - 10px);
+}
+
+article h2 {
+    line-height: 17px;
+    color: #148a8a;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+article p {
+    line-height: 18px;
+    color: #777;
+}
+
+aside article {
+    margin-bottom: 26px;
+}
+
+aside article img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 2px;
+    margin-bottom: 10px;
+}
+
+aside h1 {
+    color: white;
+    font-size: 16px;
+    font-weight: normal;
+    background-color: #8ac74e;
+    border: 1px solid #77ae44;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    margin-bottom: 10px;
+    padding: 0 10px;
+    width: 100%;
+    height: 36px;
+    line-height: 36px;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 1px #6e9f3e;
+}
+/* tablet */
+@media screen and (max-width: 950px) {
+    main {
+        width: 94%;
+        margin: 10px auto;
+    }
+}
+
+/* smartphone */
+@media screen and (max-width: 610px) {
+    main {
+        width: 100%;
+        margin: 0 auto;
+        border-radius: 10px;
+    }
+    aside {
+        display: none;
+    }
+    section {
+        width: 100%;
+        transform: all 5s;
+        /* }
+
+    aside h1 {
+        padding: 0;
+        padding: auto;
+    }
+    aside h2 {
+        margin-right: 10px;
+        font-size: 100%;
+    } */
+    }
+}
+
+@media screen and (max-width: 440px) {
+    section article {
+        display: block;
+    }
+    section article img,
+    section article div {
+        width: 100%;
+    }
+}

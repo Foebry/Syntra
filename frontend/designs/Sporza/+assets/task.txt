@@ -1,0 +1,20 @@
+fontstyling:
+
+Groene titels:
+    tekstgrootte= 14px
+    interlinie= 17px
+    kleur= #
+    ---lettertype= arial
+    bold
+
+Tekst:
+    ----lettertype= arial
+    tekstgrootte= 14px
+    interlinie= 18px
+    kleur= #777
+	
+Witte titel rechts:
+    ----lettertype= arial
+    tekstgrootte= 16px
+    achtergrond = #8ac74e
+    randkleur = #77ae44
