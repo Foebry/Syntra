@@ -1,4 +1,3 @@
-<h1>Extra</h1>
 <h2>Eigen challenges gemaakt voor anderen.</h2>
 <p>Challenges in de vorm van spelletjes, opgedeeld in verschillende stappen om zo tot een werkend script te komen. Enkele uitbreidings-stappen om het wat moeilijker te maken</p>
 <h3>Blad_Steen_Schaar</h3>
