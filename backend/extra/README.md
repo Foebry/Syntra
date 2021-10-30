@@ -6,7 +6,7 @@
   Basis: Verkrijg een werkende simulatie.</br>
   Uitbreiding: Herwerk het script met een maximum aan variabelen.
 </p>
-<h3>Hoger Lager</h3>
+<h3>Hoger_Lager</h3>
 <p>
   Simuleer het kaartspel Hoger Lager. </br>
   Basis: Verkrijg een eenvoudige werkende simulatie.</br>
