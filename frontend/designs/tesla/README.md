@@ -2,4 +2,3 @@
 </br>
 <a href="https://sander-tesla.surge.sh/">
   <img src="+assets/design.jpg" alt="preview" target="_blank"/>
-/>
