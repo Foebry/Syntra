@@ -365,8 +365,7 @@ section.scrollbar .container::after {
     flex: 1 1 20%;
     min-width: 200px;
 }
-.about ul,
-footer ul {
+.about ul {
     display: flex;
     margin-bottom: 67px;
     gap: 8px;
@@ -533,6 +532,10 @@ footer ul,
 footer p {
     margin-top: 31px;
     color: #767e9e;
+}
+footer ul{
+    display: flex;
+    gap: 8px;
 }
 
 /*
