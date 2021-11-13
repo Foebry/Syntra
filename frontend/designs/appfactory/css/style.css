@@ -367,6 +367,19 @@ section.scrollbar .container::after {
     /*min-width: 50px;
     max-width: 720px;*/
 }
+.about ul {
+    display: flex;
+    margin-bottom: 67px;
+    gap: 8px;
+}
+.about ul li::before {
+    font-size: 12px;
+    font-weight: 300;
+    color: #767e9e;
+    padding: 8px;
+    border: 1px solid #767e9e;
+    border-radius: 50%;
+}
 .about .imgholder {
     aspect-ratio: 1/1;
 }
@@ -388,7 +401,7 @@ section.scrollbar .container::after {
     font-weight: 300;
     line-height: 21.5px;
     color: #767e9e;
-    margin-bottom: 21px;
+    margin-bottom: 28px;
 }
 
 /*
