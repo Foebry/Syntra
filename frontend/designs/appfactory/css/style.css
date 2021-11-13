@@ -41,7 +41,7 @@ header {
     display: flex;
 }
 .container {
-    width: 90%;
+    width: 92.2%;
     margin: 0 auto;
 }
 header .container,
@@ -293,7 +293,7 @@ section.scrollbar .container::after {
     aspect-ratio: 4/3;
     object-fit: cover;
     position: relative;
-    min-width: 250px;
+    min-width: 200px;
 }
 
 .portfolio img {
@@ -363,22 +363,23 @@ section.scrollbar .container::after {
 }
 .about .staff article {
     flex: 1 1 20%;
-    min-width: 250px;
-    /*min-width: 50px;
-    max-width: 720px;*/
+    min-width: 200px;
 }
-.about ul {
+.about ul,
+footer ul {
     display: flex;
     margin-bottom: 67px;
     gap: 8px;
 }
-.about ul li::before {
+.about ul li::before,
+footer li::before {
     font-size: 12px;
     font-weight: 300;
     color: #767e9e;
     padding: 8px;
     border: 1px solid #767e9e;
     border-radius: 50%;
+    cursor: pointer;
 }
 .about .imgholder {
     aspect-ratio: 1/1;
@@ -467,6 +468,19 @@ section.scrollbar .container::after {
 .contact textarea {
     outline: none;
 }
+.contact .input {
+    position: relative;
+}
+.contact label {
+    position: absolute;
+    left: 15px;
+    top: 0;
+    line-height: 38px;
+    color: #f0d8d9;
+    font-size: 12px;
+    font-weight: 400;
+    text-transform: capitalize;
+}
 
 .contact .contactinformation h3 {
     font-size: 18px;
@@ -497,6 +511,28 @@ section.scrollbar .container::after {
 .contact li::before {
     position: absolute;
     left: 0;
+}
+
+/*
+********************************************************************************
+********************************************************************************
+******************************************** FOOTER ****************************
+********************************************************************************
+********************************************************************************
+*/
+
+footer {
+    height: 76px;
+}
+footer .container {
+    display: flex;
+    justify-content: space-between;
+    text-transform: capitalize;
+}
+footer ul,
+footer p {
+    margin-top: 31px;
+    color: #767e9e;
 }
 
 /*
@@ -543,9 +579,9 @@ section.scrollbar .container::after {
         margin-right: 0;
     }
 }
-@media screen and (max-width: 877px) {
+@media screen and (max-width: 711px) {
     .about .staff article:nth-child(3) {
-        *max-width: 385px;
+        max-width: 385px;
         flex: 0 1 50%;
     }
 }

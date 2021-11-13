@@ -287,16 +287,31 @@
                     <div class="contactform">
                         <form action="">
                             <fieldset>
-                                <input type="text" class="name" />
-                                <input type="email" class="email" />
-                                <input type="text" class="subject" />
-                                <textarea
-                                    class="project"
-                                    name=""
-                                    id=""
-                                    cols="66%"
-                                    rows="10"
-                                ></textarea>
+                                <div class="input">
+                                    <input type="text" class="name" />
+                                    <label for="name">name (required)</label>
+                                </div>
+                                <div class="input">
+                                    <input type="email" class="email" />
+                                    <label for="email">email (required)</label>
+                                </div>
+                                <div class="input">
+                                    <input type="text" class="subject" />
+                                    <label for="subject">subject</label>
+                                </div>
+                                <div class="input">
+                                    <textarea
+                                        class="project"
+                                        name=""
+                                        id=""
+                                        cols="66%"
+                                        rows="10"
+                                    ></textarea>
+                                    <label for="project"
+                                        >describe your project in
+                                        detail...</label
+                                    >
+                                </div>
                             </fieldset>
                         </form>
                         <div class="contactinformation">
@@ -320,7 +335,17 @@
                     </div>
                 </div>
             </section>
-            <footer></footer>
+            <footer>
+                <div class="container">
+                    <p>&copy; copyright 2017</p>
+                    <ul>
+                        <li class="icon-facebook"></li>
+                        <li class="icon-google-plus"></li>
+                        <li class="icon-twitter"></li>
+                        <li class="icon-linkedin"></li>
+                    </ul>
+                </div>
+            </footer>
         </main>
     </body>
 </html>
