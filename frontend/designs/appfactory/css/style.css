@@ -35,9 +35,6 @@ section.about {
 ********************************************************************************
 */
 header {
-    color: #fffffd;
-    font-size: 12px;
-    font-weight: 700;
     border-bottom: 6px solid #313745;
     height: 90px;
     text-transform: uppercase;
@@ -57,6 +54,7 @@ header .container {
     align-content: center;
 }
 header h1 {
+    color: #fff;
     font-size: 20px;
     font-weight: 900;
 }
@@ -64,30 +62,41 @@ header h1::after {
     content: "*";
     color: #ef6b66;
 }
-header .container ul {
-    width: 42%;
+header ul {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
+    position: relative;
+}
+.icon-burger {
+    display: none;
 }
 header li a {
     color: #fffffd;
     text-decoration: none;
+    text-transform: capitalize;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
 }
 header ul li a:hover {
     color: #f06c64;
 }
 header li {
     position: relative;
+    flex: 1 1 25%;
 }
-header li:not(:first-child)::before {
+header li:not(:last-child) {
+    margin-right: 38px;
+}
+header li:not(:last-child)::after {
     content: ".";
     position: absolute;
     font-size: 12px;
     font-weight: 700;
     color: #494e62;
     bottom: 4px;
-    left: -70px;
+    right: -20px;
 }
 
 /*
@@ -103,9 +112,10 @@ header li:not(:first-child)::before {
 .scrollbar .container {
     position: relative;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
     flex: 1 1 25%;
-    gap: 74px;
+    gap: 8%;
+    flex-wrap: wrap;
 }
 .scrollbar .container::before {
     content: "<";
@@ -144,7 +154,7 @@ section.scrollbar .container::after {
 .scrollbar .imgholder:nth-child(2) {
     aspect-ratio: 2/1;
     margin-right: 54px;
-    min-width: 200px;
+    min-width: 300px;
 }
 
 .scrollbar img {
@@ -152,6 +162,15 @@ section.scrollbar .container::after {
     height: 100%;
     border-radius: 30px;
 }
+
+/*
+********************************************************************************
+********************************************************************************
+********************************************* SERVICES ****************************
+********************************************************************************
+********************************************************************************
+*/
+
 .services {
     border-bottom: 6px solid #fff;
 }
@@ -189,7 +208,8 @@ section.services .container {
 .services ul li {
     position: relative;
     display: block;
-    width: 24%;
+    flex: 1 1 24%;
+    min-width: 212.8px;
     flex-shrink: 1;
     flex-grow: 1;
     margin-bottom: 11px;
@@ -409,11 +429,11 @@ section.services .container {
     flex-wrap: wrap;
 }
 .contact .contactform form {
-    min-width: 650px;
+    min-width: 350px;
     flex: 1 1 40%;
 }
 .contact .contactform .contactinformation {
-    min-width: 450px;
+    min-width: 350px;
     flex: 1 1 25%;
 }
 .contact .input.name {
@@ -458,7 +478,85 @@ section.services .container {
     font-size: 12px;
     font-weight: 300;
     line-height: 21px;
+    position: relative;
 }
 .contact .contactinformation li:first-child {
     text-transform: capitalize;
+}
+.contact li::before {
+    position: absolute;
+    left: 0;
+}
+
+/*
+********************************************************************************
+********************************************************************************
+************************************ MEDIA QUERRIES ****************************
+********************************************************************************
+********************************************************************************
+*/
+
+@media screen and (max-width: 943px) {
+    .scrollbar .container::after,
+    .scrollbar .container::before {
+        display: none;
+    }
+    .scrollbar .imgholder:not(:first-child) {
+        display: none;
+    }
+    .scrollbar .imgholder {
+        position: relative;
+        margin-right: 12.5px;
+        width: 50%;
+    }
+    .scrollbar .imgholder::before {
+        content: ".";
+        position: absolute;
+        color: #313745;
+        font-size: 100px;
+        bottom: -75px;
+        left: calc(50% - 12.5px);
+    }
+    .scrollbar .imgholder::after {
+        content: ".";
+        position: absolute;
+        color: #ca4548;
+        font-size: 100px;
+        bottom: -75px;
+        left: calc(50% + 12.5px);
+    }
+}
+@media screen and (max-width: 650px) {
+    header ul {
+        display: none;
+    }
+    .icon-burger {
+        position: relative;
+        display: block;
+        background: rgba(0, 0, 0, 0);
+        color: white;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .scrollbar .imgholder {
+        box-shadow: 12px 12px #ce5d55;
+        transition: all 1s;
+        margin-right: 66.5px;
+    }
+}
+@media screen and (min-width: 601px) {
+    .scrollbar .imgholder {
+        box-shadow: 25px 25px #ce5d55;
+        transition: all 1s;
+        margin-right: 80px;
+    }
+}
+@media screen and (max-width: 944px) {
+    .scrollbar .imgholder {
+        margin-right: 0;
+    }
 }
