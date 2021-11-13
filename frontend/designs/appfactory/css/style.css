@@ -113,7 +113,6 @@ header li:not(:last-child)::after {
     position: relative;
     display: flex;
     justify-content: center;
-    flex: 1 1 25%;
     gap: 8%;
     flex-wrap: wrap;
 }
@@ -145,16 +144,17 @@ section.scrollbar .container::after {
     box-shadow: 25px 25px 0 #ce5d55;
     border-radius: 30px;
     object-fit: contain;
+    flex: 1 1 15%;
 }
 .scrollbar .imgholder:first-child {
     aspect-ratio: 1/2;
     margin-left: 54px;
-    min-width: 100px;
+    max-width: 20%;
 }
 .scrollbar .imgholder:nth-child(2) {
     aspect-ratio: 2/1;
     margin-right: 54px;
-    min-width: 300px;
+    max-width: 40%;
 }
 
 .scrollbar img {
@@ -293,7 +293,7 @@ section.scrollbar .container::after {
     aspect-ratio: 4/3;
     object-fit: cover;
     position: relative;
-    min-width: 350px;
+    min-width: 250px;
 }
 
 .portfolio img {
@@ -362,9 +362,10 @@ section.scrollbar .container::after {
     gap: 20px;
 }
 .about .staff article {
-    flex: 1 1 32%;
-    min-width: 350px;
-    max-width: 700px;
+    flex: 1 1 20%;
+    min-width: 250px;
+    /*min-width: 50px;
+    max-width: 720px;*/
 }
 .about .imgholder {
     aspect-ratio: 1/1;
@@ -475,9 +476,11 @@ section.scrollbar .container::after {
     line-height: 21px;
     position: relative;
 }
-.contact .contactinformation li:first-child {
+
+.contact .contactinformation li.icon-location {
     text-transform: capitalize;
 }
+
 .contact li::before {
     position: absolute;
     left: 0;
@@ -492,34 +495,6 @@ section.scrollbar .container::after {
 */
 
 @media screen and (max-width: 943px) {
-    .scrollbar .container::after,
-    .scrollbar .container::before {
-        display: none;
-    }
-    .scrollbar .imgholder:not(:first-child) {
-        display: none;
-    }
-    .scrollbar .imgholder {
-        position: relative;
-        margin-right: 12.5px;
-        width: 50%;
-    }
-    .scrollbar .imgholder::before {
-        content: ".";
-        position: absolute;
-        color: #313745;
-        font-size: 100px;
-        bottom: -75px;
-        left: calc(50% - 12.5px);
-    }
-    .scrollbar .imgholder::after {
-        content: ".";
-        position: absolute;
-        color: #ca4548;
-        font-size: 100px;
-        bottom: -75px;
-        left: calc(50% + 12.5px);
-    }
 }
 @media screen and (max-width: 650px) {
     header ul {
@@ -553,5 +528,44 @@ section.scrollbar .container::after {
 @media screen and (max-width: 944px) {
     .scrollbar .imgholder {
         margin-right: 0;
+    }
+}
+@media screen and (max-width: 877px) {
+    .about .staff article:nth-child(3) {
+        *max-width: 385px;
+        flex: 0 1 50%;
+    }
+}
+@media screen and (max-width: 577px) {
+    .about .staff article:nth-child(3) {
+        flex-grow: 1;
+    }
+    .scrollbar .container::after,
+    .scrollbar .container::before {
+        display: none;
+    }
+    .scrollbar .imgholder:not(:first-child) {
+        display: none;
+    }
+    .scrollbar .imgholder {
+        position: relative;
+        margin-right: 12.5px;
+        min-width: 50%;
+    }
+    .scrollbar .imgholder::before {
+        content: ".";
+        position: absolute;
+        color: #313745;
+        font-size: 100px;
+        bottom: -75px;
+        left: calc(50% - 12.5px);
+    }
+    .scrollbar .imgholder::after {
+        content: ".";
+        position: absolute;
+        color: #ca4548;
+        font-size: 100px;
+        bottom: -75px;
+        left: calc(50% + 12.5px);
     }
 }
