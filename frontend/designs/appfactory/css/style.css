@@ -543,64 +543,48 @@ footer p {
 ********************************************************************************
 */
 
-@media screen and (max-width: 943px) {
-}
-@media screen and (max-width: 650px) {
-    header ul {
-        display: none;
-    }
-    .icon-burger {
-        position: relative;
-        display: block;
-        background: rgba(0, 0, 0, 0);
-        color: white;
-        border: none;
-        font-size: 20px;
-        cursor: pointer;
-    }
-}
-
-@media screen and (max-width: 600px) {
+/*decrease shadow*/
+@media screen and (max-width: 960px) {
     .scrollbar .imgholder {
         box-shadow: 12px 12px #ce5d55;
         transition: all 1s;
         margin-right: 66.5px;
     }
 }
-@media screen and (min-width: 601px) {
+/*reset shadow*/
+@media screen and (min-width: 961px) {
     .scrollbar .imgholder {
         box-shadow: 25px 25px #ce5d55;
         transition: all 1s;
         margin-right: 80px;
     }
 }
-@media screen and (max-width: 944px) {
-    .scrollbar .imgholder {
-        margin-right: 0;
-    }
-}
+
+/* Fix width for uneven columns */
 @media screen and (max-width: 711px) {
     .about .staff article:nth-child(3) {
         max-width: 385px;
         flex: 0 1 50%;
     }
-}
+}  
+
 @media screen and (max-width: 577px) {
-    .about .staff article:nth-child(3) {
-        flex-grow: 1;
-    }
+    /*replace arrows*/
     .scrollbar .container::after,
     .scrollbar .container::before {
         display: none;
     }
+    /*remove all but first img*/
     .scrollbar .imgholder:not(:first-child) {
         display: none;
     }
+    /*center image*/
     .scrollbar .imgholder {
         position: relative;
         margin-right: 12.5px;
         min-width: 50%;
     }
+    /*replace arrows with dots*/
     .scrollbar .imgholder::before {
         content: ".";
         position: absolute;
@@ -617,4 +601,39 @@ footer p {
         bottom: -75px;
         left: calc(50% + 12.5px);
     }
+    /* remove navigation*/
+    header ul {
+        display: none;
+    }
+    /* replace navigation with burger icon*/
+    .icon-burger {
+        position: relative;
+        display: block;
+        background: rgba(0, 0, 0, 0);
+        color: white;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+    }
+}
+}
+@media screen and (max-width: 455px) {
+    /*reset grow*/
+    .about .staff article:nth-child(3) {
+        flex-grow: 1;
+        max-width: 100%;
+    }
+    header ul {
+        display: none;
+    }
+    .icon-burger {
+        position: relative;
+        display: block;
+        background: rgba(0, 0, 0, 0);
+        color: white;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+    }
+}
 }
