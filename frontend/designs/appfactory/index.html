@@ -288,15 +288,24 @@
                         <form action="">
                             <fieldset>
                                 <div class="input">
-                                    <input type="text" class="name" />
+                                    <input type="text" class="name" required />
                                     <label for="name">name (required)</label>
                                 </div>
                                 <div class="input">
-                                    <input type="email" class="email" />
+                                    <input
+                                        type="email"
+                                        class="email"
+                                        required
+                                    />
                                     <label for="email">email (required)</label>
                                 </div>
                                 <div class="input">
-                                    <input type="text" class="subject" />
+                                    <input
+                                        type="text"
+                                        class="subject"
+                                        default="null"
+                                        required
+                                    />
                                     <label for="subject">subject</label>
                                 </div>
                                 <div class="input">
@@ -306,6 +315,8 @@
                                         id=""
                                         cols="66%"
                                         rows="10"
+                                        required
+                                        default="null;"
                                     ></textarea>
                                     <label for="project"
                                         >describe your project in
