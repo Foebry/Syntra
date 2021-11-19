@@ -617,7 +617,7 @@ footer ul {
 }
 
 /* Fix width for uneven columns */
-@media screen and (max-width: 823px) {
+@media screen and (max-width: 877px) {
     .about .staff article:last-of-type {
         flex: 0 1 48%;
     }
