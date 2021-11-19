@@ -283,12 +283,12 @@ header li:not(:last-child)::after {
     margin-bottom: 20px;
 }
 
-.portfolio ul {
+.portfolio .filter {
     display: flex;
     margin-bottom: 20px;
 }
 
-.portfolio ul button {
+.portfolio .filter button {
     border: 1px solid #666d89;
     border-radius: 4px;
     font-size: 12px;
@@ -299,10 +299,10 @@ header li:not(:last-child)::after {
     text-transform: capitalize;
     margin-right: 10px;
 }
-.portfolio ul button:hover {
+.portfolio .filter button:hover {
     cursor: pointer;
 }
-.portfolio ul button:focus {
+.portfolio .filter button:focus {
     color: #c5c5c5;
     border: 1px solid #c5c5c5;
 }
@@ -343,6 +343,8 @@ header li:not(:last-child)::after {
 .portfolio .imgholder:hover::before {
     display: block;
     position: absolute;
+    font-family: "icomoon";
+    content: "\e906";
     right: calc(50% - 75px);
     top: calc(50% - 75px);
     font-size: 150px;
@@ -616,10 +618,10 @@ footer ul {
     }
 }
 
-/* Fix width for uneven columns */
+/* Fix max-width for last item in uneven amount */
 @media screen and (max-width: 877px) {
     .about .staff article:last-of-type {
-        flex: 0 1 48%;
+        max-width: 48%;
     }
 }
 
@@ -670,8 +672,8 @@ footer ul {
         font-size: 20px;
         cursor: pointer;
     }
-    /*reset grow*/
-    .about .staff article:nth-child(3) {
-        flex-grow: 1;
+    /* reset max-width*/
+    .about .staff article:last-of-type {
+        max-width: 100%;
     }
 }
