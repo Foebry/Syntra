@@ -166,6 +166,7 @@ header li:not(:last-child)::after {
     width: 100%;
     height: 100%;
     border-radius: 30px;
+    display: block;
 }
 
 /*
@@ -223,10 +224,10 @@ header li:not(:last-child)::after {
     font-family: "icomoon", sans-serif;
     position: absolute;
     color: #666d89;
-    font-size: 30px;
-    padding: 10px;
+    font-size: 38px;
+    padding: 12px;
     border: 2px solid #666d89;
-    left: -70px;
+    left: -78px;
     top: 0;
     border-radius: 50%;
 }
@@ -285,22 +286,27 @@ header li:not(:last-child)::after {
 
 .portfolio .filter {
     display: flex;
+    flex-wrap: wrap;
     margin-bottom: 20px;
+    gap: 10px;
 }
 
 .portfolio .filter button {
     border: 1px solid #666d89;
-    border-radius: 4px;
+    border-radius: 5px;
+    padding: 4px 6px;
     font-size: 12px;
     font-weight: 400;
     line-height: 20px;
-    background-color: rgba(0, 0, 0, 0%);
+    background-color: transparent;
     color: #767e9e;
     text-transform: capitalize;
-    margin-right: 10px;
+    white-space: nowrap;
 }
 .portfolio .filter button:hover {
     cursor: pointer;
+    color: #c5c5c5;
+    border: 1px solid #c5c5c5;
 }
 .portfolio .filter button:focus {
     color: #c5c5c5;
@@ -318,14 +324,18 @@ header li:not(:last-child)::after {
     object-fit: cover;
     position: relative;
     min-width: 256.5px;
+    border: 3px solid transparent;
+    transition: all 300ms;
 }
 
 .portfolio img {
     width: 100%;
     height: 100%;
+    display: block;
 }
 .portfolio .imgholder:hover {
-    border: 3px solid #afbdbd;
+    border-color: #afbdbd;
+    transform: scale(1.05);
     cursor: pointer;
 }
 .portfolio .imgholder:hover::after {
@@ -338,9 +348,6 @@ header li:not(:last-child)::after {
     background-color: rgba(0, 0, 0, 40%);
 }
 .portfolio .imgholder::before {
-    display: none;
-}
-.portfolio .imgholder:hover::before {
     display: block;
     position: absolute;
     font-family: "icomoon";
@@ -349,6 +356,11 @@ header li:not(:last-child)::after {
     top: calc(50% - 75px);
     font-size: 150px;
     color: white;
+    opacity: 0%;
+}
+.portfolio .imgholder:hover::before {
+    opacity: 100%;
+    transition: all 300ms;
 }
 
 .portfolio .images {
@@ -384,7 +396,6 @@ header li:not(:last-child)::after {
 .about .staff {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
     gap: 20px;
 }
 .about .staff article {
@@ -396,8 +407,11 @@ header li:not(:last-child)::after {
     margin-bottom: 67px;
     gap: 8px;
 }
-.about ul li::before,
-footer li::before {
+.about ul li a {
+    text-decoration: none;
+}
+.about ul li a::before,
+footer li a::before {
     font-family: "icomoon";
     font-size: 12px;
     font-weight: 300;
@@ -405,22 +419,21 @@ footer li::before {
     padding: 8px;
     border: 1px solid #767e9e;
     border-radius: 50%;
-    cursor: pointer;
 }
-.about ul li:nth-of-type(1):before,
-footer li:nth-of-type(1):before {
+.about ul li:nth-of-type(1) a:before,
+footer li:nth-of-type(1) a:before {
     content: "\ea90";
 }
-.about ul li:nth-of-type(2):before,
-footer li:nth-of-type(2):before {
+.about ul li:nth-of-type(2) a:before,
+footer li:nth-of-type(2) a:before {
     content: "\ea8b";
 }
-.about ul li:nth-of-type(3):before,
-footer li:nth-of-type(3):before {
+.about ul li:nth-of-type(3) a:before,
+footer li:nth-of-type(3) a:before {
     content: "\ea96";
 }
-.about ul li:nth-of-type(4):before,
-footer li:nth-of-type(4):before {
+.about ul li:nth-of-type(4) a:before,
+footer li:nth-of-type(4) a:before {
     content: "\eaca";
 }
 .about .imgholder {
@@ -429,6 +442,7 @@ footer li:nth-of-type(4):before {
 .about img {
     width: 100%;
     height: 100%;
+    display: block;
 }
 
 .about article h3 {
@@ -442,7 +456,7 @@ footer li:nth-of-type(4):before {
 .about article p {
     font-size: 12px;
     font-weight: 300;
-    line-height: 21.5px;
+    line-height: 22px;
     color: #767e9e;
     margin-bottom: 28px;
 }
@@ -476,24 +490,47 @@ footer li:nth-of-type(4):before {
 
 .contact .contactform {
     display: flex;
-    gap: 21px;
+    gap: 20px;
     margin-bottom: 51px;
-    flex-wrap: wrap;
+    /*flex-wrap: wrap;*/
 }
 .contact .contactform form {
-    min-width: 350px;
-    flex: 1 1 40%;
+    /*min-width: 350px;*/
+    width: 66%;
+    /*flex: 1 1 75%;*/
 }
-.contact .contactform .contactinformation {
-    min-width: 350px;
-    flex: 1 1 25%;
+.contact .contactform aside {
+    /*min-width: 350px;*/
+    width: 34%;
+    /*flex: 1 1 25%;*/
 }
-.contact .input.name {
+.contact .input {
     position: relative;
 }
-.contact input:valid + label,
-.contact textarea:valid + label {
-    display: none;
+.contact label {
+    pointer-events: none;
+}
+.contact label span:after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    line-height: 38px;
+    padding: 0 15px;
+    color: #f0d8d9;
+    text-transform: capitalize;
+    font-size: 12px;
+}
+.contact label[for="name"] span:after {
+    content: "name (required)";
+}
+.contact label[for="email"] span:after {
+    content: "email (required)";
+}
+.contact label[for="subject"] span:after {
+    content: "subject";
+}
+.contact label[for="project"] span:after {
+    content: "describe your project in detail...";
 }
 .contact input,
 .contact textarea {
@@ -510,62 +547,68 @@ footer li:nth-of-type(4):before {
     color: #f0d8d9;
     position: relative;
 }
+.contact textarea {
+    height: 35vh;
+    resize: none;
+}
+.contact input::placeholder,
+.contact textarea::placeholder {
+    opacity: 0;
+}
 .contact input:focus,
 .contact textarea {
     outline: none;
 }
-.contact .input {
-    position: relative;
+.contact input:focus + label span:after,
+.contact textarea:focus + label span:after,
+.contact input:not(:placeholder-shown) + label span:after,
+.contact textarea:not(:placeholder-shown) + label span:after {
+    display: none;
 }
-.contact label {
-    position: absolute;
-    left: 15px;
-    top: 0;
-    line-height: 38px;
-    color: #f0d8d9;
-    font-size: 12px;
-    font-weight: 400;
-    text-transform: capitalize;
+.contact input:invalid:not(:placeholder-shown):not(:focus),
+.contact textarea:invalid:not(:placeholder-shown):not(:focus) {
+    outline: 2px solid #2d2f3b;
+    outline-color: red;
 }
 
-.contact .contactinformation h3 {
+.contact aside h3 {
     font-size: 18px;
     font-weight: 900;
     color: #f0d8d9;
     text-transform: capitalize;
     margin-bottom: 8px;
 }
-.contact .contactinformation p {
+.contact aside p {
     font-size: 12px;
     font-weight: 400;
     color: #fff;
     margin-bottom: 32px;
 }
-.contact .contactinformation li {
-    padding-left: 31px;
+.contact aside li a {
+    padding-left: 20px;
     color: #fff;
     font-size: 12px;
     font-weight: 300;
     line-height: 21px;
     position: relative;
+    text-decoration: none;
 }
-
-.contact .contactinformation li.icon-location {
+.contact aside li:first-of-type {
     text-transform: capitalize;
 }
 
-.contact li::before {
+.contact li a::before {
     font-family: "icomoon";
     position: absolute;
     left: 0;
 }
-.contact li:nth-of-type(1):before {
+.contact li:nth-of-type(1) a:before {
     content: "\e948";
 }
-.contact li:nth-of-type(2):before {
+.contact li:nth-of-type(2) a:before {
     content: "\e942";
 }
-.contact li:nth-of-type(3):before {
+.contact li:nth-of-type(3) a:before {
     content: "\e945";
 }
 
@@ -607,14 +650,14 @@ footer ul {
 @media screen and (max-width: 960px) {
     .slider .img-slider .imgholder {
         box-shadow: 12px 12px #ce5d55;
-        transition: all 1s;
+        transition: all 0.5s;
     }
 }
 /*reset shadow*/
 @media screen and (min-width: 961px) {
     .slider .img-slider .imgholder {
         box-shadow: 25px 25px #ce5d55;
-        transition: all 1s;
+        transition: all 0.5s;
     }
 }
 
@@ -622,6 +665,13 @@ footer ul {
 @media screen and (max-width: 877px) {
     .about .staff article:last-of-type {
         max-width: 48%;
+    }
+    .contact .contactform {
+        flex-wrap: wrap;
+    }
+    .contact .contactform form,
+    .contact .contactform aside {
+        width: 100%;
     }
 }
 
