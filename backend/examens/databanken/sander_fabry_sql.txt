@@ -1,0 +1,39 @@
+1. 
+select det_txt_nl Gemeente, det_cases as "Aantal besmettingen" from gemeente
+where det_txt_nl like 'C%'
+order by det_cases desc;
+
+2.
+select prv_naam, count(det_prv_id) 'aantal gemeenten' from gemeente
+    inner join provincie on prv_id = det_prv_id
+group by prv_id
+order by count(det_prv_id) desc, prv_naam
+
+3.
+select reg_name Regio, sum(det_cases) 'Totaal besmettingen' from regio
+    inner join provincie on reg_id = prv_reg_id
+    inner join gemeente on det_prv_id = prv_id
+group by reg_id
+order by reg_name;
+
+4.
+select reg_name Regio, sum(det_cases) 'Totaal besmettingen',
+       round(sum(det_cases)*100/(select sum(det_cases) from gemeente), 1) Procentueel from regio
+    inner join provincie on reg_id = prv_reg_id
+    inner join gemeente on det_prv_id = prv_id
+group by reg_id
+order by reg_name;
+
+5.
+select reg_name Regio, prv_naam Provincie, round(avg(det_cases)) "Gemiddeld aantal besmettingen per gemeente" from regio
+    inner join provincie on reg_id = prv_reg_id
+    inner join gemeente on det_prv_id = prv_id
+group by prv_id
+order by reg_name, prv_naam
+
+6.
+create table centra(
+    cen_id int auto_increment not null primary key,
+    cen_naam varchar(255),
+    cen_det_id int
+);
