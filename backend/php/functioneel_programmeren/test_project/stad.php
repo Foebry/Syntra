@@ -21,7 +21,7 @@
             require_once "src/database.php";
             require_once "src/elements.php";
             # aanmaken sql connector
-            $conn = new mysqli("localhost", "root", "", "steden");
+            $conn = connectDb("localhost", "root", "", "steden");
             #aanmaken query
             $sql = "select * from images where img_id = ".$_GET['img_id'];
             # specifieke data inladen uit db

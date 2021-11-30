@@ -14,7 +14,7 @@ if($conn->connect_error){
 
 
 //define and execute query
-$sql = "select * from gemeente limit 10";
+/*$sql = "select * from gemeente limit 10";
 $result = $conn->query($sql);
 
 print "<table>";
@@ -40,4 +40,4 @@ if ( $result->num_rows > 0 ){
   print "</table>";
 
   $conn->close();
-?>
+?>*/
