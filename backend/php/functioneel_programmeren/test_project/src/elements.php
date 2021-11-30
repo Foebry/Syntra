@@ -1,6 +1,6 @@
 <?php
 
-function injectColumn_Student($data){
+function injectColumn($data){
   return "
   <div class='col-sm-4'>
       <h3>{$data["title"]}</h3>
