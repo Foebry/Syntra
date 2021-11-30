@@ -21,11 +21,18 @@
     <div class="container">
       <div class="row">
         <?php
-          require_once "src/elements.php";
-          $images = ["Berlijn"=>"/images/berlin.jpg", "Parijs"=>"/images/paris.jpg", "Londen"=>"images/london.jpg"];
-          foreach($images as $key=>$value){
+            # inladen elements module
+            require_once "src/elements.php";
+            # creëren array met images
+            $images = [
+                        "Berlijn"=>"berlin.jpg",
+                        "Parijs"=>"paris.jpg",
+                        "Londen"=>"london.jpg"
+                    ];
+            foreach($images as $key=>$value){
+            # kolom aanmaken voor ieder object in de images array
             echo(
-              injectColumn(["title"=>$key, "path"=>$value])
+              injectColumn(["title"=>$key, "path"=>"images/$value"])
             );
           }
          ?>
