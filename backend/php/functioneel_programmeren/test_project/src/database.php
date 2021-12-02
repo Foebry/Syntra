@@ -7,7 +7,7 @@
     function GetData($conn, $query){
         $rows = [];
         $data = $conn->query($query);
-        while( $row = $result->fetch_assoc() ){
+        while( $row = $data->fetch_assoc() ){
             $rows[] = $row;
         }
         return $rows;
