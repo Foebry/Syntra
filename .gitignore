@@ -6,3 +6,5 @@ herexamen_voorbeeld.jpg
 herexamendb.sql
 oplossingen_examen_voorbeeld.docx
 /backend/structurizer
+*.scss
+*.css.map

@@ -20,6 +20,7 @@ function injectTitle($header, $title){
 function injectParagraphLorem($length){
     $lorem = file_get_contents('http://loripsum.net/api/1');
     $words = explode(" ", $lorem);
+
     return implode(" ", array_slice($words, 0, $length));
 }
 

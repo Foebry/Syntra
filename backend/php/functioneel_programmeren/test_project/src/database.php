@@ -1,16 +1,26 @@
 <?php
 
-    function connectDb($host, $user, $password, $database){
-        return new mysqli($host, $user, $password, $database);
+    function connectDb(){
+        // read config.json
+        $file = file_get_contents("../config.json");
+        //convert json to associative array and navigate down to "DATABASE" key
+        $data = json_decode($file, true)["DATABASE"];
+
+        // create and return connection
+        $dsn = "mysql:dbname=".$data["dbname"].";host=".$data["host"];
+        return new PDO(
+                        $dsn,
+                        $user=$data["username"],
+                        $password=$data["password"]
+                    );
     }
 
     function GetData($conn, $query){
-        $rows = [];
+        // query uitvoeren
         $data = $conn->query($query);
-        while( $row = $data->fetch_assoc() ){
-            $rows[] = $row;
-        }
-        return $rows;
+
+        // alle rijen opvragen en als array teruggeven
+        return $data->fetchAll();
     }
 
  ?>
