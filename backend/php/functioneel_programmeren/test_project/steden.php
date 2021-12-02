@@ -28,12 +28,11 @@
             $sql = "select * from images";
             #opvragen data uit db
             $images = GetData($conn, $sql);
-
             # data uitprinten in de pagina
             foreach($images as $row){
                 echo "<article>";
                 echo injectTitle(1, $row["img_title"]);
-                echo "<p>".$row['img_width']." x ".$row['img_height'];
+                echo "<p>".$row['img_width']." x ".$row['img_height']."</p>";
                 echo injectParagraphLorem(15);
                 echo injectImgHolder('images/'.$row['img_filename']);
                 echo "</article>";

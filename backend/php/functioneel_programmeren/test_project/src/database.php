@@ -5,7 +5,12 @@
     }
 
     function GetData($conn, $query){
-        return $conn->query($query);
+        $rows = [];
+        $data = $conn->query($query);
+        while( $row = $result->fetch_assoc() ){
+            $rows[] = $row;
+        }
+        return $rows;
     }
 
  ?>
