@@ -193,8 +193,8 @@ main {
   height: 104px;
   margin-bottom: 20px;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   position: relative;
 }
 .form input {
@@ -233,79 +233,86 @@ main {
 
 .list {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex: 1 1 420px;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
 }
 .list__item {
   height: 68px;
   background-color: #fff;
-  margin-bottom: 12px;
   box-shadow: 2px 2px #e4e8eb;
   padding: 24px;
   width: 86%;
   border-radius: 10px;
   display: flex;
-  align-items: center;
+  justify-content: space-between;
 }
 .list__item span {
   position: relative;
   color: #000;
   font-size: 16px;
 }
+.list__item__buttons {
+  display: flex;
+  gap: 40px;
+}
 .list__item__button {
-  font-family: "icons";
-  font-size: 30px;
-  height: 68px;
+  background-color: #000;
+  border-radius: 50%;
+  padding: 8px;
   position: relative;
   border: none;
-  background-color: transparent;
-  cursor: pointer;
 }
 .list__item__button--remove {
-  margin-right: 20px;
-  position: relative;
+  background-color: transparent;
 }
 .list__item__button--remove:before {
-  color: #bec9c6;
-  position: absolute;
-  top: calc(50% - 15px);
+  font-family: "icons";
   content: "\e903";
+  color: #bdcac6;
+  position: absolute;
+  font-size: 16px;
+  top: 0;
+  left: 0;
 }
 .list__item__button--remove:after {
   content: "|";
-  display: block;
+  color: #bdcac6;
   position: absolute;
-  font-size: 40px;
-  left: 40px;
-  top: calc(50% - 25px);
+  font-size: 16px;
+  top: 0;
+  left: 30px;
 }
 .list__item__button--remove:hover:before {
-  color: red;
+  color: #c72924;
 }
 .list__item__button--check {
-  position: relative;
-  margin-left: 20px;
+  background-color: transparent;
 }
 .list__item__button--check:before {
-  color: #19ba99;
-  background-color: #fff;
-  position: absolute;
   content: "\e900";
-  top: calc(50% - 15px);
-}
-.list__item--checked span:after {
-  text-decoration: line-through;
+  font-family: "icons";
+  color: #19ba99;
   position: absolute;
-  content: "";
-  height: 2px;
-  right: -5px;
-  left: -5px;
-  top: calc(50% - 1px);
-  border-top: 1px solid #19ba99;
+  font-size: 16px;
+  top: 0;
+  left: 0;
 }
-.list__item--checked button:nth-of-type(2):before {
-  color: #fff;
+.list__item__button:hover {
+  cursor: pointer;
+}
+.list__item--checked span:before {
+  content: "";
+  border-top: 2px solid #19ba99;
+  position: absolute;
+  left: -5px;
+  right: -5px;
+  top: 8px;
+}
+.list__item--checked button.list__item__button--check:before {
   background-color: #19ba99;
+  color: #fff;
 }
 
 /*# sourceMappingURL=style.css.map */
