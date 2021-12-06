@@ -2,4 +2,4 @@
 
 ![presented design](./assets/design.png)
 
-visit [surge](sander-examen-html-css.surge.sh) for the live version
+visit [surge](sander-examen-html.surge.sh) for the live version
