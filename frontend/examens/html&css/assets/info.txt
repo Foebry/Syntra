@@ -1,0 +1,26 @@
+Zet de one-pager om in html/css.
+Voorzie zelf een alternatief voor tablet en smartphone.
+
+Je moet enkel de html/css doen. De zoekfunctie en het contactformulier moet niet werken.
+
+Je moet zelf een iconfont maken voor de volgende icoontjes: youtube, instagram, facebook, twitter en het zoekicoontje
+
+Maak gebruik van reset.css
+
+Lettertype: Arial, Helvetica, sans-serif
+
+lichtgrijs (bg) : #f4f4f4
+geel(header titel en icoontjes in footer):  #e7e34f
+text: #646464
+links in text: #959364
+titels boven paragrafen: #121212
+
+paragraaf + inputfields + footer: 14px
+titels: 16px
+gele header: 80px
+logo: 24px
+menu: 12px
+portfolio-items titel: 22px bold
+naam en jaartal: 15px
+credits: 12px
+
