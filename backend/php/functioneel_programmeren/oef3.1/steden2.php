@@ -21,7 +21,7 @@
                 echo "<p>".$row['img_width']." x ".$row['img_height'];
                 echo PrintParagraphLorem(17);
                 echo PrintImgHolder('../images/'.$row['img_filename']);
-                echo PrintLink("stad.php?img_id=".$row['img_id'], 'Meer info');
+                echo PrintLink("stad_form.php?img_id=".$row['img_id'], 'Meer info');
                 echo "</article>";
             }
          ?>
