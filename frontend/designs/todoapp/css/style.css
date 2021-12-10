@@ -179,6 +179,7 @@ html {
 
 body {
   background-color: #eef3f6;
+  font-family: roboto;
 }
 
 main {
@@ -200,22 +201,28 @@ main {
 .form input {
   background-color: #65c4ae;
   padding: 25px;
+  margin: 25px 50px 25px 25px;
   height: 68px;
-  width: 86%;
-  border-radius: 10px;
+  width: calc(100% - 32.5px);
+  border-radius: 7px 0 0 7px;
   border-color: transparent;
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 400;
   color: #fff;
   outline: none;
+  font-family: Roboto;
+  font-style: 20px;
+  line-height: 20px;
+  color: #fff;
 }
 .form input::placeholder {
   color: #fff;
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 400;
 }
 .form button {
   height: 68px;
+  width: 68px;
   border-radius: 50%;
   border-color: transparent;
   color: #fff;
@@ -226,9 +233,14 @@ main {
 .form button:before {
   font-family: "icons";
   content: "\e901";
-  padding: 22px;
   color: #19ba99;
-  font-size: 16px;
+  font-size: 20px;
+}
+.form--error .form__input {
+  background-color: #f1747a;
+}
+.form--error .form__submit {
+  cursor: not-allowed;
 }
 
 .list {
@@ -252,37 +264,35 @@ main {
   position: relative;
   color: #000;
   font-size: 16px;
-}
-.list__item__buttons {
-  display: flex;
-  gap: 40px;
+  margin-right: auto;
 }
 .list__item__button {
   background-color: #000;
   border-radius: 50%;
   padding: 8px;
-  position: relative;
   border: none;
+  position: relative;
+  display: flex;
+  align-items: center;
 }
 .list__item__button--remove {
   background-color: transparent;
+  margin-right: 15px;
 }
 .list__item__button--remove:before {
   font-family: "icons";
+  position: absolute;
+  left: 0;
   content: "\e903";
   color: #bdcac6;
-  position: absolute;
-  font-size: 16px;
-  top: 0;
-  left: 0;
+  font-size: 20px;
 }
 .list__item__button--remove:after {
   content: "|";
   color: #bdcac6;
+  font-size: 20px;
   position: absolute;
-  font-size: 16px;
-  top: 0;
-  left: 30px;
+  right: -15px;
 }
 .list__item__button--remove:hover:before {
   color: #c72924;
@@ -294,10 +304,9 @@ main {
   content: "\e900";
   font-family: "icons";
   color: #19ba99;
-  position: absolute;
-  font-size: 16px;
+  font-size: 20px;
+  right: 0;
   top: 0;
-  left: 0;
 }
 .list__item__button:hover {
   cursor: pointer;
