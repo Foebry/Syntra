@@ -210,6 +210,7 @@ main {
   font-weight: 400;
   color: #fff;
   outline: none;
+  line-height: 20px;
   font-family: Roboto;
   font-style: 20px;
   line-height: 20px;
@@ -226,8 +227,8 @@ main {
   border-radius: 50%;
   border-color: transparent;
   color: #fff;
-  position: absolute;
   right: 18px;
+  position: absolute;
   cursor: pointer;
 }
 .form button:before {
@@ -249,75 +250,71 @@ main {
   flex-wrap: wrap;
   gap: 12px;
   justify-content: center;
+  width: calc(100% - 32.5px);
+  margin: 0 auto;
 }
 .list__item {
-  height: 68px;
+  width: 100%;
   background-color: #fff;
   box-shadow: 2px 2px #e4e8eb;
-  padding: 24px;
-  width: 86%;
+  padding: 13px 18px;
   border-radius: 10px;
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  line-height: 20px;
+  gap: 33px;
 }
-.list__item span {
+.list__item__text {
   position: relative;
+  text-wrap: normal;
   color: #000;
   font-size: 16px;
   margin-right: auto;
+  font-family: Roboto;
+  font-style: 18px;
+  line-height: 20px;
+  color: #000;
 }
 .list__item__button {
-  background-color: #000;
+  background-color: transparent;
   border-radius: 50%;
   padding: 8px;
   border: none;
   position: relative;
+  color: #bdcac6;
+  font-size: 20px;
+  opacity: 0.65;
   display: flex;
   align-items: center;
 }
-.list__item__button--remove {
-  background-color: transparent;
-  margin-right: 15px;
+.list__item__button:not(:last-of-type):after {
+  content: "|";
+  position: absolute;
+  right: -16.5px;
 }
 .list__item__button--remove:before {
   font-family: "icons";
-  position: absolute;
   left: 0;
   content: "\e903";
-  color: #bdcac6;
-  font-size: 20px;
-}
-.list__item__button--remove:after {
-  content: "|";
-  color: #bdcac6;
-  font-size: 20px;
-  position: absolute;
-  right: -15px;
 }
 .list__item__button--remove:hover:before {
   color: #c72924;
-}
-.list__item__button--check {
-  background-color: transparent;
+  opacity: 1;
+  transition: all 300ms;
 }
 .list__item__button--check:before {
   content: "\e900";
   font-family: "icons";
   color: #19ba99;
-  font-size: 20px;
   right: 0;
-  top: 0;
 }
 .list__item__button:hover {
   cursor: pointer;
 }
-.list__item--checked span:before {
-  content: "";
-  border-top: 2px solid #19ba99;
-  position: absolute;
-  left: -5px;
-  right: -5px;
-  top: 8px;
+.list__item--checked span {
+  text-decoration: line-through;
+  text-decoration-color: #19ba99;
 }
 .list__item--checked button.list__item__button--check:before {
   background-color: #19ba99;

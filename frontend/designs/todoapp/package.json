@@ -1,0 +1,21 @@
+{
+  "name": "todoapp",
+  "version": "1.0.0",
+  "description": "![presented design](./+assets/todo-design.png)",
+  "main": "index.js",
+  "scripts": {
+    "css:dev": "sass ./css/style.scss ./css/style.css -w",
+    "css:prod": "sass ./css/style.scss ./css/style.css --no-source-map -s compressed",
+    "deploy": "surge ./ --domain sander-todoapp.surge.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://www.github.com/foebry/syntra/frontend/designs/todoapp.git"
+  },
+  "keywords": [
+    "todo",
+    "app"
+  ],
+  "author": "Sander Fabry",
+  "license": "ISC"
+}
