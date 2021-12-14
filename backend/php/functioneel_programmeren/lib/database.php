@@ -21,8 +21,13 @@
         // query uitvoeren
         $data = $conn->query($query);
 
-        // alle rijen opvragen en als array teruggeven
-        return $data->fetchAll();
+        // alle rijen opvragen
+        $data = $data->fetchAll();
+
+        if (count($data) == 0) return False;
+        elseif (count($data) == 1) return $data[0];
+        return $data;
+
     }
 
     function execute($conn, $query){

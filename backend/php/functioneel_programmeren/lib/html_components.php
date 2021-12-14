@@ -52,8 +52,8 @@ function PrintLink($path, $txt){
     return "<a href=$path>$txt</a>";
 }
 
-function PrintForm($data, $fields){
-    $form = '<form method="POST" action="save.php" id="mainform" name="mainform">';
+function PrintForm($data, $fields, $action){
+    $form = "<form method='POST' action='{$action}' id='mainform' name='mainform'>";
     // overloop alle velden die we willen tonen
     foreach ($fields as $field){
         // indien het veld '_id' bevat zetten we het label op "ID"
@@ -65,8 +65,8 @@ function PrintForm($data, $fields){
         $label = substr($field, $pos+1);
 
         // Kijk na of het veldnaam overeenkomt met een key in de array data
-        if (array_key_exists($field, $data[0])){
-            $value = $data[0][$field];
+        if (array_key_exists($field, $data)){
+            $value = $data[$field];
             $form .= '<div class="form-group row">';
             $form .= "<label for='$field' class='col-sm-2 col-form-label'>$label</label>";
             $form .= '<div class="col-sm-10">';

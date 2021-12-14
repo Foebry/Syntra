@@ -1,6 +1,6 @@
 <?php
-    require_once "../src/html_components.php";
-    require_once "../src/database.php";
+    require_once "../lib/html_components.php";
+    require_once "../lib/database.php";
     $css = array('steden.css');
     echo PrintHead($title="Steden 2 - Plekken in Europa", $css);
 ?>
@@ -19,11 +19,12 @@
                 echo "<article>";
                 echo PrintTitle(1, $row["img_title"]);
                 echo "<p>".$row['img_width']." x ".$row['img_height'];
-                echo PrintParagraphLorem(17);
+                echo PrintParagraphLorem(16);
                 echo PrintImgHolder('../images/'.$row['img_filename']);
                 echo PrintLink("stad_form.php?img_id=".$row['img_id'], 'Meer info');
                 echo "</article>";
             }
+            $conn = null;
          ?>
     </div>
 </body>
