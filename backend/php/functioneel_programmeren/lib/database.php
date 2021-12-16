@@ -16,16 +16,20 @@
                     );
     }
 
-    function GetData($conn, $query, $params=null){
+    function GetData($conn, $query){
+
+        $data = [];
 
         // query uitvoeren
-        $data = $conn->query($query);
+        $result = $conn->query($query);
 
         // alle rijen opvragen
-        $data = $data->fetchAll();
+        $data = $result->fetchall(PDO::FETCH_ASSOC);
+        // while($row = $result->fetch(PDO::FETCH_ASSOC)){
+        //     $data[] = $row;
+        // }
 
-        if (count($data) == 0) return False;
-        elseif (count($data) == 1) return $data[0];
+        if (count($data) == 1) return $data[0];
         return $data;
 
     }
