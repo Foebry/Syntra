@@ -1,39 +1,41 @@
 <?php
-require_once "./database.php";
+if (!isset($_SESSION)) session_start();
 
-function validateForm($data, $table){
-    // Geldig formulier indien volgende zijn allen geldig
-    // title, filename, width, height
+function validate($field, $values){
+    if($values["datatype"] == "int"){
+        if (!validateInteger($_POST[$field])){
+            exit(print("$field moet een integer zijn en mag enkel numerieke waarden bevatten"));
+        }
+    }
+    elseif($values["datatype"] == "varchar"){
+        if (!validateString($_POST[$field], $field)){
+            $length = strlen($_POST[$field]);
+            $max_length = $values["max_size"];
+            exit(print("$field is $length lang, maar mag maximaal $max_length lang zijn"));
+        }
 
-    if (!validTitle($data["title"]) == false) return "invalid title";
-    if (!validFilename($data["filename"])) return "invalid filename";
-    if (!validWidth($data["width"])) return "invalid width";
-    if (!validHeight($data["height"])) return "invalid height";
+    }
+}
+
+function validateCSRF(){
+    if (!hash_equals($_POST["csrf"], $_SESSION["latest_csrf"])){
+        return false;
+    }
     return true;
-
 }
 
-function validTitle($title):bool{
-    //geldige titel indien type title = string en max characters = 255
-    if ((gettype($title) == "string") and (strlen($title) <= 255)) return true;
-    return false;
+function validateInteger($value){
+    // return false indien $value niet numeriek is, anders true
+    return !is_numeric($value) ? false : true;
 }
 
-function validFilename($filename):bool{
-    //geldige filename indien type filename = string en max characters = 255
-    if (gettype($filename) == "string" and strlen($title) <= 255) return true;
-    return false;
-}
+function validateString($value, $field){
+    $_POST[$field] = htmlentities(trim($value), ENT_QUOTES);
 
-function validWidth($width):bool{
-    //geldige width indien type width = integer
-    if (gettype($width) == "integer");
-    return false;
-}
+    $max_size = $_POST["DB_HEADERS"][$field]["max_size"];
 
-function validHeight($height):bool{
-    //geldige height indien type height = integer
-    if (gettype($width) == "integer");
-    return false;
+    if (strlen($_POST[$field]) > $max_size) return false;
+
+    return true;
 }
  ?>

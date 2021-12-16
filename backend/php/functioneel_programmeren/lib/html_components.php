@@ -1,5 +1,6 @@
 <?php
 require_once "../lib/database.php";
+require_once "../lib/security.php";
 
 function insertCSS($head, $files){
     $css = '';
@@ -53,22 +54,45 @@ function PrintLink($path, $txt){
     return "<a href=$path>$txt</a>";
 }
 
-function fillForm($data, $template){
-    $template = file_get_contents($template);
+function printForm($data, $template, $select_field){
+    /*
+    * $select_field vormt basis waarrond een select gemaakt wordt.
+    */
+
+    $selected_land = $data["img_lan_id"];
+    $template = file_get_contents("../templates/$template");
 
     foreach($data as $key=>$value){
         $template = str_replace("@$key@", "$value", $template);
     }
+
+    $conn = connectDb();
+    $data = GetData($conn, "select * from $select_field");
+
+    $template = makeselect($data, $template, $selected_land);
+
+    $csrf = generateCSRF();
+    $template = str_replace("@csrf@", $csrf, $template);
+
     return $template;
 }
 
-function makeSelect($data, $template, $selected_id){
+function makeSelect($data, $template, $sel_lan){
+    /*
+    * $data = alle records vanuit de tabel bv. land
+    */
+    $conn = connectDb();
     $select = "";
+
+    // voor ieder land een option aanmaken
     foreach($data as $row){
         $lan_id = $row["lan_id"];
-        $lan_value = $row["lan_land"];
-        $selected = $lan_id == $selected_id ? "selected" : "";
-        $select .= "<option $selected value=$lan_id>$lan_value</option>";
+        $lan_land = $row["lan_land"];
+
+
+
+        $selected = $lan_id == $sel_lan ? "selected" : "";
+        $select .= "<option $selected value=$lan_id>$lan_land</option>";
     }
     $template = str_replace("@makeselect@", $select, $template);
     return $template;

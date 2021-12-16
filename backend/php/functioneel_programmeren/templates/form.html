@@ -1,5 +1,10 @@
 <!-- opbouwen formulier -->
-<form action="../lib/save.php" method="POST" id="@id@" name="@name@">
+<form action="../lib/save.php" method="POST" id="mainform" name="mainform">
+    <!--meta info -->
+    <input type="hidden" id="csrf" name="csrf" value="@csrf@">
+    <input type="hidden" id="table_select" name="table_select" value="land">
+    <input type="hidden" id="table" name="table" value="images">
+    <input type="hidden" id="aftersql" name="aftersql" value="steden2.php">
     <!-- id veld -->
     <div class="form-group row">
         <label for="img_id" class="col-sm-2 col-form-label">id</label>
@@ -39,7 +44,7 @@
     <div class="form-group row">
         <label for="land_select" class="col-sm-2 col-form-label">land</label>
         <div class="col-sm-3">
-            <select name="" id="land_select" id="land_select" class="form-control">
+            <select name="img_lan_id" id="land_select" class="form-control">
                 @makeselect@
             </select>
         </div>
