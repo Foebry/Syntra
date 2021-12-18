@@ -98,4 +98,12 @@ function makeSelect($data, $template, $sel_lan){
     return $template;
 }
 
+function PrintNavBar($template, $replacements){
+    $file = file_get_contents($template);
+    foreach($replacements as $row){
+        $file = str_replace($row[0], $row[1], $file);
+    }
+    return $file;
+}
+
  ?>
