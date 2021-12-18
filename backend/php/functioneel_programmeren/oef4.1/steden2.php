@@ -4,7 +4,7 @@
     $css = array('steden.css', 'navbar.css');
     echo PrintHead($title="Steden 2 - Plekken in Europa", $css);
 
-    echo PrintJumbo('Leuke plekken in Europa', 'Tips voor citytrips voor vrolijke vakantiegangers!');
+    echo PrintJumbo('Leuke plekken in Europa (steden2)', 'Tips voor citytrips voor vrolijke vakantiegangers!');
     $replacements = [["@HOME_LINK@", "./steden.php"], ["@REGISTER_LINK@", "./register.php"], ["@LOGIN_LINK@", "./login.php"]];
     echo PrintNavBar("../templates/navbar.html", $replacements);
     ?>

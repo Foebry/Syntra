@@ -2,10 +2,12 @@
     require_once "../lib/html_components.php";
     require_once "../lib/elements.php";
     require_once "../lib/database.php";
-    $css = array('steden.css, navbar.css');
-    echo PrintHead($title="Mijn eerste webpagina", $css)
- ?>
- <?=PrintJumbo("Leuke plekken in Europa", "Tips voor citytrips voor vrolijke vakantiegangers!")?>
+    $css = array('steden.css', 'navbar.css');
+    echo PrintHead($title="Mijn eerste webpagina", $css);
+    echo PrintJumbo("Leuke plekken in Europa (steden)", "Tips voor citytrips voor vrolijke vakantiegangers!");
+    $replacements = [["@HOME_LINK@", "./steden.php"], ["@REGISTER_LINK@", "./register.php"], ["@LOGIN_LINK@", "./login.php"]];
+    echo PrintNavBar("../templates/navbar.html", $replacements);
+    ?>
 
     <div class="container">
         <?php
