@@ -9,11 +9,10 @@
     # aanmaken sql connector
     $conn = connectDb();
     #aanmaken query
-    $sql = "select * from images where img_id = ".$_GET['img_id'];
+    $sql = sprintf("select * from `images` where img_id = %s", $_GET["img_id"]);
     # specifieke data inladen uit db
     $data = GetData($conn, $sql);
 
     // form uitprinten obv template form.html ahv data $data met select op basis van land
     echo(printForm($data, "form.html", "land"));
 
-?>

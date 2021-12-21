@@ -5,8 +5,7 @@
     $css = array('steden.css', 'navbar.css');
     echo PrintHead($title="Mijn eerste webpagina", $css);
     echo PrintJumbo("Leuke plekken in Europa (steden)", "Tips voor citytrips voor vrolijke vakantiegangers!");
-    $replacements = [["@HOME_LINK@", "./steden.php"], ["@REGISTER_LINK@", "./register.php"], ["@LOGIN_LINK@", "./login.php"]];
-    echo PrintNavBar("../templates/navbar.html", $replacements);
+    echo PrintNavBar("../templates/navbar.html");
     ?>
 
     <div class="container">
@@ -15,7 +14,7 @@
             # aanmaken sql connector
             $conn = connectDb();
             # aanmaken query
-            $sql = "select * from images";
+            $sql = "select * from images limit 3";
             #opvragen data uit db
             $images = GetData($conn, $sql);
             # data uitprinten in de pagina
