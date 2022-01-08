@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/icons/style.css">
+    <title>Fooi Calculator</title>
+</head>
+<body>
+    <main>
+        <header>
+            <div class="imgholder"></div>
+        </header>
+        <form action="POST">
+            <section class="inputs">
+                <div class="input">
+                    <h3 for="bill">bill</h3>
+                    <div class="input__item ">
+                        <input type="text" name="bill" id="bill" value="0">
+                    </div>
+                </div>
+                <div class="tip">
+                    <h3>select tip %</h3>
+                    <ul id="tip" name="tip" class="tiplist">
+                        <li class="tiplist__item" id="tip_amount" name="tip_amount">5%</li>
+                        <li class="tiplist__item" id="tip_amount" name="tip_amount">10%</li>
+                        <li class="tiplist__item" id="tip_amount" name="tip_amount">15%</li>
+                        <li class="tiplist__item" id="tip_amount" name="tip_amount">25%</li>
+                        <li class="tiplist__item" id="tip_amount" name="tip_amount">50%</li>
+                        <li class="tiplist__item tiplist__item--custom" id="tip_amount" name="tip_amount">
+                            <input type="text" value="custom">
+                        </li>
+                    </ul>
+                </div>
+                <div class="input">
+                    <h3>number of people</h3>
+                    <div class="input__item">
+                        <input type="text" name="people" id="people" value="0">
+                    </div>
+                </div>
+            </section>
+            <section class="outcome">
+                <div class="result">
+                    <label for="tip_amount_pp">tip amount</label>
+                    <div class="input">
+                        <input type="text" id="tip_amount_pp" name="tip_amount_pp" value="$0.00" readonly>
+                    </div>
+                </div>
+                <div class="result">
+                    <label for="tip_total_pp">total</label>
+                    <div class="input">
+                        <input type="text" id="tip_total_pp" name="tip_total_pp" value="$0.00" readonly>
+                    </div>
+                </div>
+                <input type="reset" value="reset" class="reset">
+            </section>
+        </form>
+    </main>
+</body>
+</html>
