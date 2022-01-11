@@ -27,6 +27,7 @@ function swapCase(str) {
 	return arr.join("");
 
 }
+console.log("BoOYAa")
 console.log(swapCase("BoOYAa"));
 console.log("-------------------------------------------------------------------------------------");
 
@@ -39,7 +40,7 @@ function totalSum(arr) {
 console.log(totalSum([1, 2, 3, 4, 5, 6, 7, 8, 9])); //45
 console.log("-------------------------------------------------------------------------------------");
 //5. Write a JavaScript function to remove a specific element from an array
-var myNames = ["John", "Cindy", "Omer", "Barbie", "Barbie"];
+let myNames = ["John", "Cindy", "Omer", "Barbie", "Barbie"];
 
 function removeSpecificelement(array, name) {
 	return array.filter(el => el != name);
@@ -48,6 +49,7 @@ console.log(removeSpecificelement(myNames, "Barbie")); //["John", "Cindy", "Omer
 console.log("-------------------------------------------------------------------------------------");
 
 //6. Write a function to remove all strings with less than X characters from an array of strings
+
 function removeStrings(arr, len) {
 	return arr.filter(el => el.length >= len);
 };
@@ -70,6 +72,7 @@ function getFibNumbers(n, numbers = {}) {
 	return arr;
 }
 console.log(getFibNumbers(10)); // [1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
+console.log(getFibNumbers(1000))
 console.log("-------------------------------------------------------------------------------------");
 
 //8. Write a JavaScript function that returns array elements larger than a number given:

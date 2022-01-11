@@ -2,12 +2,14 @@
 let table = [];
 
 function generateMultiplicationTable(number) {
-	for (i = 1; i < 1000; i++) {
-		table.push(i * number);
+	//return [ i*number for i in range(1000)]
+	for (i = 0; i < 1000; i++) {
+		table.push((i * number).toString());
 	}
 	return table;
 }
 var result = generateMultiplicationTable(5);
+console.log("oefening 1")
 console.log(result);
 console.log("-------------------------------------------------------------------------------------");
 
@@ -18,6 +20,7 @@ table.forEach((item, i) => {
 		table[i] = table[i].toString() + "*";
 	}
 });
+console.log("oefening 2")
 console.log(table);
 console.log("-------------------------------------------------------------------------------------");
 
@@ -25,6 +28,7 @@ console.log("-------------------------------------------------------------------
 function isDivisible(number, divisor) {
 	return number % divisor == 0;
 }
+console.log("oefening 3")
 console.log(isDivisible(333, 7)); //=> false
 console.log("-------------------------------------------------------------------------------------");
 
@@ -37,6 +41,7 @@ function getEvenNumbersInRange(start, end) {
 	}
 	return lst;
 }
+console.log("oefening 4")
 console.log(getEvenNumbersInRange(56, 1211));
 console.log("-------------------------------------------------------------------------------------");
 
@@ -44,6 +49,7 @@ console.log("-------------------------------------------------------------------
 function getDistance(p1, p2) {
 	return Math.sqrt((p2[0] - p1[0]) ** 2 + (p2[1] - p1[1]) ** 2);
 }
+console.log("oefening 5")
 console.log(getDistance([20, 100], [50, 800]));
 console.log(getDistance([0, 0], [7.2, 5]))
 console.log("-------------------------------------------------------------------------------------");
