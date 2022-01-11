@@ -1,16 +1,13 @@
 //1- Write a JavaScript function to check whether a string is blank or not.
-function is_Blank(str) {
-	return str == "";
-}
+const is_Blank = (str) => str === "";
+
 console.log("oefening 1")
 console.log(is_Blank('')); //= true
 console.log(is_Blank('abc')); //= false
 console.log("---------------------------------------------------------------------------------------")
 
 //2- Write a JavaScript function to hide email addresses to protect from unauthorized user.
-function protect_email(email) {
-	return email.replace(email.substring(Math.floor(email.indexOf("@") / 2), email.indexOf("@")), "...");
-}
+const protect_email = (email) => email.replace(email.substring(Math.floor(email.indexOf("@") / 2), email.indexOf("@")), "...");
 
 console.log("oefening 2")
 console.log(protect_email("robin_singh@example.com")); //robin...@example.com
@@ -19,9 +16,7 @@ console.log("-------------------------------------------------------------------
 
 
 //3- Write a JavaScript function to insert a string within a string at a particular position (default is 1).
-function insert(str, substr = "", pos = 0) {
-	return `${str.substring(0, pos)}${substr}${str.substr(pos)}`;
-}
+const insert = (str, substr = "", pos = 0) => `${str.substring(0, pos)}${substr}${str.substr(pos)}`;
 
 console.log("oefening 3")
 console.log(insert('We are doing some exercises.')); //= We are doing some exercises.
@@ -51,43 +46,40 @@ console.log("-------------------------------------------------------------------
 
 
 //5- Write a JavaScript function to truncate a string to a certain length.
-function truncate_string(str, pos) {
-	return str.substring(0, pos);
-}
+const truncate_string = (str, pos) => str.substring(0, pos);
+
 console.log("oefening 5")
 console.log(truncate_string("Robin Singh", 4)); //= Robi
 console.log("---------------------------------------------------------------------------------------")
 
 
 //6- Write a JavaScript function to test whether the character at the provided (character) index is lower case.
-function isLowerCaseAt(str, pos) {
-	return str[pos] == str[pos].toLowerCase();
-}
+const isLowerCaseAt = (str, pos) => str[pos] === str[pos].toLowerCase();
+
 console.log("oefening 6")
 console.log(isLowerCaseAt('Js STRING EXERCISES', 1)); //= true
 console.log("---------------------------------------------------------------------------------------")
 
 
 //7- Write a JavaScript function to test whether a string ends with a specified string.
-function endsWith(str, substr) {
-	return str.split(" ")[str.split(" ").length - 1] == substr;
-}
+const ends_with = (str, substr) => str.endsWith(substr);
+
 console.log("oefening 7")
-console.log(endsWith('JS string exercises', 'exercises')); //= true
+console.log(ends_with('JS string exercises', 'exercises')); //= true
+console.log(ends_with("JS string exercise", "exercises")); //false
 console.log("---------------------------------------------------------------------------------------")
 
 
 //8- Write a JavaScript function to get unique guid (an acronym for 'Globally Unique Identifier) of the specified length, or 32 by default.
-const options = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+const guid = (len = 32) => new Array(Math.ceil(len / 8))
+	.fill("")
+	.map((el) => Math.random().toString(16).substr(2))
+	.join("")
+	.substr(0, len)
+	.split("")
+	.map((el) => Math.random() > 0.5 ? el.toUpperCase() : el)
+	.join("");
 
-function guid(length = 32) {
-	//return "".join([options[random.randrange(len(options)) for _ in range(length)])
-	let str = "";
-	for (i = 0; i < length; i++) {
-		str += options[Math.floor(Math.random() * options.length)];
-	}
-	return str;
-}
 console.log("oefening 8")
 console.log(guid()); //= hRYilcoV7ajokxsYFl1dba41AyE0rUQR
 console.log(guid(15)); //= b7pwBqrZwqaDrex
