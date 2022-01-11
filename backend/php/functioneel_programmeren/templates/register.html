@@ -1,0 +1,57 @@
+<!-- opbouwen formulier -->
+<form action="../lib/save.php" method="POST" id="mainform" name="mainform">
+    <!--meta info -->
+    <input type="hidden" id="csrf" name="csrf" value="@csrf@">
+    <input type="hidden" id="table" name="table" value="user">
+    <input type="hidden" id="aftersql" name="aftersql" value="steden.php">
+    <input type="hidden" id="pkey" name="pkey" value="usr_id">
+    <input type="hidden" id="usr_password_min" name="usr_password_min" value="8">
+    <input type="hidden" id="password_verification" name="password_verification" value="usr_password_verification">
+    <input type="hidden" id="passwords" name="passwords" value="usr_password usr_password_verification">
+    <input type="hidden" id="email" name="email" value="usr_email">
+    <input type="hidden" id="submitbutton" name="sumbit" value="insert">
+    <!-- voornaam veld -->
+    <div class="form-group row">
+        <label for="usr_voornaam" class="col-sm-2 col-form-label">voornaam</label>
+        <div class="col-sm-8">
+            <input type="text" name="usr_voornaam" id="usr_voornaam" class="form-control" value="@usr_voornaam@">
+            <p class="error-msg">@err_usr_voornaam@</p>
+        </div>
+    </div>
+    <!-- naam veld -->
+    <div class="form-group row">
+        <label for="usr_naam" class="col-sm-2 col-form-label">naam</label>
+        <div class="col-sm-8">
+            <input type="text" name="usr_naam" id="usr_naam" class="form-control" value="@usr_naam@" autocomplete="off">
+            <p class="error-msg">@err_usr_naam@</p>
+        </div>
+    </div>
+    <!-- login veld -->
+    <div class="form-group row">
+        <label for="usr_email" class="col-sm-2 col-form-label">login</label>
+        <div class="col-sm-8">
+            <input type="text" name="usr_email" id="usr_email" class="form-control" value="@usr_email@" autocomplete="off">
+            <p class="error-msg">@err_usr_email@</p>
+        </div>
+    </div>
+    <!-- wachtwoord veld -->
+    <div class="form-group row">
+        <label for="usr_password" class="col-sm-2 col-form-label">wachtwoord</label>
+        <div class="col-sm-8">
+            <input type="password" name="usr_password" id="usr_password" class="form-control" value="@usr_password@">
+            <p class="error-msg">@err_usr_password@</p>
+        </div>
+    </div>
+    <!-- wachtwoord verificatie veld -->
+    <div class="form-group row">
+        <label for="usr_password_verification" class="col-sm-2 col-form-label">wachtwoord</label>
+        <div class="col-sm-8">
+            <input type="password" name="usr_password_verification" id="usr_password_verification" class="form-control" value="@usr_password_verification@">
+            <p class="error-msg">@err_usr_password_verification@</p>
+        </div>
+    </div>
+    <!-- submit button -->
+    <div class="form-group-row">
+        <input type="submit" value="save">
+    </div>
+</form>

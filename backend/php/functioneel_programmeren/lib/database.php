@@ -2,12 +2,15 @@
 require_once "../lib/validate.php";
 
     function connectDb(){
-        // read config.json
+        /**
+        * functie verantwoordelijk voor het creëren van een connectie met de db van het project.
+        */
+        // laad content config.json in
         $file = file_get_contents("../config.json");
-        //convert json to associative array and navigate down to "DATABASE" key
+        // hervorm json naar een associatieve array en navigeer "DATABASE" key.
         $data = json_decode($file, true)["DATABASE"];
 
-        // create and return connection
+        // maak connectie met de db en geef het connectie object terug
         $dsn = "mysql:dbname=".$data["dbname"].";host=".$data["host"];
 
         return new PDO(
@@ -17,47 +20,68 @@ require_once "../lib/validate.php";
                     );
     }
 
-    function GetData($conn, $query){
+    function GetData($query){
+        /**
+        * functie verantwoordelijk voor het opvragen en teruggeven van data uit de databank.
+        */
 
         $data = [];
+        // creëer een connectie
+        $conn = connectDb();
 
         // query uitvoeren
         $result = $conn->query($query);
 
-        // alle rijen opvragen
-        $data = $result->fetchall(PDO::FETCH_ASSOC);
-        // while($row = $result->fetch(PDO::FETCH_ASSOC)){
-        //     $data[] = $row;
-        // }
-
-        if (count($data) == 1) return $data[0];
-        return $data;
+        // alle rijen opvragen en teruggeven
+        return $result->fetchall(PDO::FETCH_ASSOC);
 
     }
 
-    function execute($conn, $query){
+    function execute($query){
+        /**
+        * functie verantwoordelijk voor het uitvoeren van queries.
+        * bv. UPDATE - INSERT - DELETE - CREATE - DROP
+        */
+
+        // aanmaken connectie
+        $conn = connectDb();
+
         return $conn->query($query);
     }
 
     function getHeaders($table){
-        $conn = connectDb();
-        $sql = "select * from information_schema.columns where table_name = '$table'";
-        $data = GetData($conn, $sql);
+        /**
+        * functie verantwoordelijk voor het opvragen van de tabelhoofdingen voor een opgegeven tabel.
+        * @param $table: tabel waarvoor de hoofdingen gevraagd wordt.
+        * @type $table: string
+        *
+        * @var $headers: array van associatieve arrays die de nodige metadata bevat over iedere kolom van de database
+        */
+
         $headers = [];
+        // aanmaken connectie & query
+        $conn = connectDb();
+        $query = "select * from information_schema.columns where table_name = '$table' and table_schema = 'steden'";
 
+        // opvragen data ahv bovenstaande query
+        $data = GetData($query);
+
+        // voor iedere rij (gevevens van 1 kolom) nagaan en uithalen wat van belang is.
         foreach($data as $row){
-
-            // bepalen welke data van belang is
+            // belangrijke eigenschappen van de rij (gegevens van 1 kolom) zijn:
+            // COLUMN_NAME - DATA_TYPE - COLUMN_KEY - CHARACTER_MAXIMUM_LENGTH
             $column = $row["COLUMN_NAME"];
             $column_datatype = $row["DATA_TYPE"];
             $column_key = $row["COLUMN_KEY"];
             $column_max_length = $row["CHARACTER_MAXIMUM_LENGTH"];
+            $column_default = $row["COLUMN_DEFAULT"];
 
-            // nieuwe associatieve array aanmaken met nodige data.
+            // nieuwe associatieve array aanmaken met nodige data. en toevoegen aan de $headers array
             $headers[$column] = [];
             $headers[$column]["datatype"] = $column_datatype;
             $headers[$column]["key"] = $column_key;
             $headers[$column]["max_size"] = $column_max_length;
+            $headers[$column]["default"] = $column_default;
 
         }
         $_POST["DB_HEADERS"] = $headers;
@@ -68,16 +92,16 @@ function buildStatement(){
     //controleer csrftoken
     if (!validateCSRF()) exit("Probleem met CSRF-token");
 
-    $table_select = $_POST["table_select"];
+    //$table_select = $_POST["table_select"];
     $table = $_POST["table"];
-    $conn = connectDb();
 
     // check of er in tabel images records bestaan met img_lan_id gelijk aan $_POST["img_lan_id"]
     // zoja is de image voor het bepaalde land reeds gepost en willen we update
     // anders heeft het betreffende land nog geen image gepost en willen we inserten
-    $data = getData($conn, "select * from images where img_lan_id = ".$_POST["img_lan_id"]);
-    $statement = $data ? "update" : "insert";
-    $sql = $statement == "insert" ? "insert into $table set " : "update $table set ";
+
+    //$data = getData("select * from images where img_lan_id = ".$_POST["img_lan_id"]);
+    //$statement = $data ? "update" : "insert";
+    //$sql = $statement == "insert" ? "insert into $table set " : "update $table set ";
 
     $headers = getHeaders($table);
 
@@ -100,4 +124,5 @@ function buildStatement(){
     //exit(var_dump($sql));
     return $sql;
 }
+
  ?>
