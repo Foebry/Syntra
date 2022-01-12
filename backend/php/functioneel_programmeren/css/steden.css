@@ -150,6 +150,7 @@ table {
     font-weight: 800;
     margin-bottom: 20px;
     color: green;
+    text-transform: capitalize;
 }
 .container article p {
     font-size: 16px;

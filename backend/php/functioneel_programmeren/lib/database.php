@@ -74,14 +74,14 @@ require_once "../lib/validate.php";
             $column_datatype = $row["DATA_TYPE"];
             $column_key = $row["COLUMN_KEY"];
             $column_max_length = $row["CHARACTER_MAXIMUM_LENGTH"];
-            $column_default = $row["COLUMN_DEFAULT"];
+            $is_null = $row["IS_NULLABLE"];
 
             // nieuwe associatieve array aanmaken met nodige data. en toevoegen aan de $headers array
             $headers[$column] = [];
             $headers[$column]["datatype"] = $column_datatype;
             $headers[$column]["key"] = $column_key;
             $headers[$column]["max_size"] = $column_max_length;
-            $headers[$column]["default"] = $column_default;
+            $headers[$column]["is_null"] = $is_null;
 
         }
         $_POST["DB_HEADERS"] = $headers;

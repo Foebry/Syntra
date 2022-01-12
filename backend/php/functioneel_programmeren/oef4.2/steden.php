@@ -5,17 +5,16 @@
     require_once "../lib/database.php";
 
     $css = array('steden.css', 'navbar.css');
+    $headers = getHeaders("images");
     $images = GetData("select * from images limit 3");
-    $main = mergeInfo("main.html", $info);
+
     $content = createArticles($images, "article_steden.html");
+    $content = mergeContent("main.html", $content);
+    $content = mergeErrorInfoPlaceholder($content, $headers, $errors, $info);
+    $content = removeEmptyPlaceholder($content);
 
     echo PrintHead($title="Mijn eerste webpagina", $css);
     echo PrintJumbo("Leuke plekken in Europa (steden)", "Tips voor citytrips voor vrolijke vakantiegangers!");
     echo PrintNavBar("../templates/navbar.html");
-    echo MergeContent($main, $content);
+    echo $content;
     ?>
-
-
-
-  </body>
-</html>

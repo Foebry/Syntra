@@ -5,8 +5,11 @@
 
     $css = array('stad_form.css');
     $headers = getHeaders("user");
-    $form = printGenericForm("register.html", $headers, $old_post);
+    $content = createForm("register.html", $headers, $old_post);
+    $content = mergeContent("main.html", $content);
+    $content = mergeErrorInfoPlaceholder($content, $headers, $errors, $info);
+    $content = removeEmptyPlaceholder($content);
 
     echo PrintHead($title="register", $css);
     echo PrintJumbo($titel="Registratie");
-    echo mergeErrors($form, $headers, $errors);
+    echo $content;

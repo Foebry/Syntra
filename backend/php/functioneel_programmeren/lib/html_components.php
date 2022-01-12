@@ -16,6 +16,7 @@ function getTagsFromTemplate($template, $offset=0){
     while($offset){
         $start = $offset+1;
         $end = strpos($template, "@", $start);
+        if ($end == 0) break;
         $tags[] = substr($template, $start, $end-$start);
         $offset = strpos($template, "@", $end+1);
     }
@@ -27,16 +28,15 @@ function createArticles($data , $template){
 
     foreach($data as $row){
         $content .= file_get_contents("../templates/$template");
-        $tags = getTagsFromTemplate($template);
-        foreach($tags as $tag){
-            $value = key_exists($tag, $row) ? $row[$tag] : (strpos($tag, "lorem") !== false ? PrintParagraphLorem(substr($tag, 5)) : "");
-            $content = str_replace("@$tag@", $value, $content);
+        foreach($row as $placeholder => $value){
+            $content = str_replace("@$placeholder@", $value, $content);
         }
     }
     return $content."</div>";
 }
 
 function mergeContent($template, $content){
+    $template = file_get_contents("../templates/$template");
     $template = str_replace("@content@", $content, $template);
     return $template;
 }
@@ -82,7 +82,7 @@ function PrintLink($path, $txt) :string{
     return "<a href=$path>$txt</a>";
 }
 
-function printGenericForm($template, $headers, $old_post) :string{
+function createForm($template, $headers, $old_post) :string{
     $template = file_get_contents("../templates/$template");
     foreach ($headers as $tag => $value) {
         $value_verification = key_exists($tag."_verification", $old_post) ? $old_post[$tag."_verification"] : "";
@@ -95,21 +95,31 @@ function printGenericForm($template, $headers, $old_post) :string{
     }
     return $template;
 }
-
-function mergeErrors($template, $headers, $errors){
+function mergeErrorInfoPlaceholder($templatetxt, $headers, $errors, $info){
+    $templatetxt = mergeErrors($templatetxt, $headers, $errors);
+    $templatetxt = mergeInfo($templatetxt, $info);
+    return $templatetxt;
+}
+function removeEmptyPlaceholder($templatetxt){
+    $tags = getTagsFromTemplate($templatetxt);
+    foreach($tags as $tag){
+        $templatetxt = str_replace("@$tag@", "", $templatetxt);
+    }
+    return $templatetxt;
+}
+function mergeErrors($templatetxt, $headers, $errors){
 
     foreach($headers as $tag => $value){
         $value = key_exists($tag, $errors) ? $errors[$tag] : "";
         $value_verification = key_exists($tag."_verification", $errors) ? $errors[$tag."_verification"] : "";
-        $template = str_replace("@err_$tag@", $value, $template);
-        $template = str_replace("@err_$tag"."_verification@", $value_verification, $template);
+        $templatetxt = str_replace("@err_$tag@", $value, $templatetxt);
+        $templatetxt = str_replace("@err_$tag"."_verification@", $value_verification, $templatetxt);
     }
-    return $template;
+    return $templatetxt;
 }
-function mergeInfo($template, $info){
-    $template = file_get_contents("../templates/$template");
-    $template = str_replace("@info@", $info, $template);
-    return $template;
+function mergeInfo($templatetxt, $info){
+    $templatetxt = str_replace("@info@", $info, $templatetxt);
+    return $templatetxt;
 }
 function printForm($data, $template, $select_field) :string{
     /**
