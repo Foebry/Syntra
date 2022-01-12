@@ -88,41 +88,31 @@ require_once "../lib/validate.php";
         return $headers;
     }
 
-function buildStatement(){
-    //controleer csrftoken
-    if (!validateCSRF()) exit("Probleem met CSRF-token");
+function buildStatement($statement){
+    /**
+    * functie die de sql statment zal genereren.
+    * @param $statement: type van statement ("insert", "update", ...)
+    * @type $statement: string
+    *
+    * @return: string
+    */
 
-    //$table_select = $_POST["table_select"];
     $table = $_POST["table"];
+    $headers = $_POST["DB_HEADERS"];
+    $values = [];
 
-    // check of er in tabel images records bestaan met img_lan_id gelijk aan $_POST["img_lan_id"]
-    // zoja is de image voor het bepaalde land reeds gepost en willen we update
-    // anders heeft het betreffende land nog geen image gepost en willen we inserten
+    $statement = $statement == "insert" ? "insert into $table set " : "update $table set ";
 
-    //$data = getData("select * from images where img_lan_id = ".$_POST["img_lan_id"]);
-    //$statement = $data ? "update" : "insert";
-    //$sql = $statement == "insert" ? "insert into $table set " : "update $table set ";
-
-    $headers = getHeaders($table);
-
-    // overloop alle velden vanuit de db, en valideer de overeenkomende gegevens uit $_POST
-    foreach($headers as $key=>$values){
-        // negeeer niet-data
-        if(in_array($key, ["img_id", "img_desc", "img_published"])) continue;
-
-        // valideer $_POST[$key]
-        validate($key, $values);
-
+    # overloop alle velden uit de db tabel, en valideer de overeenkomende gegevens uit $_POST
+    foreach($headers as $key => $properties){
+        if ($key == $_POST["pkey"]) continue;
         $value = $_POST[$key];
 
-        // vul $sql aan met veld en waarde
-        $sql .= "$key = '$value', ";
+        # vul $values aan met veld en waarde
+        $values[] = "$key = '$value'";
     }
-    $sql = trim($sql, ', ');
-    if($statement == "update") $sql .= "where img_id = ".$_POST["img_id"];
-
-    //exit(var_dump($sql));
-    return $sql;
+    $values = implode(", ", $values);
+    return $statement . $values;
 }
 
  ?>

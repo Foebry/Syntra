@@ -15,7 +15,7 @@
 
     # valideer de waarde van iedere key overeenkomend met de headers van de tabel
     foreach ($headers as $key => $values) {
-        if (key_exists($key, $_POST)){
+        if (key_exists($key, $_POST) and $key != $_POST["pkey"]){
             validate($key, $values);
         }
     }

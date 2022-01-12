@@ -12,6 +12,30 @@ function validate($field, $values){
     * @type $values: array(string => string|int)
     */
 
+    $not_null = $_POST["DB_HEADERS"][$field]["is_null"] == "NO";
+    $unique = $_POST["DB_HEADERS"][$field]["key"] == "UNI";
+    $fields = [
+        "usr_password" => "Het wachtwoord",
+        "usr_voornaam" => "Voornaam",
+        "usr_naam" => "Deze Naam",
+        "usr_email" => "Dit e-mailadres",
+
+    ];
+    $_POST[$field] = $_POST[$field] == "" ? "null" : $_POST[$field];
+    # indien de ingevoerde waarde leeg is, ga na of dit veld in de databank leeg mag zijn,
+    # zoniet, zet de correcte error message en return;
+    if ($not_null and $_POST[$field] == "null"){
+        $_SESSION["ERRORS"][$field] = "$fields[$field] mag niet leeg zijn.";
+        return;
+    }
+    # indien het veld uniek is in de databank, ga na of deze waarde nog niet bestaat.
+    # indien wel het geval, zet de correcte error message en return.
+    if ($unique){
+        if (getData("select $field from ".$_POST["table"]." where $field = "."'".$_POST[$field]."'")){
+            $_SESSION["ERRORS"][$field] = "$fields[$field] is al in gebruik.";
+            return;
+        }
+    }
     if($values["datatype"] == "int"){
         validateInteger($_POST[$field], $field);
     }
@@ -38,11 +62,9 @@ function validateInteger($value, $field){
     * @type $field: string
     */
 
-    if ($value == "") $value = "null";
-
     if (!is_numeric($value)){
 
-        $_SESSION["ERRORS"][$field] = "$field is een numeriek veld en mag enkel numerieke waarden bevatten.";
+        $_SESSION["ERRORS"][$field] = "$fields[$field] is een numeriek veld en mag enkel numerieke waarden bevatten.";
     }
 }
 
@@ -73,14 +95,7 @@ function validateString($value, $field){
         "usr_email" => "e-mailadres",
 
     ];
-    # indien het veld uniek is in de databank, ga na of deze waarde nog niet bestaat.
-    # indien wel het geval, zet de correcte error message en return.
-    if ($unique){
-        if (getData("select $field from ".$_POST["table"]." where $field = "."'".$_POST[$field]."'")){
-            $_SESSION["ERRORS"][$field] = "Dit $fields[$field] is al in gebruik.";
-            return;
-        }
-    }
+
     # indien de lengte van de ingevoerde waarde langer is dan de toegelaten lengte,
     # of net te kort, zet de correcte error messages voor de respectievelijke fouten.
     if(strlen($_POST[$field]) < $min_len){
@@ -89,19 +104,7 @@ function validateString($value, $field){
    elseif (strlen($_POST[$field]) > $max_size) {
        $_SESSION["ERRORS"][$field] = "$field is $strlen lang, maar mag maximaal $max_size lang zijn.";
    }
-
-   # indien de ingevoerde waarde leeg is, ga na of dit veld in de databank leeg mag zijn,
-   # zoja zet de waarde van het ingevoerde veld gelijk aan de string "null".
-   # zoniet, zet de correcte error message en return;
-    elseif (strlen($_POST[$field]) == 0){
-        if ($not_null){
-            $_SESSION["ERRORS"][$field] = "$fields[$field] mag niet leeg zijn";
-            return;
-        }
-        $_POST[$field] = "null";
-     }
 }
-
 
 function ValidateUsrPassword($values){
     $passwords = explode(" ", $values);
