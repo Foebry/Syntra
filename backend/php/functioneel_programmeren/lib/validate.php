@@ -2,7 +2,16 @@
 require_once "../lib/database.php";
 if (!isset($_SESSION)) session_start();
 
+
 function validate($field, $values){
+    /**
+    * functie die de het meegegeven veld zal valideren.
+    * @param $field: kolomhoofd
+    * @param $values: eigenschappen van de kolom.
+    * @type $field: string
+    * @type $values: array(string => string|int)
+    */
+
     if($values["datatype"] == "int"){
         validateInteger($_POST[$field], $field);
     }
@@ -12,13 +21,23 @@ function validate($field, $values){
 }
 
 function validateCSRF(){
-    if (!hash_equals($_POST["csrf"], $_SESSION["latest_csrf"])){
-        return false;
-    }
-    return true;
+    /**
+    * functie die het csrf-token zal valideren
+    *
+    * @return: boolean
+    */
+    return hash_equals($_POST["csrf"], $_SESSION["latest_csrf"]);
 }
 
 function validateInteger($value, $field){
+    /**
+    * functie die een integer veld zal valideren.
+    * @param $value: waarde ingegeven door de gebruiker.
+    * @param $field: kolomhoofd
+    * @type $value: int
+    * @type $field: string
+    */
+
     if ($value == "") $value = "null";
 
     if (!is_numeric($value)){
@@ -28,11 +47,21 @@ function validateInteger($value, $field){
 }
 
 function validateString($value, $field){
+    /**
+    * functie die een string veld zal valideren.
+    * @param $value: waarde ingegeven door de gebruiker
+    * @param $field: kolomhoofd
+    * @type $value: string
+    * @type $field: string
+    *
+    * @return: null
+    */
+
+    # sanitization
     $_POST[$field] = htmlentities(trim($value), ENT_QUOTES);
 
     $not_null = $_POST["DB_HEADERS"][$field]["is_null"] == "NO";
     $max_size = $_POST["DB_HEADERS"][$field]["max_size"];
-    //if($field == "usr_email") exit(var_dump($POST["DB_HEADERS"][$field]["column_key"]));
     $unique = $_POST["DB_HEADERS"][$field]["key"] == "UNI";
     $min_len = intval(key_exists($field."_min", $_POST) ? $_POST[$field."_min"] : 0);
 
@@ -44,19 +73,26 @@ function validateString($value, $field){
         "usr_email" => "e-mailadres",
 
     ];
+    # indien het veld uniek is in de databank, ga na of deze waarde nog niet bestaat.
+    # indien wel het geval, zet de correcte error message en return.
     if ($unique){
         if (getData("select $field from ".$_POST["table"]." where $field = "."'".$_POST[$field]."'")){
             $_SESSION["ERRORS"][$field] = "Dit $fields[$field] is al in gebruik.";
             return;
         }
     }
-
+    # indien de lengte van de ingevoerde waarde langer is dan de toegelaten lengte,
+    # of net te kort, zet de correcte error messages voor de respectievelijke fouten.
     if(strlen($_POST[$field]) < $min_len){
         $_SESSION["ERRORS"][$field] = "$fields[$field] moet minstens $min_len tekens bevatten";
     }
    elseif (strlen($_POST[$field]) > $max_size) {
        $_SESSION["ERRORS"][$field] = "$field is $strlen lang, maar mag maximaal $max_size lang zijn.";
    }
+
+   # indien de ingevoerde waarde leeg is, ga na of dit veld in de databank leeg mag zijn,
+   # zoja zet de waarde van het ingevoerde veld gelijk aan de string "null".
+   # zoniet, zet de correcte error message en return;
     elseif (strlen($_POST[$field]) == 0){
         if ($not_null){
             $_SESSION["ERRORS"][$field] = "$fields[$field] mag niet leeg zijn";

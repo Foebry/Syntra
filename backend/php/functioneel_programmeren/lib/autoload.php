@@ -1,4 +1,8 @@
 <?php
+require_once "../lib/database.php";
+require_once "../lib/security.php";
+require_once "../lib/html_components.php";
+
 if (!isset($_SESSION)) session_start();
 
 $old_post = [];

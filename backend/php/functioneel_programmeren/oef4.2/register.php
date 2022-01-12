@@ -1,6 +1,4 @@
 <?php
-    require_once "../lib/html_components.php";
-    require_once "../lib/database.php";
     require_once "../lib/autoload.php";
 
     $css = array('stad_form.css');

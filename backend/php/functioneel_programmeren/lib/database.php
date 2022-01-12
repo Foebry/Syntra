@@ -3,7 +3,7 @@ require_once "../lib/validate.php";
 
     function connectDb(){
         /**
-        * functie verantwoordelijk voor het creëren van een connectie met de db van het project.
+        * functie die een connectie zal creëren met de db van het project.
         */
         // laad content config.json in
         $file = file_get_contents("../config.json");
@@ -22,7 +22,7 @@ require_once "../lib/validate.php";
 
     function GetData($query){
         /**
-        * functie verantwoordelijk voor het opvragen en teruggeven van data uit de databank.
+        * functie die de opgevragen data adhv de megeleverde querry uit de databank zal inladen.
         */
 
         $data = [];
@@ -39,7 +39,7 @@ require_once "../lib/validate.php";
 
     function execute($query){
         /**
-        * functie verantwoordelijk voor het uitvoeren van queries.
+        * functie die queries uitvoert.
         * bv. UPDATE - INSERT - DELETE - CREATE - DROP
         */
 
@@ -51,11 +51,11 @@ require_once "../lib/validate.php";
 
     function getHeaders($table){
         /**
-        * functie verantwoordelijk voor het opvragen van de tabelhoofdingen voor een opgegeven tabel.
+        * functie die de tabelhoofdingen van de tabel opvraagt en teruggeeft.
         * @param $table: tabel waarvoor de hoofdingen gevraagd wordt.
         * @type $table: string
         *
-        * @var $headers: array van associatieve arrays die de nodige metadata bevat over iedere kolom van de database
+        * @return: array(string => array(string => string|int))
         */
 
         $headers = [];

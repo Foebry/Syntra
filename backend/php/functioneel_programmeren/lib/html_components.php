@@ -1,177 +1,281 @@
 <?php
-require_once "../lib/database.php";
-require_once "../lib/security.php";
+require_once "../lib/autoload.php";
 
-function insertCSS($head, $files){
+
+function PrintHead($title, $css=array(0)) :string{
+    /**
+     * functie die de hoofding van de webpagina zal genereren.
+     * @param $title: de titel van de webpagina
+     * @param $css: de verschillende css files nodig om de pagina te stylen.
+     * @type $title: string
+     * @type $css: array($string)
+     *
+     * @return: string
+     */
+
+    # Inladen van de template nodig om de head te genereren.
+    $head = file_get_contents("../templates/head.html");
+
+    # Vervangen van placeholder @title@ door de $title
+    $head = str_replace("@title@", $title, $head);
+    # vervangen van placeholder @css@ door de verschillende css style sheets nodig om de pagina te stylen
+    $head = insertCSS($head, $css);
+
+
+    return $head;
+}
+
+function insertCSS($headtxt, $files){
+    /**
+     * functie die de verschillende style sheets zal inladen.
+     * @param $headtxt: html-string van de head.
+     * @param $files: verschillende style-sheets nodig om de pagina te stylen
+     * @type $headtxt: string
+     * @type $files: array(string)
+     *
+     * @return: string
+     */
+
     $css = '';
+    # genereer een link-tag voor iedere css file in files.
     foreach($files as $file){
         $css .= '<link rel="stylesheet" href="../css/'.$file.'">';
     }
-    return str_replace("@CSS@", $css, $head);
-}
-
-function getTagsFromTemplate($template, $offset=0){
-    $tags = [];
-    $offset = strpos($template, "@", $offset);
-    while($offset){
-        $start = $offset+1;
-        $end = strpos($template, "@", $start);
-        if ($end == 0) break;
-        $tags[] = substr($template, $start, $end-$start);
-        $offset = strpos($template, "@", $end+1);
-    }
-    return $tags;
+    # vervang placeholder @CSS@ door de genenereerde string
+    return str_replace("@CSS@", $css, $headtxt);
 }
 
 function createArticles($data , $template){
+    /**
+    * functie die een parentclass articles creëert met daarin een aantal articles aanmaakt aan de
+    * hand van de geleverde template samengevoegd met de benodigde data.
+    * @param $data: verschillende data nodig om de articles te genereren.
+    * @param $template: de gekozen template voor de article tag.
+    * @type $data: array[string=>[array(string)]]
+    * @type $template: string
+    *
+    * @return: string
+    */
+
+    # aanmaken van de parent tag articles
     $content = "<div class='articles'>";
 
+    # het aantal keys (rijen) in $data bepaald het aantal articles.
     foreach($data as $row){
+        # voor iedere rij wordt een nieuwe article template ingelezen.
         $content .= file_get_contents("../templates/$template");
+
         foreach($row as $placeholder => $value){
+            # vervang alle placeholders met de waarde van de key uit de row.
             $content = str_replace("@$placeholder@", $value, $content);
         }
     }
+    # sluit de parent tag af
     return $content."</div>";
 }
 
 function mergeContent($template, $content){
+    /**
+    * functie om de @content@ placeholder te vervangen met de volledige content-string
+    * @param $template: De gewenste template pagina.
+    * @param $content: de volledige content string
+    * @type $template: string
+    * @type $content: string
+    */
+
+    # gewenste template pagina inlezen.
     $template = file_get_contents("../templates/$template");
+    # @content@ placeholder vervangen door de contentstring
     $template = str_replace("@content@", $content, $template);
+
     return $template;
 }
 
-function PrintHead($title, $css=array(0)) :string{
-    $head = file_get_contents("../templates/head.html");
+function mergeErrorInfoPlaceholder($templatetxt, $headers, $errors, $info){
+    /**
+    * functie die de overeenkomende error-placeholders en info-placeholders zal vervangen in geval
+    * van errors en info message.
+    * @param $templatetxt: de gegenereerde htmlstring
+    * @param $headers: kolomhoofden van de tabel
+    * @param $errors: error messages
+    * @param $info: info message
+    * @type $templatetxt: string
+    * @type $headers: array(string => array())
+    * @type $errors: array(string => string)
+    * @type $info: string
+    *
+    * @return: string
+    */
 
-    $head = str_replace("@title@", $title, $head);
-    $head = insertCSS($head, $css);
+    # vervang de verschillende error-placeholders in de htmlstring
+    $templatetxt = mergeErrors($templatetxt, $headers, $errors);
+    # vervang de info-placeholders in de htmlstring
+    $templatetxt = mergeInfo($templatetxt, $info);
 
-    return $head.PrintBody();
+    return $templatetxt;
+}
+
+function mergeErrors($templatetxt, $headers, $errors){
+    /**
+    * functie die de verschillende error-placeholders zal vervangen voor de overeenkomende errormessages.
+    * @param $templatetxt: gegenereerde htmlstring
+    * @param $headers: kolomhoofden van de tabel
+    * @param $errors: errormessages
+    * @type $templatetxt: string
+    * @type $headers: array(string => array())
+    * @type $errors: array(string => string)
+    *
+    * @return: string
+    */
+    
+    # Voor iedere kolomhoofd nagaan of deze aanwezig is in de errors array
+    foreach($headers as $tag => $value){
+        # indien kolomhoofd aanwezig in errors array, zet value gelijk aan de waarde van het kolomhoofd in de errors array
+        # doe hetzelfde voor het kolomhoofd_verification om speciale _verification velden te controleren
+        # indien deze niet aanwezig is in de errors array, is er geen error voor dit veld en mag deze placeholder vervangen
+        # worden door een lege string.
+        $value = key_exists($tag, $errors) ? $errors[$tag] : "";
+        $value_verification = key_exists($tag."_verification", $errors) ? $errors[$tag."_verification"] : "";
+
+        # vervang de error placeholders
+        $templatetxt = str_replace("@err_$tag@", $value, $templatetxt);
+        $templatetxt = str_replace("@err_$tag"."_verification@", $value_verification, $templatetxt);
+    }
+    return $templatetxt;
+}
+
+function mergeInfo($templatetxt, $info){
+    /**
+    * functie die de info-placeholder zal vervangen door de gewenste boodschap.
+    * @param $templatetxt: de gegenereerde htmlstring
+    * @param $info: de info-message
+    * @type $templatetxt: string
+    * @type $info: string
+    *
+    * @return: string
+    */
+
+    # vervang de info-placeholder door de gewenste info-message.
+    $templatetxt = str_replace("@info@", $info, $templatetxt);
+
+    return $templatetxt;
+}
+
+function removeEmptyPlaceholder($templatetxt){
+    /**
+    * functie die de resterende placeholders zal verwijderen.
+    * onopgevulde placeholders mogen nu verwijderd worden.
+    * @param $templatetxt: de gegenereerde htmlstring
+    * @type $templatetxt: string
+    *
+    * @return: string
+    */
+
+    # verzamel alle nog bestaande placeholders
+    $tags = getTagsFromTemplate($templatetxt);
+    # vervang iedere placeholder door een lege string
+    foreach($tags as $tag){
+        $templatetxt = str_replace("@$tag@", "", $templatetxt);
+    }
+
+    return $templatetxt;
+}
+
+function getTagsFromTemplate($templatetxt, $offset=0){
+    /**
+    * functie die alle bestaande placeholders zal zoeken.
+    * @param $templatetxt: de gegenereerde htmlstring
+    * @param $offset: startplaats om te zoeken naar placeholders in de htmlstring
+    * @type $templatetxt: string
+    * @type $offset: int
+    * @default $offset: 0
+    *
+    * @return: array(string)
+    */
+
+
+    $placeholders = [];
+    # zoek naar de eerste positie waar een @ voorkomt.
+    # @ duidt de start van een placeholder aan
+    $offset = strpos($templatetxt, "@", $offset);
+
+    # zolang placeholders gevonden worden, voeg deze toe aan de placeholders array
+    while($offset){
+        # zoek naar de closing @ van de placeholder, vanaf de positie ná de opening @
+        $start = $offset+1;
+        $end = strpos($templatetxt, "@", $start);
+        # indien geen closing @ gevonden, zijn er geen verdere placeholders en eindigd de while loop
+        if ($end == 0) break;
+        # indien wel een closing @ gevonden, voeg de waarde tussen opening en closing @ toe aan de placeholders array
+        $placeholders[] = substr($templatetxt, $start, $end-$start);
+        # zet $offset gelijk aan de positie van de volgende opening @
+        # indien geen gevonden if $offset gelijk aan 0 (ofwel false) en eindigd de while loop
+        $offset = strpos($templatetxt, "@", $end+1);
+    }
+
+    return $placeholders;
 }
 
 function PrintJumbo($titel, $subtitel=""): string{
+    /**
+    * functie die de bootstrap Jumbo zal genereren.
+    * @param $title: titel voor de Jumbo
+    * @param $subtitel: subtitel voor de Jumbo
+    * @type $title: string
+    * @type $subtitel: string
+    *
+    * @return: string
+    */
+
+    # inladen van de Jumbo template
     $jumbo = file_get_contents("../templates/jumbo.html");
 
+    # vervangen van titel en subtitel placeholders door hun respectievelijke waarden
     $jumbo = str_replace("@titel@", $titel, $jumbo);
     return str_replace("@subtitel@", $subtitel, $jumbo);
 }
 
-function PrintBody() :string{
-    return "<body>";
-}
+function PrintNavBar($template):string {
+    /**
+    * functie die de bootstrap navbar zal genereren.
+    * @param $template: navbar-template
+    * @type $template: string
+    *
+    * @return: string
+    */
 
-function PrintTitle($header, $title) :string{
-    return "<h$header>$title</h$header>";
-}
-
-function PrintParagraphLorem($length) :string{
-    $lorem = file_get_contents('http://loripsum.net/api/1');
-    $words = explode(" ", $lorem);
-
-    return implode(" ", array_slice($words, 0, $length));
-}
-
-function PrintImgHolder($path) :string{
-    return "<div class='imgholder'>
-                <img src='$path' alt=''>
-            </div>";
-}
-
-function PrintLink($path, $txt) :string{
-    return "<a href=$path>$txt</a>";
+    # ophalen content van template
+    return file_get_contents("../templates/$template");
 }
 
 function createForm($template, $headers, $old_post) :string{
+    /**
+    * functie die een form zal genereren aan de hand van de te gebruiken template en de data uit old_post
+    * @param $template: de te gebruiken template voor de form
+    * @param $headers: kolomhoofden van de tabel
+    * @param $old_post: waarden ingegeven door de gebruiker.
+    * @type $template: string
+    * @type $headers: array(string => array())
+    * @type $old_post: array(string => string)
+    *
+    * return: string
+    */
+
+    # inladen van template
     $template = file_get_contents("../templates/$template");
+
+    # voor iedere hoofding in headers nagaan of deze voorkomt in de old_post array.
+    # zoja vervang de overeenkomende placeholder met de waarde in old_post anders door een lege string
     foreach ($headers as $tag => $value) {
         $value_verification = key_exists($tag."_verification", $old_post) ? $old_post[$tag."_verification"] : "";
         $value = key_exists($tag, $old_post) ?  $old_post[$tag] : "";
         $template = str_replace("@$tag@", $value, $template);
         $template = str_replace("@$tag"."_verification@", $value_verification, $template);
     }
+    # indien het form ook een csrf placeholder bevat, vervang deze door de gegenereerde csrf-token
     if (strpos($template, "@csrf@")){
         $template = str_replace("@csrf@", generateCSRF(), $template);
     }
+
     return $template;
-}
-function mergeErrorInfoPlaceholder($templatetxt, $headers, $errors, $info){
-    $templatetxt = mergeErrors($templatetxt, $headers, $errors);
-    $templatetxt = mergeInfo($templatetxt, $info);
-    return $templatetxt;
-}
-function removeEmptyPlaceholder($templatetxt){
-    $tags = getTagsFromTemplate($templatetxt);
-    foreach($tags as $tag){
-        $templatetxt = str_replace("@$tag@", "", $templatetxt);
-    }
-    return $templatetxt;
-}
-function mergeErrors($templatetxt, $headers, $errors){
-
-    foreach($headers as $tag => $value){
-        $value = key_exists($tag, $errors) ? $errors[$tag] : "";
-        $value_verification = key_exists($tag."_verification", $errors) ? $errors[$tag."_verification"] : "";
-        $templatetxt = str_replace("@err_$tag@", $value, $templatetxt);
-        $templatetxt = str_replace("@err_$tag"."_verification@", $value_verification, $templatetxt);
-    }
-    return $templatetxt;
-}
-function mergeInfo($templatetxt, $info){
-    $templatetxt = str_replace("@info@", $info, $templatetxt);
-    return $templatetxt;
-}
-function printForm($data, $template, $select_field) :string{
-    /**
-    * @param $select_field: vormt basis waarrond een select gemaakt wordt.
-    */
-
-    //$selected_land = $data["img_lan_id"];
-    $template = file_get_contents("../templates/$template");
-
-    foreach($data as $key=>$value){
-        $template = str_replace("@$key@", "$value", $template);
-    }
-
-    $conn = connectDb();
-    $data = GetData($conn, "select * from $select_field");
-
-    //$template = makeselect($data, $template, $selected_land);
-
-    $csrf = generateCSRF();
-    return str_replace("@csrf@", $csrf, $template);
-}
-
-function makeSelect($data, $template, $selected_option) :string{
-    /**
-     *
-     * @param $data: alle data uit de tabel bv. land nodig om de select tag te vervolledigen
-     * @param $template: het beoogde template
-     * @param $selected_option: option die als selected moet aangeduid worden
-     *
-     * @var $select: html-string die de hele select tag bevat.
-     *
-     */
-    $select = "";
-
-    // voor ieder land een option aanmaken
-    foreach($data as $row){
-        $lan_id = $row["lan_id"];
-        $lan_land = $row["lan_land"];
-
-        $selected = $lan_id == $selected_option ? "selected" : "";
-        $select .= "<option $selected value=$lan_id>$lan_land</option>";
-    }
-    return str_replace("@makeselect@", $select, $template);
-}
-
-function PrintNavBar($template):string {
-    /**
-    * @param $template: het te gebruiken template
-    *
-    * @type $template: string
-    */
-
-    // ophalen content van template
-    return file_get_contents($template);
 }
