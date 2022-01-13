@@ -102,12 +102,13 @@ function validateString($value, $field){
         $_SESSION["ERRORS"][$field] = "$fields[$field] moet minstens $min_len tekens bevatten";
     }
    elseif (strlen($_POST[$field]) > $max_size) {
-       $_SESSION["ERRORS"][$field] = "$field is $strlen lang, maar mag maximaal $max_size lang zijn.";
+       $_SESSION["ERRORS"][$field] = "$fields[$field] is $strlen lang, maar mag maximaal $max_size lang zijn.";
    }
 }
 
 function ValidateUsrPassword($values){
     $passwords = explode(" ", $values);
+
     for($i=0;$i<count($passwords)-1;$i++){
         if ($_POST[$passwords[$i]] === $_POST[$passwords[$i+1]]) {
             $_POST[$passwords[0]] = password_hash($_POST[$passwords[0]], 1);
