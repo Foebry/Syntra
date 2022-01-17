@@ -1,5 +1,5 @@
 //1. Write a JavaScript function to check if a certain word is a Palindrome.
-const isPalindrome = (word) => word === word.split("").reverse().join("");
+const isPalindrome = (str) => str === str.split("").reverse().join("");
 
 console.log("oefening 1")
 console.log(isPalindrome("ene")); //true
@@ -92,18 +92,14 @@ console.log(angleType(225)); //"Acute angle"
 console.log("-------------------------------------------------------------------------------------");
 
 //11. Write a JavaScript function to merge two arrays and removes all duplicates elements.
-function mergeArrays(arr1, arr2) {
-	arr = [];
-	arr1.forEach((item) => {
-		if (!arr.includes(item)) arr.push(item)
-	});
-	arr2.forEach((item) => {
-		if (!arr.includes(item)) arr.push(item)
-	});
-	return arr;
 
+//const mergeArrays = (arr1, arr2) => [...new Set([...arr1, ...arr2])];
 
-}
+const mergeArrays = (arr1, arr2) => [...Object.values({
+	...arr1,
+	...arr2
+})];
+
 console.log("oefening 11")
 console.log(mergeArrays([1, 2, 3], [4, 5, 6])); //[1, 2, 3, 4, 5, 6]
 console.log(mergeArrays([1, 2, 3], ["een", "twee", "drie"])) //[1, 2, 3, "een", "twee", "drie"]
