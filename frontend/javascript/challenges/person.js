@@ -1,7 +1,6 @@
 const {
 	uniqueNamesGenerator,
 	names,
-	animals
 } = require('unique-names-generator');
 
 class Person {
@@ -15,6 +14,6 @@ const people = new Array(5).fill("").map(el => new Person(uniqueNamesGenerator({
 	dictionaries: [names],
 	length: 1
 }), uniqueNamesGenerator({
-	dictionaries: [animals],
+	dictionaries: [names],
 	length: 1
-}))).forEach(el => console.log(el.pet));
+}))).forEach(el => console.log(`\t${el.name} heeft een huisdier genaamd ${el.pet}`));

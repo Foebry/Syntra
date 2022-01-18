@@ -4,14 +4,15 @@ const {
 	names
 } = require('unique-names-generator');
 
+
 class Animal {
 	constructor(name) {
 		this.name = name;
 		this.type = uniqueNamesGenerator({
 			dictionaries: [animals],
 			length: 1
-		})
-		this.age = Math.floor(Math.random() * 13);
+		});
+		this.age = Math.ceil(Math.random() * 13);
 		this.isDomestic = Boolean(Math.round(Math.random()));
 		this.deathkill = [];
 	}
@@ -24,7 +25,7 @@ class Animal {
 		this.age++;
 	}
 	repr() {
-		return `${this.name} is een ${this.domestic ? "gedomesticeerde" : "wilde"} ${this.type} van ${this.age} jaar oud.`
+		return `${this.name} is een ${this.isDomestic ? "gedomesticeerde" : "wilde"} ${this.type} van ${this.age} jaar oud.`
 	}
 }
 
@@ -62,5 +63,5 @@ my_animals.forEach(el => console.log(`\tVan de ${el.deathkill.length} vliegen ge
 console.log(`\n${my_animals.reduce((prev, el) => {
 	return el.deathkill.filter(fly => fly.survived).length < prev.deathkill.filter(fly => fly.survived).length ? el : prev
 }, {
-	deathkill: new Array(100000).fill(0).map(el => new Fly())
-}).name} heeft effectief de meeste vliegen gevangen`)
+	deathkill: new Array(amount_of_flies+1).fill(0).map(el => new Fly())
+}).name} heeft effectief de meeste vliegen gevangen`);
