@@ -7,6 +7,7 @@ if (!isset($_SESSION)) session_start();
 
 $old_post = [];
 $errors = [];
+$status = [];
 $info = "";
 
 if (key_exists("OLD_POST", $_SESSION)){
@@ -20,4 +21,8 @@ if (key_exists("ERRORS", $_SESSION)){
 if (key_exists("INFO", $_SESSION)){
     $info = $_SESSION["INFO"];
     $_SESSION["INFO"] = "";
+}
+if (key_exists("STATUS", $_SESSION)){
+    $status = $_SESSION["STATUS"];
+    $_SESSION["STATUS"] = [];
 }

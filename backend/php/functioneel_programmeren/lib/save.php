@@ -7,9 +7,9 @@
 
     $_SESSION["OLD_POST"] = $_POST;
 
-    # valideer csrf-token, navigeer naar 401 indien ongeldig.
+    # valideer csrf-token, navigeer naar status.php en zet correcte status
     if (!validateCSRF()) {
-        $_SESSION["ERRORS"]["status"] = "U bent niet geautoriseerd om deze bewerking uit te voeren";
+        $_SESSION["STATUS"][401] = "U bent niet geautoriseerd om deze bewerking uit te voeren";
         exit(header('location:./status.php'));
     }
 

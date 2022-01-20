@@ -127,7 +127,7 @@ function mergeErrors($templatetxt, $headers, $errors){
     *
     * @return: string
     */
-    
+
     # Voor iedere kolomhoofd nagaan of deze aanwezig is in de errors array
     foreach($headers as $tag => $value){
         # indien kolomhoofd aanwezig in errors array, zet value gelijk aan de waarde van het kolomhoofd in de errors array
@@ -209,7 +209,7 @@ function getTagsFromTemplate($templatetxt, $offset=0){
         # indien wel een closing @ gevonden, voeg de waarde tussen opening en closing @ toe aan de placeholders array
         $placeholders[] = substr($templatetxt, $start, $end-$start);
         # zet $offset gelijk aan de positie van de volgende opening @
-        # indien geen gevonden if $offset gelijk aan 0 (ofwel false) en eindigd de while loop
+        # indien geen gevonden if $offset gelijk aan 0 (ofwel false) en eindigt de while loop
         $offset = strpos($templatetxt, "@", $end+1);
     }
 
@@ -258,7 +258,7 @@ function createForm($template, $headers, $old_post) :string{
     * @type $headers: array(string => array())
     * @type $old_post: array(string => string)
     *
-    * return: string
+    * @return string
     */
 
     # inladen van template
