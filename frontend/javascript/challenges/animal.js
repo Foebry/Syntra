@@ -24,20 +24,20 @@ class Animal {
 	makeOlder() {
 		this.age++;
 	}
-	repr() {
+	toString() {
 		return `${this.name} is een ${this.isDomestic ? "gedomesticeerde" : "wilde"} ${this.type} van ${this.age} jaar oud.`
 	}
 }
 
 class Fly {
-	constructor() {
+	constructor(survived = false) {
 		this.id = Math.random().toString(16).substring(2);
-		this.survived = Boolean(Math.random() < 0.33333333333);
+		this.survived = survived || Boolean(Math.random() < 0.33333333333);
 	}
 }
 
 
-// bepalen hoeveel vliegen ieder dier zal vangen
+// bepalen hoeveel vliegen ieder dier zal vangen tussen 0 en 100
 amount_of_flies = Math.round(Math.random() * 100);
 
 
@@ -53,9 +53,11 @@ my_animals.forEach(el => {
 });
 
 console.log("Dit zijn mijn animals:");
-my_animals.forEach(el => console.log(`\t${el.repr()}`))
+my_animals.forEach(el => console.log(`\t${el.toString()}`))
 
-console.log(`\n${my_animals.filter(el => el.age == my_animals.reduce((age, el)=>{return el.age > age ? el.age : age},0))[0].name} is de oudste`);
+const oldest_age = my_animals.reduce((age, el) => el.age > age ? el.age : age, 0)
+console.log(`\n${my_animals.filter(el => el.age == oldest_age)[0].name} is de oudste`);
+
 console.log("\nDit zijn de killcounts");
 my_animals.forEach(el => console.log(`\tVan de ${el.deathkill.length} vliegen gevangen door ${el.name} zijn er ${el.deathkill.filter(fly=>fly.survived).length} ontsnapt.`))
 
@@ -63,5 +65,5 @@ my_animals.forEach(el => console.log(`\tVan de ${el.deathkill.length} vliegen ge
 console.log(`\n${my_animals.reduce((prev, el) => {
 	return el.deathkill.filter(fly => fly.survived).length < prev.deathkill.filter(fly => fly.survived).length ? el : prev
 }, {
-	deathkill: new Array(amount_of_flies+1).fill(0).map(el => new Fly())
+	deathkill: new Array(amount_of_flies+1).fill(0).map(el => new Fly(true))
 }).name} heeft effectief de meeste vliegen gevangen`);

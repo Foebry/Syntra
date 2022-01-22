@@ -24,7 +24,7 @@ for i in range(len(titles)):
         # quit(print(namen))
         namen = section[0].findAll("a")
         for naam in namen:
-            sporten.append(naam.text.lower().strip().replace("\u00eb", "e"))
+            sporten.append(naam.text.lower().strip().replace("\u00eb", "e").replace("\u00f6", "o"))
         j += 1
 
     sporten_dict[title] = sporten
@@ -45,5 +45,5 @@ for row in content_rows[1:]:
 sporten_dict["olympische_sporten"] = olympische_sporten
 
 
-with open("./sporten.json", "w") as file:
+with open("./sporten_test.json", "w") as file:
     json.dump(sporten_dict, file, indent=4)
