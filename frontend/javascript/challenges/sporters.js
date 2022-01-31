@@ -4,9 +4,9 @@ const {
 	names,
 } = require('unique-names-generator');
 
+
 const min_logs = 500;
 const max_logs = 1000;
-const people = 5000;
 
 class Sporter {
 	constructor(fname = null, lname = null, log = null) {
@@ -21,7 +21,11 @@ class Sporter {
 		this.fullname = `${this.fname} ${this.lname}`;
 		this.log = log || new Array(Math.floor(min_logs + Math.random() * (max_logs - min_logs)))
 			.fill(0)
-			.map(el => new Log())
+			.map(el => this.train());
+	}
+	// create a new Log for the sporter
+	train(sport = null, distance = null, time = null) {
+		return new Log(sport, distance, time);
 	}
 	// calculate total amount of km across all sports or a specific, given sport
 	calculateTotalkm(sport = null) {
@@ -47,11 +51,35 @@ class Sporter {
 	getAverageSpeed(sport = null) {
 		return this.calculateTotalkm(sport) / this.calculateTotalTime(sport) * 3600;
 	}
+	static getTotalkm(arr, sport = null) {
+		return parseFloat((arr.reduce((tot, sporterObj) => tot + sporterObj.calculateTotalkm(sport), 0)).toFixed(2));
+	}
+	static getTotalTime(arr, sport = null) {
+		return parseInt(arr.reduce((tot, sporterObj) => tot + sporterObj.calculateTotalTime(sport), 0));
+	}
+	static getSporterFurthestDistanceTrained(arr, sport = null) {
+		return arr.sort((a, b) => b.calculateTotalkm(sport) - a.calculateTotalkm(sport))[0];
+	}
+	static getSporterFurthestTraining(arr, sport = null) {
+		return arr.sort((a, b) => b.furthestTraining(sport).distance - a.furthestTraining(sport).distance)[0];
+	}
+	static getTotalAvgSpeed(arr, sport = null) {
+		return parseFloat((Sporter.getTotalkm(arr, sport) / Sporter.getTotalTime(arr, sport) * 3600).toFixed(2));
+	}
+	static getSporterHighestAvgSpeed(arr, sport = null) {
+		return arr.sort((a, b) => b.getAverageSpeed(sport) - a.getAverageSpeed(sport))[0];
+	}
+	static getHighestAvgSpeed(arr, sport = null) {
+		return parseFloat(Sporter.getSporterHighestAvgSpeed(arr, sport).getAverageSpeed(sport).toFixed(2));
+	}
+	static getSporterHighestAvgDistance(arr, sport = null) {
+		return arr.sort((a, b) => b.getAverageDistance(sport) - a.getAverageDistance(sport))[0];
+	}
 }
 
 
 class Log {
-	constructor(sport = null, distance = null, time = null) {
+	constructor(sport, distance, time) {
 		this.sport = sport || sports[Math.floor(Math.random() * 3)];
 		this.distance = distance || this.setDistance();
 		this.time = time || this.setTime();
@@ -112,14 +140,16 @@ class Log {
 	}
 }
 
-const sporters = new Array(people).fill(0).map(el => new Sporter());
-const totaal_km = parseFloat(sporters.reduce((tot, sporterObj) => tot + sporterObj.calculateTotalkm(), 0).toFixed(3));
-const verste_zwemmer = sporters.sort((a, b) => b.calculateTotalkm("zwemmen") - a.calculateTotalkm("zwemmen"))[0].fullname;
-const sporter_verste_zwemtraining = sporters.sort((a, b) => b.furthestTraining("zwemmen").distance - a.furthestTraining("zwemmen").distance)[0].fullname;
-const totale_loop_afstand = parseFloat(sporters.reduce((tot, sporterObj) => tot + sporterObj.calculateTotalkm("lopen"), 0).toFixed(3));
-const totaal_avg_loop_snelheid = parseFloat((totale_loop_afstand / sporters.reduce((tot, sporterObj) => tot + sporterObj.calculateTotalTime("lopen"), 0) * 3600).toFixed(3));
-const sporter_hoogste_avg_fiets_snelheid = sporters.sort((a, b) => b.getAverageSpeed("fietsen") - a.getAverageSpeed("fietsen"))[0];
-const hoogste_avg_fiets_snelheid = parseFloat(sporter_hoogste_avg_fiets_snelheid.getAverageSpeed("fietsen").toFixed(2));
+const people = 5000;
+const sporters_group = new Array(people).fill(0).map(el => new Sporter());
+
+const totaal_km = Sporter.getTotalkm(sporters_group)
+const verste_zwemmer = Sporter.getSporterFurthestDistanceTrained(sporters_group, "zwemmen").fullname;
+const sporter_verste_zwemtraining = Sporter.getSporterFurthestTraining(sporters_group, "zwemmen").fullname;
+const totale_loop_afstand = Sporter.getTotalkm(sporters_group, "lopen");
+const totaal_avg_loop_snelheid = Sporter.getTotalAvgSpeed(sporters_group, "lopen");
+const sporter_hoogste_avg_fiets_snelheid = Sporter.getSporterHighestAvgSpeed(sporters_group, "fietsen");
+const hoogste_avg_fiets_snelheid = Sporter.getHighestAvgSpeed(sporters_group, "fietsen");
 
 console.log(`Samen hebben alle sporters ${totaal_km} kilometer afgelegd.`);
 console.log(`De sporter met de hoogste zwemafstand is ${verste_zwemmer}`);
@@ -137,11 +167,12 @@ console.log(`De sporter met de hoogste gemiddelde fietssnelheid is ${sporter_hoo
 
 /* Tests
  sporters aanmaken
-const log1 = [new Log("fietsen", 156, 12729), new Log("zwemmen", 0, 0)];
+const log1 = [new Log("fietsen", 156, 12729), new Log("zwemmen", 1, 1)];
 const log2 = [new Log("fietsen", 151, 10896), new Log("zwemmen", 2.9, 9088), new Log("zwemmen", 2.5, 6879), new Log("fietsen", 175, 14616), new Log("lopen", 19, 6634)];
+46.00
 const log3 = [new Log("zwemmen", 2.2, 5285), new Log("fietsen", 173, 14282), new Log("fietsen", 161, 13910), new Log("lopen", 12, 2937), new Log("zwemmen", 2.2, 5421)];
-const log4 = [new Log("zwemmen", 2.8, 8513), new Log("zwemmen", 3, 8064), new Log("lopen", 18, 6285), new Log("fietsen", 0, 0)];
-const log5 = [new Log("lopen", 6, 972), new Log("fietsen", 0, 0), new Log("zwemmen", 4, 15963)];
+const log4 = [new Log("zwemmen", 2.8, 8513), new Log("zwemmen", 3, 8064), new Log("lopen", 18, 6285), new Log("fietsen", 1, 720)];
+const log5 = [new Log("lopen", 6, 972), new Log("fietsen", 1, 720), new Log("zwemmen", 4, 15963)];
 
 const sporter_1 = new Sporter("Andy", "Zulu", log1);
 const sporter_2 = new Sporter("Bert", "Yankee", log2);
@@ -149,25 +180,25 @@ const sporter_3 = new Sporter("Christal", "Xray", log3);
 const sporter_4 = new Sporter("Dean", "Whiskey", log4);
 const sporter_5 = new Sporter("Eve", "Victor", log5);
 
-let sporters = [sporter_1, sporter_2, sporter_3, sporter_4, sporter_5];
-
-const totalDistance = sporters.reduce((tot, sporterObj) => tot + sporterObj.calculateTotalkm(), 0);
-const furthest_swimmer = sporters.sort((a, b) => b.calculateTotalkm("zwemmen") - a.calculateTotalkm("zwemmen"))[0].fullname;
-const furthest_runner = sporters.sort((a, b) => b.calculateTotalkm("lopen") - a.calculateTotalkm("lopen"))[0].fullname;
-const furthest_biker = sporters.sort((a, b) => b.calculateTotalkm("fietsen") - a.calculateTotalkm("fietsen"))[0].fullname;
-const furthest_bike_training = sporters.sort((a, b) => b.furthestTraining("fietsen").distance - a.furthestTraining("fietsen").distance)[0].fullname;
-const totalDistanceRunning = sporters.reduce((tot, sporterObj) => tot + sporterObj.calculateTotalkm("lopen"), 0);
-const highest_avg_cycling_distance = sporters.sort((a, b) => b.getAverageDistance("fietsen") - a.getAverageDistance("fietsen"))[0];
-const highest_avg_cycling_speed_sporter = sporters.sort((a, b) => b.getAverageSpeed("fietsen") - a.getAverageSpeed("fietsen"))[0];
-const highest_avg_cycling_speed_speed = highest_avg_cycling_speed_sporter.getAverageSpeed("fietsen");
-const sporter_verste_zwemtraining = sporters.sort((a, b) => b.furthestTraining("zwemmen").distance - a.furthestTraining("zwemmen").distance)[0].fullname;
-console.log(totalDistance); //886.6
-console.log(furthest_swimmer); //Dean Whiskey
-console.log(furthest_runner); //Bert Yankee
-console.log(furthest_biker); //Christal Xray
-console.log(furthest_bike_training); //Bert Yankee
+let sporters_group = new Sportersclub([sporter_1, sporter_2, sporter_3, sporter_4, sporter_5]);
+//console.log(JSON.stringify(sporters_group, null, 4));
+const totalDistance = sporters_group.getTotalkm();
+const furthest_swimmer = sporters_group.getSporterFurthestDistanceTrained("zwemmen");
+const furthest_runner = sporters_group.getSporterFurthestDistanceTrained("lopen");
+const furthest_biker = sporters_group.getSporterFurthestDistanceTrained("fietsen");
+const furthest_bike_training = sporters_group.getSporterFurthestTraining("fietsen").furthestTraining("fietsen");
+const totalDistanceRunning = sporters_group.getTotalkm("lopen");
+const sporter_highest_avg_cycling_distance = sporters_group.getSporterHighestAvgDistance("fietsen");
+const sporter_highest_avg_cycling_speed = sporters_group.getSporterHighestAvgSpeed("fietsen");
+const highest_avg_cycling_speed_speed = sporter_highest_avg_cycling_speed.getAverageSpeed("fietsen").toFixed(2);
+const sporter_verste_zwemtraining = sporters_group.getSporterFurthestTraining("zwemmen");
+console.log(totalDistance); //893.6
+console.log(furthest_swimmer.fullname); //Dean Whiskey
+console.log(furthest_runner.fullname); //Bert Yankee
+console.log(furthest_biker.fullname); //Christal Xray
+console.log(furthest_bike_training.distance); //175
 console.log(totalDistanceRunning); //55
-console.log(highest_avg_cycling_distance); //Christal Xray
-console.log(highest_avg_cycling_speed_sporter.fullname); // Bert Yankee
+console.log(sporter_highest_avg_cycling_distance.fullname); //Christal Xray
+console.log(sporter_highest_avg_cycling_speed.fullname); // Bert Yankee
 console.log(highest_avg_cycling_speed_speed); //46.00
-console.log(sporter_verste_zwemtraining); //Eve Victor*/
+console.log(sporter_verste_zwemtraining.fullname); //Eve Victor*/
