@@ -1,6 +1,6 @@
 <?php
 
-require_once "./modules/Ship.php";
+require_once "./models/Ship.php";
 
 function get_ships()
 {
