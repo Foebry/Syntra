@@ -37,6 +37,8 @@ list_ref.onclick = function(event) {
                 break;
             }
         }
+    } else if (event.target.classList.contains("list__item__button--check")) {
+        toggleChecked(event);
     }
 }
 form.onclick = function(event) {
@@ -69,4 +71,12 @@ function renderData() {
                 <button class="list__item__button list__item__button--check"></button>
             </li>`;
     }
+}
+
+function toggleChecked(event) {
+    item = event.target.parentElement
+    item.classList.contains("list__item--checked") ?
+        item.classList.remove("list__item--checked") :
+        item.classList.add("list__item--checked");
+
 }

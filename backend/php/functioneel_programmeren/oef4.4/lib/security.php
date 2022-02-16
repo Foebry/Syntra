@@ -23,9 +23,10 @@ function GenerateCSRF( string $formname = "noformname" ): string {
 function LoginCheck(): bool{
     $where = " where usr_email = '".$_POST["usr_email"]."'";
     $sql = "select usr_password from ".$_POST["table"]. $where;
-    $password_hash = getData("select usr_password from ".$_POST["table"]. $where)[0]["usr_password"];
-
-    return ($password_hash && password_verify($_POST["usr_password"], $password_hash));
+    $data = getData("select usr_password from ".$_POST["table"]. $where);
+    if ($data == null) return False;
+    if ($data[0]["usr_password"]) $password_hash = $data[0]["usr_password"];
+    return (password_verify($_POST["usr_password"], $password_hash));
 }
 
  ?>

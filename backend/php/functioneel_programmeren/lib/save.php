@@ -1,49 +1,105 @@
-
 <?php
-    require_once "./autoload.php";
+error_reporting( E_ALL );
+ini_set( 'display_errors', 1 );
+require_once "autoload.php";
 
-    $table = $_POST["table"];
-    $headers = getHeaders($table);
+SaveFormData();
 
-    $_SESSION["OLD_POST"] = $_POST;
+function SaveFormData()
+{
+    if ( $_SERVER['REQUEST_METHOD'] == "POST" )
+    {
+        //controle CSRF token
+        if ( ! key_exists("csrf", $_POST)) die("Missing CSRF");
+        if ( ! hash_equals( $_POST['csrf'], $_SESSION['lastest_csrf'] ) ) die("Problem with CSRF");
 
-    # valideer csrf-token, navigeer naar status.php en zet correcte status
-    if (!validateCSRF()) {
-        $_SESSION["STATUS"][401] = "U bent niet geautoriseerd om deze bewerking uit te voeren";
-        exit(header('location:./status.php'));
-    }
+        $_SESSION['lastest_csrf'] = "";
 
-    # valideer de waarde van iedere key overeenkomend met de headers van de tabel
-    foreach ($headers as $key => $values) {
-        if (key_exists($key."_verification", $_POST) and $_POST[$key."_verification"] == "") $_POST[$key."_verification"] = "null";
+        //sanitization
+        $_POST = StripSpaces($_POST);
+        $_POST = ConvertSpecialChars($_POST);
 
-        if (key_exists($key, $_POST) and $key != $_POST["pkey"]){
-            validate($key, $values);
+        $table = $pkey = $update = $insert = $where = $str_keys_values = "";
+
+        //get important metadata
+        if ( ! key_exists("table", $_POST)) die("Missing table");
+        if ( ! key_exists("pkey", $_POST)) die("Missing pkey");
+
+        $table = $_POST['table'];
+        $pkey = $_POST['pkey'];
+
+        //validation
+        $sending_form_uri = $_SERVER['HTTP_REFERER'];
+        CompareWithDatabase( $table, $pkey );
+
+        //Validaties voor het registratieformulier
+        if ( $table == "user" )
+        {
+                ValidateUsrPassword( $_POST['usr_password'] );
+                ValidateUsrEmail( $_POST['usr_email'] );
+                CheckUniqueUsrEmail( $_POST['usr_email'] );
         }
+
+        //terugkeren naar afzender als er een fout is
+        if ( count($_SESSION['errors']) > 0 )
+        {
+            $_SESSION['OLD_POST'] = $_POST;
+            header( "Location: " . $sending_form_uri ); exit();
+        }
+
+        //insert or update?
+        if ( $_POST["$pkey"] > 0 ) $update = true;
+        else $insert = true;
+
+        if ( $update ) $sql = "UPDATE $table SET ";
+        if ( $insert ) $sql = "INSERT INTO $table SET ";
+
+        //make key-value string part of SQL statement
+        $keys_values = [];
+
+        foreach ( $_POST as $field => $value )
+        {
+            //skip non-data fields
+            if ( in_array( $field, [ 'table', 'pkey', 'afterinsert', 'afterupdate', 'csrf' ] ) ) continue;
+
+            //handle primary key field
+            if ( $field == $pkey )
+            {
+                if ( $update ) $where = " WHERE $pkey = $value ";
+                continue;
+            }
+
+            if ( $field == "usr_password" ) //encrypt usr_password
+            {
+                $value = password_hash( $value, PASSWORD_BCRYPT );
+            }
+
+            $keys_values[] = " $field = '$value' " ;
+        }
+
+        $str_keys_values = implode(" , ", $keys_values );
+
+        //extend SQL with key-values
+        $sql .= $str_keys_values;
+
+        //extend SQL with WHERE
+        $sql .= $where;
+
+        //run SQL
+        $result = ExecuteSQL( $sql );
+
+        if ( $result AND $table == "user" )
+        {
+            $_SESSION['msgs'][] = "Bedankt voor uw registratie";
+        }
+
+        //output if not redirected
+        print $sql ;
+        print "<br>";
+        print $result->rowCount() . " records affected";
+
+        //redirect after insert or update
+        if ( $insert AND $_POST["afterinsert"] > "" ) header("Location: ../" . $_POST["afterinsert"] );
+        if ( $update AND $_POST["afterupdate"] > "" ) header("Location: ../" . $_POST["afterupdate"] );
     }
-
-    # indien een password_verification aanwezig in het form: valideer het password.
-    if (key_exists("passwords", $_POST)) ValidateUsrPassword($_POST["passwords"]);
-    # indien een email aanwezig in het form: valideer het email
-    if (key_exists("email", $_POST)) ValidateUsrEmail($_POST["email"]);
-
-    # indien er errors in het form aanwezig zijn, keer terug naar het form.
-    if (count($_SESSION["ERRORS"]) > 0){
-        exit(header('location:'.$_SERVER["HTTP_REFERER"]));
-    }
-
-    # statement is gelijk aan de submit-value van het form.
-    $statement = $_POST["submit"];
-
-    # maak het volledige sql-statement
-    $sql = buildStatement($statement);
-
-    # voer het statement uit
-    if (!execute($sql)) exit(var_dump($sql));
-
-    # zet de info-message gelijk aan de de info-message uit het formulier.
-    $_SESSION["INFO"] = $_POST["info-msg"];
-
-    # navigeer naar de pagina gespecifieerd in het form
-    header('location:' . "../oef4.2/".$_POST["aftersql"]);
- ?>
+}

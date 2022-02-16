@@ -9,3 +9,9 @@ oplossingen_examen_voorbeeld.docx
 *.scss
 *.css.map
 project_management
+test.*
+node_modules
+groepsproject_1
+stage
+backend/groepswerk_1
+

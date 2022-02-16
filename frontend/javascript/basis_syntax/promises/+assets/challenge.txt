@@ -1,0 +1,5 @@
+schrijf een function ruimKamerOp() waar je de naam van de persoon aan meegeeft en dat een Promise teruggeeft.
+deze moet dan tussen 5 en 10 seconden later een antwoord geven of de kamer wel of niet opgeruimd is.
+
+promise.all => 3 keer de kamer laten opruimen
+promise.race => 3 keer de kamer laten opruimen en de snelste heeft gewonnen

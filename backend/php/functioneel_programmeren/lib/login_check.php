@@ -13,9 +13,4 @@
     if (LoginCheck()) exit(print("INLOGGEN GELUKT"));
     exit("HELAAS");
 
-    function LoginCheck(): bool{
-        $password_hash = getData("select usr_password from ".$_POST["table"]." where usr_email = '" .$_POST["usr_email"] ."'")[0]["usr_password"];
-        return ($password_hash && password_verify($_POST["usr_password"], $password_hash));
-    }
-
  ?>

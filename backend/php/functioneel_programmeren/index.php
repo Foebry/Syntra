@@ -22,7 +22,7 @@
       <div class="row">
         <?php
             # inladen elements module
-            require_once "src/elements.php";
+            require_once "./lib/elements.php";
             # creëren array met images
             $images = [
                         "Berlijn"=>"berlin.jpg",
