@@ -40,13 +40,24 @@ ul {
 }
 ul li {
     flex: 1 1 250px;
-    background-color: lightblue;
+    background-color: lightgrey;
     display: flex;
     gap: 20px;
     max-width: 430px;
     padding: 10px;
     align-items: center;
     border-radius: 10px;
+}
+ul li:nth-child(even) {
+    background-color: darkgrey;
+}
+ul li.female:hover {
+    background-color: salmon;
+    cursor: pointer;
+}
+ul li.male:hover {
+    background-color: lightblue;
+    cursor: pointer;
 }
 ul li .imgholder {
     aspect-ratio: 1/1;

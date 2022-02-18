@@ -9,7 +9,10 @@ async function getRandomUsers() {
 	const data = await response.json();
 	results = await data.results;
 	results.forEach(el => {
+		console.log(el);
+		const sex = el.gender;
 		const li = document.createElement("li");
+		li.classList.add(sex);
 		li.innerHTML = `<div class="imgholder">
     <img src='${el.picture.large}' alt='profile picture of ${el.name.first} ${el.name.last}'>
 </div>
