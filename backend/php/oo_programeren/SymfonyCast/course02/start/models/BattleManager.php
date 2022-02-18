@@ -7,7 +7,7 @@
      * @return array With keys winning_ship, losing_ship & used_jedi_powers
      */
 
-        public function battle(Ship $ship1, $ship1Quantity, Ship $ship2, $ship2Quantity)
+        public function battle(Ship $ship1, $ship1Quantity, Ship $ship2, $ship2Quantity) :BattleResult
         {
             $ship1Health = $ship1->getStrength() * $ship1Quantity;
             $ship2Health = $ship2->getStrength() * $ship2Quantity;
@@ -34,6 +34,9 @@
                 $ship2Health = $ship2Health - ($ship1->getWeaponPower() * $ship1Quantity);
             }
 
+            $ship1->setStrength($ship1Health);
+            $ship2->setStrength($ship2Health);
+
             if ($ship1Health <= 0 && $ship2Health <= 0) {
                 // they destroyed each other
                 $winningShip = null;
@@ -49,11 +52,7 @@
                 $usedJediPowers = $ship1UsedJediPowers;
             }
 
-            return array(
-                'winning_ship' => $winningShip->getName(),
-                'losing_ship' => $losingShip->getName(),
-                'used_jedi_powers' => $usedJediPowers,
-            );
+            return new BattleResult($winningShip, $losingShip, $usedJediPowers);
         }
 
         private function didJediDestroyShipUsingTheForce(Ship $ship)
