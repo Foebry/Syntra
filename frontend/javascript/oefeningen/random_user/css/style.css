@@ -81,7 +81,7 @@ ul li .info p {
 ul li .info p:first-of-type {
     font-size: 18.5px;
 }
-@media screen and (max-width: 1280px) {
+@media screen and (max-width: 1290px) {
     ul li {
         flex: 1 1 395px;
         max-width: 600px;
@@ -90,9 +90,9 @@ ul li .info p:first-of-type {
         font-size: 17px;
     }
 }
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 910px) {
     ul li {
-        flex: 1 1 300px;
+        flex: 1 1 250px;
         justify-content: space-around;
         flex-wrap: wrap;
     }
