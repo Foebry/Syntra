@@ -1,6 +1,6 @@
 <?php
 
-    class RebelShip extends Ship{
+    class RebelShip extends AbstractShip{
 
         public function getFavoriteJedi(){
             $cool_jedis = ["Yoda", "Ben Kenobi"];
@@ -24,5 +24,9 @@
             $val .= " (Rebel)";
 
             return $val;
+        }
+
+        public function getJediFactor() :int{
+            return rand(10, 30);
         }
     }
