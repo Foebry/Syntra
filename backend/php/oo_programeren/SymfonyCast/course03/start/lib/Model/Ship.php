@@ -35,7 +35,7 @@ class Ship
     {
         return $this->name;
     }
-    
+
     public function setStrength($number)
     {
         if (!is_numeric($number)) {
@@ -130,5 +130,9 @@ class Ship
     public function setId($id)
     {
         $this->id = $id;
+    }
+
+    public function getType(){
+        return "Empire";
     }
 }
