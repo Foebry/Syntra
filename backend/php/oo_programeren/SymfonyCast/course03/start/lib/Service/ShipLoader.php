@@ -5,10 +5,14 @@ class ShipLoader
     private $pdo;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     public function __construct(PDO $pdo)
 =======
     public function __construct(AbstractShipStorage $shipStorage)
 >>>>>>> c457d80 (chapter 9)
+=======
+    public function __construct(ShipStorageInterface $shipStorage)
+>>>>>>> ed65981 (ep3 chapter 10)
     {
         $this->pdo = $pdo;
     }
