@@ -2,7 +2,11 @@
 require __DIR__.'/bootstrap.php';
 require_once "./models/BattleManager.php";
 
-$ship_loader = new ShipLoader();
+$pdo = new PDO($configuration["db_dsn"],
+$configuration["db_user"],
+$configuration["db_pass"]);
+
+$ship_loader = new ShipLoader($pdo);
 
 $ships = $ship_loader->getShips();
 
