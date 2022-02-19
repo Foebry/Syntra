@@ -8,4 +8,13 @@
 
             return $cool_jedis[$key];
         }
+
+        public function getType(){
+            return "Rebel";
+        }
+
+        public function isFunctional()
+        {
+            return True;
+        }
     }
