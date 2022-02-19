@@ -1,6 +1,5 @@
 <?php
 require __DIR__.'/bootstrap.php';
-require_once "./models/BattleManager.php";
 
 
 $container = new Container($configuration);
