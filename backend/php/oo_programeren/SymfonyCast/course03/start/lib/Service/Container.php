@@ -36,7 +36,7 @@ class Container
     }
 
     /**
-    * @return AbstractShipStorage
+    * @return ShipStorageInterface
     */
     public function getShipStorage(){
         if($this->shipStorage === null){
