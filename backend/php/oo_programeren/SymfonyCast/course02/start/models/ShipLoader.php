@@ -54,7 +54,7 @@
         /**
         * @return PDO
         */
-        private function getPDO(){
+        private function getPDO() :PDO{
             return $this->pdo;
         }
     }

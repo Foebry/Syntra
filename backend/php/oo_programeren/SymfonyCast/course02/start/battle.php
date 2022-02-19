@@ -3,9 +3,8 @@ require __DIR__.'/bootstrap.php';
 require_once "./models/BattleManager.php";
 
 $container = new Container($configuration);
-$pdo = $container->getPDO();
 
-$ship_loader = new ShipLoader($pdo);
+$ship_loader = $container->getShipLoader();
 
 $ships = $ship_loader->getShips();
 
@@ -32,8 +31,7 @@ if ($ship1Quantity <= 0 || $ship2Quantity <= 0) {
     die;
 }
 
-$battle_manager = new BattleManager();
-
+$battle_manager = $container->getBattleManager();
 $outcome = $battle_manager->battle($ship1, $ship1Quantity, $ship2, $ship2Quantity);
 ?>
 
