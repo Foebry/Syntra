@@ -4,6 +4,7 @@
         private $jedi_factor = 0;
         private $strength = 0;
         private $under_repair;
+        private $id;
 
         public function __construct($name){
             $this->setName($name);
@@ -39,6 +40,13 @@
         }
         public function getWeaponPower(){
             return $this->weapon_power;
+        }
+
+        public function setId(int $id){
+            $this->id = $id;
+        }
+        public function getId() :int{
+            return $this->id;
         }
 
         public function isFunctional(){
