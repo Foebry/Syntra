@@ -2,7 +2,7 @@
 require __DIR__.'/bootstrap.php';
 require_once "./models/BattleManager.php";
 
-$ship_loader = new ShipLoader();
+$ship_loader = new ShipLoader($configuration["db_dsn"], $configuration["db_user"], $configuration["db_pass"]);
 
 $ships = $ship_loader->getShips();
 
