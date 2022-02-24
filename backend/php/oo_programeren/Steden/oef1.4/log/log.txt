@@ -1,0 +1,46 @@
+2022-02-24 13:24:37 - select * from information_schema.columns where table_name = 'images' and table_schema = 'steden'
+2022-02-24 13:24:37 - SELECT * from images limit 3
+2022-02-24 13:28:48 - Select * from images where img_id = 1
+2022-02-24 13:28:48 - select * from information_schema.columns where table_name = 'images' and table_schema = 'steden'
+2022-02-24 13:29:00 - select * from information_schema.columns where table_name = 'images' and table_schema = 'steden'
+2022-02-24 13:29:00 - SELECT * from images limit 3
+2022-02-24 13:35:38 - select * from information_schema.columns where table_name = 'images' and table_schema = 'steden'
+2022-02-24 13:35:38 - SELECT * from images limit 3
+2022-02-24 13:36:09 - select * from information_schema.columns where table_name = 'images' and table_schema = 'steden'
+2022-02-24 13:36:41 - select * from information_schema.columns where table_name = 'images' and table_schema = 'steden'
+2022-02-24 13:36:51 - select * from information_schema.columns where table_name = 'images' and table_schema = 'steden'
+2022-02-24 13:36:51 - SELECT * from images limit 3
+2022-02-24 13:36:54 - select * from information_schema.columns where table_name = 'images' and table_schema = 'steden'
+2022-02-24 13:36:54 - SELECT * from images limit 3
+2022-02-24 13:36:56 - select * from information_schema.columns where table_name = 'images' and table_schema = 'steden'
+2022-02-24 13:37:09 - select * from information_schema.columns where table_name = 'images' and table_schema = 'steden'
+2022-02-24 13:37:48 - select * from information_schema.columns where table_name = 'images' and table_schema = 'steden'
+2022-02-24 13:38:17 - select * from information_schema.columns where table_name = 'images' and table_schema = 'steden'
+2022-02-24 13:40:17 - select * from information_schema.columns where table_name = 'images' and table_schema = 'steden'
+2022-02-24 13:40:17 - SELECT * from images limit 3
+2022-02-24 13:40:55 - select * from information_schema.columns where table_name = 'images' and table_schema = 'steden'
+2022-02-24 13:40:55 - SELECT * from images limit 3
+2022-02-24 13:41:29 - select * from information_schema.columns where table_name = 'user' and table_schema = 'steden'
+2022-02-24 13:42:04 - select * from information_schema.columns where table_name = 'user' and table_schema = 'steden'
+2022-02-24 13:42:56 - select * from information_schema.columns where table_name = 'user' and table_schema = 'steden'
+2022-02-24 13:43:50 - select * from information_schema.columns where table_name = 'user' and table_schema = 'steden'
+2022-02-24 13:43:50 - select usr_email from user where usr_email = 'sander.fabry@test.be'
+2022-02-24 13:44:06 - select * from information_schema.columns where table_name = 'user' and table_schema = 'steden'
+2022-02-24 13:44:06 - select usr_email from user where usr_email = 'sander.fabry@test.be'
+2022-02-24 13:44:21 - select * from information_schema.columns where table_name = 'user' and table_schema = 'steden'
+2022-02-24 13:44:21 - select usr_email from user where usr_email = 'sander.fabry@test.be'
+2022-02-24 13:44:21 - select * from information_schema.columns where table_name = 'images' and table_schema = 'steden'
+2022-02-24 13:44:21 - SELECT * from images limit 3
+2022-02-24 13:44:38 - select * from information_schema.columns where table_name = 'images' and table_schema = 'steden'
+2022-02-24 13:44:38 - SELECT * from images limit 3
+2022-02-24 13:45:20 - select * from information_schema.columns where table_name = 'user' and table_schema = 'steden'
+2022-02-24 13:45:35 - select * from information_schema.columns where table_name = 'user' and table_schema = 'steden'
+2022-02-24 13:45:35 - select usr_email from user where usr_email = 'sander.fabry@test.be'
+2022-02-24 13:45:35 - select * from information_schema.columns where table_name = 'user' and table_schema = 'steden'
+2022-02-24 13:45:44 - select * from information_schema.columns where table_name = 'user' and table_schema = 'steden'
+2022-02-24 13:45:44 - select usr_email from user where usr_email = 'sander.fabry@test.test'
+2022-02-24 13:45:44 - insert into user set usr_voornaam = 'Sander', usr_naam = 'Fabry', usr_email = 'sander.fabry@test.test', usr_password = '$2y$10$uymP4fKHvarroAoliK8SIega3j/o6HHBudcX.qGVTGlj.C1FSoOSG'
+2022-02-24 13:45:44 - select * from information_schema.columns where table_name = 'images' and table_schema = 'steden'
+2022-02-24 13:45:44 - SELECT * from images limit 3
+2022-02-24 13:46:53 - select * from information_schema.columns where table_name = 'images' and table_schema = 'steden'
+2022-02-24 13:46:53 - SELECT * from images limit 3
