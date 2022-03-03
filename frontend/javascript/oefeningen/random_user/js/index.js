@@ -1,43 +1,56 @@
 const users_ul = document.querySelector("#users-ul");
 const search = document.querySelector("#search");
-let users = [];
+const template = document.querySelector("#user-template");
 
-getRandomUsers();
-
-async function getRandomUsers() {
-	const response = await fetch("https://randomuser.me/api/?results=200")
+async function render() {
+	const response = await fetch("https://randomuser.me/api/?results=200");
 	const data = await response.json();
-	results = await data.results;
-	results.forEach(el => {
-		console.log(el);
-		const sex = el.gender;
-		const li = document.createElement("li");
-		li.classList.add(sex);
-		li.innerHTML = `<div class="imgholder">
-    <img src='${el.picture.large}' alt='profile picture of ${el.name.first} ${el.name.last}'>
-</div>
-<div class='info'>
-    <h3>${el.name.first} ${el.name.last}</h3>
-    <p>${el.email}</p>
-    <p>${el.location.state}, ${el.location.country}</p>
-    <p>${el.cell}</p>
-</div>`
-		users.push(li);
-	});
-	render();
+	const results = data.results;
+
+	search.oninput = (e) => {
+		users_ul.innerHTML = "";
+		let value = e.target.value.length >= 3 ? e.target.value.toLowerCase() : "";
+
+		display(value);
+
+	}
+	const display = (str = "") => {
+		const filtered = results.filter(el => str == "" ? true :
+			el.name.first.toLowerCase().includes(str) ||
+			el.name.last.toLowerCase().includes(str) ||
+			el.location.city.toLowerCase().includes(str));
+
+		filtered.map(el => {
+				let template_temp = template.innerHTML;
+				const {
+					gender,
+					email,
+					cell,
+					picture: {
+						large
+					},
+					name: {
+						first,
+						last
+					},
+					location: {
+						city,
+						country
+					}
+				} = el;
+				template_temp = template_temp.replace("%gender%", gender);
+				template_temp = template_temp.replace("%picture_large%", large);
+				template_temp = template_temp.replace(/%name_first%/g, first);
+				template_temp = template_temp.replace(/%name_last%/g, last);
+				template_temp = template_temp.replace("%email%", email);
+				template_temp = template_temp.replace("%location_city%", city);
+				template_temp = template_temp.replace("%location_country%", country);
+				template_temp = template_temp.replace("%cell%", cell);
+				return template_temp;
+			})
+			.forEach(el => users_ul.insertAdjacentHTML("beforeend", el));
+	}
+	display();
 }
 
-function render(search = "") {
-	const filtered = users.filter(li => {
-		const li_name = li.children[1].children[0].innerHTML.toLowerCase();
-		const li_gemeente = li.children[1].children[2].innerHTML.toLowerCase();
-		const match = li_name.includes(search.toLowerCase()) || li_gemeente.includes(search.toLowerCase());
-		return search == "" ? true : match;
-	}).map(el => el.outerHTML);
-	users_ul.innerHTML = filtered.join("");
-}
-
-search.oninput = function(e) {
-	const value = e.target.value.length >= 3 ? e.target.value : "";
-	render(value);
-}
+render();
