@@ -20,4 +20,3 @@
     echo PrintJumbo($titel="Login");
     echo PrintNavBar("navbar.html");
     echo $content;
-    var_dump($_SESSION);

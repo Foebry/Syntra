@@ -45,7 +45,7 @@ function insertCSS($headtxt, $files){
     return str_replace("@@CSS@@", $css, $headtxt);
 }
 
-function createArticles(array $list , string $template, $uppercase=False){
+function createArticles(array $list , string $template, bool $uppercase=False) :string{
     /**
     * functie die een parentclass articles creëert met daarin een aantal articles aanmaakt aan de
     * hand van de geleverde template samengevoegd met de benodigde data.

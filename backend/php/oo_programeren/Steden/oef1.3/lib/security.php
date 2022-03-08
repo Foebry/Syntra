@@ -20,12 +20,15 @@ function GenerateCSRF( string $formname = "noformname" ): string {
 
     return $csrf;
 }
-function LoginCheck(): bool{
+function LoginCheck($dbm): bool{
     $where = " where usr_email = '".$_POST["usr_email"]."'";
     $sql = "select usr_password from ".$_POST["table"]. $where;
-    $data = getData("select usr_password from ".$_POST["table"]. $where);
+
+    $data = $dbm->getData("select usr_password from ".$_POST["table"]. $where);
+
     if ($data == null) return False;
     if ($data[0]["usr_password"]) $password_hash = $data[0]["usr_password"];
+
     return (password_verify($_POST["usr_password"], $password_hash));
 }
 

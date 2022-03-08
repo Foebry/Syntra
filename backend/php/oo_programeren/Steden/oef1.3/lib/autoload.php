@@ -2,6 +2,7 @@
 $root = $_SERVER["DOCUMENT_ROOT"];
 require_once "security.php";
 require_once "html_components.php";
+require_once "validate.php";
 require_once "$root/lib/services/DbManager.php";
 require_once "$root/lib/services/CityLoader.php";
 require_once "$root/lib/models/City.php";
@@ -25,7 +26,6 @@ if (key_exists("OLD_POST", $_SESSION)){
 }
 if (key_exists("ERRORS", $_SESSION)){
     $errors = $_SESSION["ERRORS"];
-    $_SESSION["ERRORS"] = [];
 }
 if (key_exists("INFO", $_SESSION)){
     $info = $_SESSION["INFO"];
@@ -35,3 +35,4 @@ if (key_exists("STATUS", $_SESSION)){
     $status = $_SESSION["STATUS"];
     $_SESSION["STATUS"] = [];
 }
+$_SESSION["ERRORS"] = [];

@@ -241,3 +241,14 @@
 2022-03-02 16:24:40 - select * from information_schema.columns where table_name = 'user' and table_schema = 'steden'
 2022-03-02 16:24:42 - select * from information_schema.columns where table_name = 'images' and table_schema = 'steden'
 2022-03-02 16:24:42 - SELECT * from images limit 3
+2022-03-08 12:27:21 - select * from information_schema.columns where table_name = 'images' and table_schema = 'steden'
+2022-03-08 12:27:21 - SELECT * from images limit 3
+2022-03-08 12:34:32 - select * from information_schema.columns where table_name = 'user' and table_schema = 'steden'
+2022-03-08 12:34:42 - select * from information_schema.columns where table_name = 'user' and table_schema = 'steden'
+2022-03-08 12:34:42 - select usr_password from user where usr_email = 'sander.fabry@gmail.com'
+2022-03-08 12:34:42 - select * from information_schema.columns where table_name = 'user' and table_schema = 'steden'
+2022-03-08 12:35:05 - select * from information_schema.columns where table_name = 'user' and table_schema = 'steden'
+2022-03-08 12:35:05 - select usr_password from user where usr_email = 'inf@inf.be'
+2022-03-08 12:35:05 - select * from user where usr_email = 'inf@inf.be'
+2022-03-08 12:35:05 - select * from information_schema.columns where table_name = 'images' and table_schema = 'steden'
+2022-03-08 12:35:05 - SELECT * from images limit 3

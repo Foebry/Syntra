@@ -6,7 +6,7 @@
 
     //var_dump($errors);
     $data = [0 => ["usr_email" => "", "usr_password" => ""]];
-    $headers = getHeaders("user");
+    $headers = $dbm->getHeaders("user");
 
     $css = array('stad_form.css');
     $content = createForm("login.html", $data, $old_post);
