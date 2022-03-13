@@ -1,0 +1,34 @@
+main {
+    min-height: 1000px;
+}
+.circle {
+    border-radius: 50%;
+    position: absolute;
+}
+.circle.red {
+    background-color: red;
+}
+.circle.green {
+    background-color: green;
+}
+.curcle.yellow {
+    background-color: yellow;
+}
+.circle.blue {
+    background-color: blue;
+}
+.circle.orange {
+    background-color: orange;
+}
+.circle.lightgreen {
+    background-color: lightgreen;
+}
+.circle.salmon {
+    background-color: salmon;
+}
+.circle.grey {
+    background-color: grey;
+}
+.circle.black {
+    background-color: black;
+}

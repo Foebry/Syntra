@@ -1,0 +1,11 @@
+body {
+    background-color: black;
+}
+.circle {
+    border-radius: 50%;
+    background-color: green;
+    border: 3px solid purple;
+    width: 75px;
+    height: 75px;
+    position: absolute;
+}

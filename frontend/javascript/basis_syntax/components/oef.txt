@@ -1,0 +1,35 @@
+elke keer ik klik op het scherm wordt er een pianotegel toegevoegd rechts bovenaan op het scherm
+elke tegel is 50% hoog en 50px breed. elke tegel heeft een random BGkleur
+
+als je op de tegel klikt krijgt de body de achtergrondkleur van de tegel
+
+
+uitbreiding
+
+onderaan rechts plaats je en play-knop. Als deze aangeklikt wordt dan
+
+let teller = 0
+setInterval(function(){
+if(teller===4){
+teller=0
+}else{
+teller++
+}
+volgendeTegel()
+},5000)
+
+console.log()
+
+
+
+
+
+class Tile{
+constructor(){
+this.bg = getRandomColor()
+this.initHTML()
+this.styling()
+}
+}
+
+document.body.onclick => ecnel el vek v
