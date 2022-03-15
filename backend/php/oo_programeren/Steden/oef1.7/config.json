@@ -1,0 +1,9 @@
+{
+    "DATABASE":
+        {
+            "host": "localhost",
+            "username": "root",
+            "password": "",
+            "dbname": "steden"
+        }
+}
