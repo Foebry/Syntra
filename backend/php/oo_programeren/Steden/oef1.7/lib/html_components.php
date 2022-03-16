@@ -1,50 +1,6 @@
 <?php
 require_once "autoload.php";
 
-
-function PrintHead($title, $css=array(0)) :string{
-    /**
-     * functie die de hoofding van de webpagina zal genereren.
-     * @param $title: de titel van de webpagina
-     * @param $css: de verschillende css files nodig om de pagina te stylen.
-     * @type $title: string
-     * @type $css: array($string)
-     *
-     * @return: string
-     */
-
-    # Inladen van de template nodig om de head te genereren.
-    $head = file_get_contents("./templates/head.html");
-
-    # Vervangen van placeholder @title@ door de $title
-    $head = str_replace("@@title@@", $title, $head);
-    # vervangen van placeholder @css@ door de verschillende css style sheets nodig om de pagina te stylen
-    $head = insertCSS($head, $css);
-
-
-    return $head;
-}
-
-function insertCSS($headtxt, $files){
-    /**
-     * functie die de verschillende style sheets zal inladen.
-     * @param $headtxt: html-string van de head.
-     * @param $files: verschillende style-sheets nodig om de pagina te stylen
-     * @type $headtxt: string
-     * @type $files: array(string)
-     *
-     * @return: string
-     */
-
-    $css = '';
-    # genereer een link-tag voor iedere css file in files.
-    foreach($files as $file){
-        $css .= '<link rel="stylesheet" href="../css/'.$file.'">';
-    }
-    # vervang placeholder @CSS@ door de genenereerde string
-    return str_replace("@@CSS@@", $css, $headtxt);
-}
-
 function createArticles(array $list , string $template, bool $uppercase=False) :string{
     /**
     * functie die een parentclass articles creëert met daarin een aantal articles aanmaakt aan de
@@ -130,92 +86,6 @@ function mergeInfo($templatetxt, $info){
     return $templatetxt;
 }
 
-function removeEmptyPlaceholder($templatetxt){
-    /**
-    * functie die de resterende placeholders zal verwijderen.
-    * onopgevulde placeholders mogen nu verwijderd worden.
-    * @param $templatetxt: de gegenereerde htmlstring
-    * @type $templatetxt: string
-    *
-    * @return: string
-    */
-
-    # verzamel alle nog bestaande placeholders
-    $tags = getTagsFromTemplate($templatetxt);
-    # vervang iedere placeholder door een lege string
-    foreach($tags as $tag){
-        $templatetxt = str_replace("@@$tag@@", "", $templatetxt);
-    }
-
-    return $templatetxt;
-}
-
-function getTagsFromTemplate($templatetxt, $offset=0){
-    /**
-    * functie die alle bestaande placeholders zal zoeken.
-    * @param $templatetxt: de gegenereerde htmlstring
-    * @param $offset: startplaats om te zoeken naar placeholders in de htmlstring
-    * @type $templatetxt: string
-    * @type $offset: int
-    * @default $offset: 0
-    *
-    * @return: array(string)
-    */
-
-
-    $placeholders = [];
-    # zoek naar de eerste positie waar een @ voorkomt.
-    # @ duidt de start van een placeholder aan
-    $offset = strpos($templatetxt, "@@", $offset);
-
-    # zolang placeholders gevonden worden, voeg deze toe aan de placeholders array
-    while($offset){
-        # zoek naar de closing @ van de placeholder, vanaf de positie ná de opening @
-        $start = $offset+2;
-        $end = strpos($templatetxt, "@@", $start);
-        # indien geen closing @ gevonden, zijn er geen verdere placeholders en eindigd de while loop
-        if ($end == 0) break;
-        # indien wel een closing @ gevonden, voeg de waarde tussen opening en closing @ toe aan de placeholders array
-        $placeholders[] = substr($templatetxt, $start, $end-$start);
-        # zet $offset gelijk aan de positie van de volgende opening @
-        # indien geen gevonden if $offset gelijk aan 0 (ofwel false) en eindigt de while loop
-        $offset = strpos($templatetxt, "@@", $end+2);
-    }
-    return $placeholders;
-}
-
-function PrintJumbo($titel, $subtitel=""): string{
-    /**
-    * functie die de bootstrap Jumbo zal genereren.
-    * @param $title: titel voor de Jumbo
-    * @param $subtitel: subtitel voor de Jumbo
-    * @type $title: string
-    * @type $subtitel: string
-    *
-    * @return: string
-    */
-
-    # inladen van de Jumbo template
-    $jumbo = file_get_contents("./templates/jumbo.html");
-
-    # vervangen van titel en subtitel placeholders door hun respectievelijke waarden
-    $jumbo = str_replace("@@titel@@", $titel, $jumbo);
-    return str_replace("@@subtitel@@", $subtitel, $jumbo);
-}
-
-function PrintNavBar($template):string {
-    /**
-    * functie die de bootstrap navbar zal genereren.
-    * @param $template: navbar-template
-    * @type $template: string
-    *
-    * @return: string
-    */
-
-    # ophalen content van template
-    return file_get_contents("./templates/$template");
-}
-
 function replaceCityProperties(string $template, City $city, $uppercase) :string{
     $title = $city->getTitle($uppercase);
     $template = str_replace("@@img_title@@", $title, $template);
@@ -237,38 +107,6 @@ function createCityDetail(string $template, City $city, $uppercase) :string{
 
     return $content;
 
-}
-
-function createForm($template, $headers, $old_post) :string{
-    /**
-    * functie die een form zal genereren aan de hand van de te gebruiken template en de data uit old_post
-    * @param $template: de te gebruiken template voor de form
-    * @param $headers: kolomhoofden van de tabel
-    * @param $old_post: waarden ingegeven door de gebruiker.
-    * @type $template: string
-    * @type $headers: array(string => array())
-    * @type $old_post: array(string => string)
-    *
-    * @return string
-    */
-    # inladen van template
-    $template = file_get_contents("./templates/$template");
-
-    # voor iedere hoofding in headers nagaan of deze voorkomt in de old_post array.
-    # zoja vervang de overeenkomende placeholder met de waarde in old_post anders door een lege string
-    //exit(var_dump($old_post["usr_email"]));
-    foreach ($headers as $tag => $values) {
-        $value_verification = key_exists($tag."_verification", $old_post) ? $old_post[$tag."_verification"] : "";
-        $value = key_exists($tag, $old_post) ?  $old_post[$tag] : "";
-        $template = str_replace("@@$tag@@", $value, $template);
-        $template = str_replace("@@$tag"."_verification@@", $value_verification, $template);
-    }
-    # indien het form ook een csrf placeholder bevat, vervang deze door de gegenereerde csrf-token
-    if (strpos($template, "@@csrf@@")){
-        $template = str_replace("@@csrf@@", generateCSRF(), $template);
-    }
-
-    return $template;
 }
 
 function makeSelect($templatetxt, $data, $headers, $id, $option_template){

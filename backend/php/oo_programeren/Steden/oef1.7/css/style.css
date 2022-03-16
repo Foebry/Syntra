@@ -1,18 +1,326 @@
-.imgholder {
-    width: 100%;
-    aspect-ratio: 4/3;
+/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+a,
+abbr,
+acronym,
+address,
+applet,
+article,
+aside,
+audio,
+b,
+big,
+blockquote,
+body,
+canvas,
+caption,
+center,
+cite,
+code,
+dd,
+del,
+details,
+dfn,
+div,
+dl,
+dt,
+em,
+embed,
+fieldset,
+figcaption,
+figure,
+footer,
+form,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+header,
+hgroup,
+html,
+i,
+iframe,
+img,
+ins,
+kbd,
+label,
+legend,
+li,
+mark,
+menu,
+nav,
+object,
+ol,
+output,
+p,
+pre,
+q,
+ruby,
+s,
+samp,
+section,
+small,
+span,
+strike,
+strong,
+sub,
+summary,
+sup,
+table,
+tbody,
+td,
+tfoot,
+th,
+thead,
+time,
+tr,
+tt,
+u,
+ul,
+var,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
 }
-img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 5%;
+
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
 }
-.msg--info {
-    margin: 0 auto;
-    background-color: lightgreen;
-    padding: 10px;
-    border: 1px solid darkgreen;
-    border-radius: 5px;
+
+body {
+  line-height: 1;
 }
+
+ol,
+ul {
+  list-style: none;
+}
+
+blockquote,
+q {
+  quotes: none;
+}
+
+blockquote:after,
+blockquote:before,
+q:after,
+q:before {
+  content: "";
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+header {
+  margin-bottom: 100px;
+}
+header .jumbo {
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  background-color: #b0b0b0;
+  text-transform: capitalize;
+}
+header .jumbo h1 {
+  font-size: 48px;
+}
+header .jumbo h2 {
+  font-size: 24px;
+}
+header nav {
+  position: relative;
+  background-color: #353535;
+  height: 70px;
+  padding: 0 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+header nav .site-links {
+  display: flex;
+  justify-content: space-between;
+  gap: 100px;
+}
+header nav .nav-links {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+header nav .nav-links .nav-link {
+  color: #dfdfdf;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 10px 0;
+}
+header nav #profile {
+  position: relative;
+  cursor: pointer;
+}
+header nav #profile .imgholder {
+  width: 70px;
+}
+header nav #profile .imgholder img {
+  display: block;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+}
+header nav #profile p {
+  position: absolute;
+  right: 100px;
+  line-height: 70px;
+  font-size: 24px;
+  color: white;
+}
+header nav #profile form {
+  position: absolute;
+  left: -50px;
+  width: 150px;
+}
+header nav #profile form ul {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 0;
+  background-color: #353535;
+}
+header nav #profile form ul li {
+  text-transform: capitalize;
+  text-align: center;
+  padding: 5px;
+}
+header nav #profile form ul li:hover {
+  background-color: #959595;
+}
+header nav #profile form ul li a {
+  font-size: 21px;
+  color: white;
+  text-decoration: none;
+}
+header nav #profile form ul li button {
+  background-color: transparent;
+  font-size: 21px;
+  border: none;
+  padding: 0;
+}
+header nav.logged-in {
+  justify-content: space-between;
+}
+
+main {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+main .container {
+  width: 80%;
+  margin: 0 auto;
+}
+
+form .form-row {
+  display: flex;
+  gap: 10px;
+  position: relative;
+  width: 100%;
+  align-items: center;
+}
+form .form-row input {
+  width: 70%;
+  font-size: 18px;
+  line-height: 21.5px;
+  padding: 5px;
+  border: none;
+  border-radius: 5px;
+  background-color: #f1f1f1;
+  outline: none;
+}
+form .form-row label {
+  width: 30%;
+  font-size: 18px;
+  text-transform: capitalize;
+}
+form .form-row p.error {
+  position: absolute;
+  left: 30%;
+  padding: 0 5px;
+  bottom: -15px;
+}
+form button {
+  font-size: 18px;
+  padding: 5px;
+  border: none;
+  background-color: #55aa22;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  text-transform: capitalize;
+}
+form.search {
+  margin: auto 0;
+}
+form.search input {
+  border: none;
+  outline: none;
+  padding: 5px;
+  font-size: 16px;
+  border-radius: 5px;
+}
+form.search input::placeholder {
+  font-size: 16px;
+}
+form.search button {
+  font-size: 16px;
+}
+form.hidden {
+  display: none;
+}
+form.login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  max-width: 400px;
+}
+form.login label {
+  text-align: right;
+}
+form.login button {
+  margin-left: calc(30% + 5px);
+}
+form.login h1 {
+  font-size: 24px;
+  margin-bottom: 50px;
+  text-align: center;
+  line-height: 30px;
+  margin-left: 30%;
+}
+
+/*# sourceMappingURL=style.css.map */

@@ -1,0 +1,35 @@
+<nav class="logged-in">
+    <div class="site-links">
+        <ul class="nav-links">
+            <li class="nav-item active">
+                <a class="nav-link" href="steden.php">home</a>
+            </li>
+            <li class="nav-item">
+                <a href="./steden.php" class="nav-link">cities</a>
+            </li>
+            <li class="nav-item">
+                <a href="./people.php" class="nav-link">people</a>
+            </li>
+        </ul>
+        <form class="search">
+            <input type="hidden" name="csrf" value="@@csrf@@" />
+            <input type="text" placeholder="Search" name="search" />
+            <button>Search</button>
+        </form>
+    </div>
+    <div id="profile">
+        <p>@@usr_name@@</p>
+        <div class="imgholder">
+            <img src="./images/avatars/@@usr_avatar@@" alt="my avatar" />
+        </div>
+        <form action="./lib/login_check.php" method="POST" class="hidden">
+            <input type="hidden" name="csrf" value="@@csrf@@" />
+            <ul>
+                <li>
+                    <a href="./profile.php">my profile</a>
+                </li>
+                <li><button name="logout">logout</button></li>
+            </ul>
+        </form>
+    </div>
+</nav>

@@ -2,13 +2,19 @@
     $public_access = true;
 
     require_once "autoload.php";
-
-    $_SESSION["OLD_POST"] = $_POST;
+    
+    if( isset($_POST["logout"] )){
+        unset( $_SESSION["user"] );
+        header("location:../index.php");
+        die();
+    }
+    
+    $_SESSION["old_post"] = $_POST;
     $container = $_SESSION["container"];
 
     $dbm = $container->getDbManager();
     $ms = $container->getMessageService();
-    $user_loader = $container->getUserLoader($dbm);
+    $userLoader = $container->getUserLoader($dbm);
 
     $headers = $dbm->getHeaders($table="user");
 
@@ -27,7 +33,7 @@
 
     if (LoginCheck($dbm, $ms)){
         $email = $_POST["usr_email"];
-        $user = $user_loader->getUserByEmail($email);
+        $user = $userLoader->getByEmail($email);
         $_SESSION["user"] = $user;
         $msg = "Welkom, ".$user->getVoornaam();
         $ms->addMessage("infos", $msg);

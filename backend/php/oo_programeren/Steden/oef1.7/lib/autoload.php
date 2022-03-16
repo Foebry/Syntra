@@ -6,17 +6,20 @@ require_once "$root/lib/models/User.php";
 require_once "$root/lib/models/Container.php";
 require_once "$root/lib/services/Logger.php";
 require_once "$root/lib/services/DbManager.php";
+require_once "$root/lib/services/LoaderInterface.php";
 require_once "$root/lib/services/CityLoader.php";
 require_once "$root/lib/services/UserLoader.php";
 require_once "$root/lib/services/MessageService.php";
+require_once "$root/lib/services/ContentManager.php";
 
 if (!isset($_SESSION)) session_start();
 
-if(!isset($_SESSION["container"])) $_SESSION["container"] = new Container();
+$_SESSION["container"] = new Container();
+
 if(!isset($_SESSION["input_errors"])) $_SESSION["input_errors"] = [];
 if(!isset($_SESSION["errors"])) $_SESSION["errors"] = [];
 if(!isset($_SESSION["infos"])) $_SESSION["infos"] = [];
-if(!isset($_SESSION["OLD_POST"])) $_SESSION["OLD_POST"] = [];
+if(!isset($_SESSION["old_post"])) $_SESSION["old_post"] = [];
 
 require_once "security.php";
 require_once "html_components.php";
@@ -24,5 +27,6 @@ require_once "validate.php";
 
 require_once "access_control.php";
 
-$old_post = $_SESSION["OLD_POST"];
-$_SESSION["OLD_POST"] = [];
+$old_post = $_SESSION["old_post"];
+
+$_SESSION["old_post"] = [];

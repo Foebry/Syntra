@@ -24,8 +24,8 @@
             return new User($data[0]);
         }
 
-        function getUserByEmail($email){
+        function getByEmail($email){
             $userData = $this->dbm->GetData("select * from user where usr_email = '$email'");
-            return new User($data[0]);
+            return new User($userData[0]);
         }
     }
