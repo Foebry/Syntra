@@ -113,11 +113,35 @@
             
             $this->content .= $form;
         }
+        public function addPopularSection($table, $title){
+            $templates = [
+                "images" => "article_steden.html"
+            ];
+            $template = $templates[$table];
+
+            $rows = $this->dbm->getData("SELECT * from $table limit 3");
+            $headers = $this->dbm->getHeaders($table);
+
+            $content = "<section class='popular $table'>";
+            $content .= "<div class='title'><h1>$title</h1></div>";
+            $content .= "<ul>";
+            foreach($rows as $row){
+                $templatestr = file_get_contents("./templates/$template");
+                foreach($headers as $key => $values){
+                    $templatestr = str_replace("@@$key@@", $row[$key], $templatestr);
+                }
+                $content .= $templatestr ;
+            }
+
+            $this->content .= $content."</ul></section>";
+
+        }
 
         public function printContent(){
 
             $this->page = str_replace("@@content@@", $this->content, $this->page);
             $this->page = $this->ms->ShowErrors($this->page);
+            $this->page = $this->ms->showInfos($this->page);
             $this->removeEmptyPlaceholders();
 
             echo $this->page;

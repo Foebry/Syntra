@@ -37,7 +37,7 @@
         $_SESSION["user"] = $user;
         $msg = "Welkom, ".$user->getVoornaam();
         $ms->addMessage("infos", $msg);
-        exit(header("location:../steden.php"));
+        exit(header("location:../"));
     }
 
  ?>
