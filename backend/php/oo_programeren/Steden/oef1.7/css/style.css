@@ -244,6 +244,34 @@ main .container {
   width: 80%;
   margin: 0 auto;
 }
+main p.info {
+  background-color: lightgreen;
+  font-size: 24px;
+  line-height: 50px;
+  color: darkgreen;
+  text-align: center;
+  border-radius: 10px;
+  margin-bottom: 50px;
+  position: relative;
+}
+main p.info button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  border-radius: 0.5px;
+  border: none;
+  background-color: darkgreen;
+}
+main p.info button:after {
+  content: "X";
+  color: black;
+}
+main p.info button:hover {
+  cursor: pointer;
+}
+main p.info.hidden {
+  display: none;
+}
 
 form .form-row {
   display: flex;
@@ -302,25 +330,26 @@ form.search button {
 form.hidden {
   display: none;
 }
-form.login {
+form.login, form.register {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 20px;
   max-width: 400px;
 }
-form.login label {
+form.login label, form.register label {
   text-align: right;
 }
-form.login button {
+form.login button, form.register button {
   margin-left: calc(30% + 5px);
 }
-form.login h1 {
-  font-size: 24px;
-  margin-bottom: 50px;
-  text-align: center;
-  line-height: 30px;
-  margin-left: 30%;
+form.login h2, form.register h2 {
+  font-size: 36px;
+  margin: 50px 0 50px 30%;
+  white-space: nowrap;
+}
+form p.error {
+  color: red;
 }
 
 section {
