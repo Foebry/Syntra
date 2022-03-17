@@ -241,8 +241,48 @@ main {
   margin: 0 auto;
 }
 main .container {
-  width: 80%;
+  width: 98%;
+  margin: 0 auto 50px;
+}
+main .container .detail .heading {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+main .container .detail .heading .imgholder {
+  width: 50%;
+  margin: 0 auto 50px;
+}
+main .container .detail .heading .imgholder img {
+  width: 100%;
+  height: auto;
+  display: block;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+}
+main .container .detail .heading .rating {
   margin: 0 auto;
+  display: flex;
+  width: 50%;
+  gap: 20px;
+}
+main .container .detail .heading .rating img {
+  display: block;
+  object-fit: contain;
+  width: 100%;
+}
+main .container .detail .content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 30px;
+  line-height: 18px;
+  font-size: 16px;
+}
+main .container .detail p {
+  font-size: 20px;
+  line-height: 21.5px;
 }
 main p.info {
   background-color: lightgreen;
@@ -363,6 +403,8 @@ section ul {
 }
 section ul li {
   flex: 1 1 300px;
+  max-width: 32%;
+  margin-bottom: 20px;
 }
 section .title {
   position: relative;
@@ -392,6 +434,17 @@ section article h2 {
   text-transform: capitalize;
   text-align: center;
   margin: 10px 0;
+}
+section article .rating {
+  width: 50%;
+  margin: 0 auto;
+}
+section article .rating img {
+  display: block;
+  width: 100%;
+  height: auto;
+  padding: 20px 0;
+  object-fit: contain;
 }
 section article p {
   font-size: 18px;

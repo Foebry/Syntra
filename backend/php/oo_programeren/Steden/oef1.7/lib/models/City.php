@@ -4,7 +4,6 @@
         private $img_title;
         private $img_width;
         private $img_height;
-        private $img_desc;
         private $img_lan_id;
         private $img_id;
 
@@ -14,8 +13,9 @@
             $this->setTitle($data["img_title"]);
             $this->setWidth($data["img_width"]);
             $this->setHeight($data["img_height"]);
-            $this->setDesc($data["img_desc"]);
             $this->setCountryId($data["img_lan_id"]);
+            $this->setContent($data["img_content"]);
+            $this->setRating($data["img_rating"]);
         }
         public function setId(int $id) :void{
             $this->img_id = $id;
@@ -47,16 +47,28 @@
         public function getHeight() :int{
             return $this->img_height;
         }
-        public function setDesc(string $desc) :void{
-            $this->img_desc = $desc;
-        }
         public function getDesc() :string{
-            return $this->img_desc;
+            $wordArr = explode(" ", $this->getContent());
+            $section = array_slice($wordArr, 0, 20);
+
+            return implode(" ", $section);
         }
         public function setCountryId(int $country_id) :void{
             $this->img_lan_id = $country_id;
         }
         public function getCountryId() :int{
             return $this->img_lan_id;
+        }
+        public function setContent($content){
+            $this->content = $content;
+        }
+        public function getContent() :string{
+            return $this->content;
+        }
+        public function setRating($rating) :void{
+            $this->rating = $rating;
+        }
+        public function getRating(): int{
+            return $this->rating;
         }
     }

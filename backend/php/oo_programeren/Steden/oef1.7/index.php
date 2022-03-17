@@ -10,40 +10,50 @@
     $contentManager = $container->getContentManager();
 
     // laad homepage
-    if ( count($_GET) == 0){
+    if( isset( $_GET["search"] ) ){
+        $search = $_GET["search"];
+        $contentManager->setTitles("home", "u zocht op $search");
+    }
+    elseif ( count($_GET) == 0){
         $contentManager->setTitles("Home");
         $contentManager->addPopularSection("images", "populaire steden");
-    }
-    elseif( isset( $_GET["search"] ) ){
-        print("searching");
     }
 
     // laad steden pagina
     elseif( isset( $_GET["steden"] ) ){
 
         if ( isset( $_GET["id"] ) ){
-            print( "specific city ". $_GET["id"] );
+    
+            $cityName = $contentManager->cityLoader->getById($_GET["id"])->getTitle();
+            $contentManager->setTitles($cityName, "detail");
+            $contentManager->addDetail("images", $_GET["id"]);
         }
         else{
-            print("alle steden");
+            $contentManager->setTitles("steden");
+            $contentManager->addSection("images");
         }
     }
 
     // laad mensen pagina
     elseif( isset( $_GET["people"]) ){
         
-
-        if( isset( $_GET["id"] ) ){
-            print("specific mens");
+        
+        if( isset( $_GET["cob"] ) ){
+            $cityId = $_GET["cob"];
+            $stadNaam = $contentManager->cityLoader->getById($cityId)->getTitle();
+            $contentManager->setTitles("Bekende mensen", "geboren in $stadNaam");
+        }
+        elseif( isset( $_GET["id"] ) ){
+            $contentManager->setTitles("PERSOON", "detail");
         }
         else{
-            print("mensen pagina");
+            $contentManager->setTitles("Bekende mensen");
         }
     }
 
     // laad profile pagina
     elseif ( isset( $_GET["profile"] ) ){
-        print("profile pagina");
+        $contentManager->setTitles("profielpagina");
     }
 
     // laad login pagina

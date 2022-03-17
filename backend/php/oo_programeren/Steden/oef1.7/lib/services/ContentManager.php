@@ -8,11 +8,12 @@
         private $csrf;
         private $ms;
 
-        public function __construct($dbm, $ms, $h1, $h2){
+        public function __construct($dbm, $ms, $cl){
             $this->csrf = $this->generateCsrf();
-            $this->page = $this->initPage($h1, $h2);
+            $this->page = $this->initPage();
             $this->dbm = $dbm;
-            $this->ms = $ms;
+            $this->messageService = $ms;
+            $this->cityLoader = $cl;
             
         }
         /**
@@ -30,8 +31,8 @@
             return $csrf;
         }
 
-        private function initPage($h1, $h2){
-            $jumbo = $this->setJumbo($h1, $h2);
+        private function initPage(){
+            $jumbo = $this->setJumbo();
             $navbar = $this->setNavbar();
 
             $page = file_get_contents("./templates/pageTemplate.html");
@@ -41,12 +42,8 @@
             return $page;
         }
 
-        private function setJumbo($h1, $h2){
-            $jumbo = file_get_contents("./templates/jumbo.html");
-            $jumbo = str_replace("@@title@@", $h1, $jumbo);
-            $jumbo = str_replace("@@subtitle@@", $h2, $jumbo);
-
-            return $jumbo;
+        private function setJumbo(){
+            return file_get_contents("./templates/jumbo.html");
         }
         private function setNavbar(){
             $navbar = file_get_contents("./templates/navbar.html");
@@ -99,6 +96,11 @@
             return $this->page;
         }
 
+        public function setTitles($h1, $h2=""){
+            $this->page = str_replace("@@title@@", $h1, $this->page);
+            $this->page = str_replace("@@subtitle@@", $h2, $this->page);
+        }
+
         public function addForm($formTemplate, $table, $old_post){
             $headers = $this->dbm->getHeaders($table);
 
@@ -113,6 +115,42 @@
             
             $this->content .= $form;
         }
+        public function addSection($table){
+            $templates = [
+                "images" => "article_steden.html"
+            ];
+            $template = $templates[$table];
+
+            $rows = $this->dbm->getData("SELECT * from $table");
+            $headers = $this->dbm->getHeaders($table);
+
+            $content = "<section><ul>";
+
+            foreach($rows as $row){
+
+                $templatestr = file_get_contents("./templates/$template");
+
+                foreach($headers as $key => $values){
+                    
+                    $templatestr = str_replace("@@$key@@", $row[$key], $templatestr);
+
+                    if( strpos($key, "content") != false){
+                        // vervang placeholder desc met de eerste 20 woorden van de content uit de db.
+                        $wordArr = explode(" ", $row[$key]);
+                        $section = array_slice($wordArr, 0, 20);
+                        $desc = implode(" ", $section);
+                        $templatestr = str_replace("@@desc@@", $desc, $templatestr);
+                    }
+                    if( strpos($key, "rating") != false){
+                        // zet de rating img
+                        $templatestr = str_replace("@@rating@@", $row[$key], $templatestr);
+                    }
+                }
+                $content .= $templatestr ;
+            }
+            $this->content .= $content."</ul></section>";
+
+        }
         public function addPopularSection($table, $title){
             $templates = [
                 "images" => "article_steden.html"
@@ -125,23 +163,66 @@
             $content = "<section class='popular $table'>";
             $content .= "<div class='title'><h1>$title</h1></div>";
             $content .= "<ul>";
+            
             foreach($rows as $row){
+
                 $templatestr = file_get_contents("./templates/$template");
+
                 foreach($headers as $key => $values){
+                    
                     $templatestr = str_replace("@@$key@@", $row[$key], $templatestr);
+
+                    if( strpos($key, "content") != false){
+                        // vervang placeholder desc met de eerste 20 woorden van de content uit de db.
+                        $wordArr = explode(" ", $row[$key]);
+                        $section = array_slice($wordArr, 0, 20);
+                        $desc = implode(" ", $section);
+                        $templatestr = str_replace("@@desc@@", $desc, $templatestr);
+                    }
+
+                    if( strpos($key, "rating") != false){
+                        // zet de rating img
+                        $templatestr = str_replace("@@rating@@", $row[$key], $templatestr);
+                    }
                 }
                 $content .= $templatestr ;
             }
-
+            
             $this->content .= $content."</ul></section>";
 
+        }
+        public function addDetail($table, $id){
+            
+            $link = "";
+
+            // stadDetail
+            if( $table == "images" )  {
+                $object = $this->cityLoader->getById($id);
+                $table = "cities";
+                $name = $object->getTitle();
+                $link = "Klik <a href='./?people&cob=$id'>hier</a> voor bekende mensen die in $name geboren zijn.";
+            }
+            
+            //persoonDetail
+            elseif( $table == "people" ) $object = $this->personLoader->getById($id);
+
+            // replace placeholders uit detail.html
+            $content = file_get_contents("./templates/detail.html");
+            $content = str_replace("@@table@@", $table, $content);
+            $content = str_replace("@@filename@@", $object->getFileName(), $content);
+            $content = str_replace("@@desc@@", $object->getDesc(), $content);
+            $content = str_replace("@@content@@", $object->getContent(), $content);
+            $content = str_replace("@@link@@", $link, $content);
+            $content = str_replace("@@rating@@", $object->getRating(), $content);
+
+            $this->content .= $content;
         }
 
         public function printContent(){
 
             $this->page = str_replace("@@content@@", $this->content, $this->page);
-            $this->page = $this->ms->ShowErrors($this->page);
-            $this->page = $this->ms->showInfos($this->page);
+            $this->page = $this->messageService->ShowErrors($this->page);
+            $this->page = $this->messageService->showInfos($this->page);
             $this->removeEmptyPlaceholders();
 
             echo $this->page;

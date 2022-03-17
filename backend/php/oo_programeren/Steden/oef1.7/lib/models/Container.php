@@ -2,12 +2,13 @@
 
 
     class Container{
-        private $city_loader;
+        private $cityLoader;
         private $dbm;
         private $logger;
         private $ms;
-        private $user_loader;
+        private $userLoader;
         private $contentManager;
+        private $personLoader;
 
         public function __construct(){
             $this->cityLoader = null;
@@ -23,7 +24,7 @@
                 $dbm = $this->getDbManager();
                 $this->cityLoader = new CityLoader($dbm);
             }
-            return $this->city_loader;
+            return $this->cityLoader;
         }
 
         public function getDbManager(){
@@ -55,12 +56,20 @@
             }
             return $this->userLoader;
         }
+        public function getPersonLoader(){
+            if( $this->personLoader == null ){
+                $dbm = $this->getDbManager();
+                $this->personLoader = new PersonLoader($dbm);
+            }
+            return $this->personLoader;
+        }
 
-        public function getContentManager($h1, $h2=""){
+        public function getContentManager(){
             if( $this->contentManager == null ){
                 $dbm = $this->getDbManager();
                 $ms = $this->getMessageService();
-                $this->contentManager = new ContentManager($dbm, $ms, $h1, $h2);
+                $cl = $this->getCityLoader();
+                $this->contentManager = new ContentManager($dbm, $ms, $cl);
             }
             return $this->contentManager;
         }

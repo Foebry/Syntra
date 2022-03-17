@@ -9,6 +9,7 @@ require_once "$root/lib/services/DbManager.php";
 require_once "$root/lib/services/LoaderInterface.php";
 require_once "$root/lib/services/CityLoader.php";
 require_once "$root/lib/services/UserLoader.php";
+require_once "$root/lib/services/PersonLoader.php";
 require_once "$root/lib/services/MessageService.php";
 require_once "$root/lib/services/ContentManager.php";
 
