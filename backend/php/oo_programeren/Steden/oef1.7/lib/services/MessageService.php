@@ -60,7 +60,11 @@
         }
 
         public function ShowErrors($template){
-            $template = str_replace("@@error@@", implode("<br>",$this->errors), $template);
+            $errorMessages = [];
+            foreach($this->errors as $error){
+                $errorMessages[] = "<p class='error'>$error</p>";
+            }
+            $template = str_replace("@@error@@", implode("<br>", $errorMessages), $template);
 
             foreach($this->input_errors as $key => $value){
                 $template = str_replace("@@err_$key@@", $value, $template);
@@ -69,6 +73,16 @@
         }
 
         public function ShowInfos($template){
-            return str_replace("@@info@@", implode("<br>", $this->infos), $template);
+            $infoMessages = [];
+
+            foreach($this->infos as $info){
+
+                $infoTemplate = file_get_contents("./templates/messageTemplate.html");
+                $infoTemplate = str_replace("@@class@@", "info", $infoTemplate);
+                $infoTemplate = str_replace("@@message@@", $info, $infoTemplate);
+                $infoMessages[] = $infoTemplate;
+                
+            }
+            return str_replace("@@info@@", implode("", $infoMessages), $template);
         }
     }
