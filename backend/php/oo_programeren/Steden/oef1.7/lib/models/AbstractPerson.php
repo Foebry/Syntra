@@ -30,8 +30,8 @@
         private function setFileName($fileName) :void{
             $this->fileName = $fileName;
         }
-        private function setContent($desc) :void{
-            $this->content = $desc;
+        private function setContent($content) :void{
+            $this->content = $content;
         }
         private function setRating($rating) :void{
             $this->rating = $rating;
@@ -57,7 +57,7 @@
         }
         public function getDesc() :string{
             $contentArr = explode(" ", $this->content);
-            $slice = array_slice($contentArr, 0, max(20, count($contentArr)));
+            $slice = array_slice($contentArr, 0, min(20, count($contentArr)));
             return join(" ", $slice);
         }
         public function getContent(){

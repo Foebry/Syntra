@@ -1,0 +1,121 @@
+<!-- opbouwen formulier -->
+<form action="./lib/save.php" method="POST" class="login">
+    <!--meta info -->
+    <input type="hidden" id="csrf" name="csrf" value="@@csrf@@" />
+    <input type="hidden" id="table" name="table" value="user" />
+    <input type="hidden" id="aftersql" name="aftersql" value="../?profile" />
+    <input type="hidden" id="pkey" name="pkey" value="usr_id" />
+    <input type="hidden" id="usr_id" name="usr_id" value="@@usr_id@@" />
+    <!--<input type="hidden" id="email" name="email" value="usr_email" /> -->
+    <input type="hidden" id="action" name="action" value="profile" />
+    <input
+        type="hidden"
+        id="usr_avatar"
+        name="usr_avatar"
+        value="@@usr_avatar@@"
+    />
+    <!-- <input
+        type="hidden"
+        id="usr_password_min"
+        name="usr_password_min"
+        value="8"
+    />
+    <input
+        type="hidden"
+        id="password_verification"
+        name="password_verification"
+        value="usr_password_verification"
+    />
+    <input
+        type="hidden"
+        id="passwords"
+        name="passwords"
+        value="usr_password usr_password_verification"
+    /> -->
+    <input
+        type="hidden"
+        id="info-msg"
+        name="info-msg"
+        value="Gegevens goed ontvangen!"
+    />
+
+    <!-- voornaam veld -->
+    <div class="inputs">
+        <div class="form-row">
+            <label for="usr_voornaam" class="col-sm-2 col-form-label"
+                >voornaam</label
+            >
+            <input
+                type="text"
+                name="usr_voornaam"
+                id="usr_voornaam"
+                autocomplete="off"
+                value="@@usr_voornaam@@"
+                placeholder="voornaam"
+            />
+            <p class="error">@@err_usr_voornaam@@</p>
+        </div>
+        <!-- naam veld -->
+        <div class="form-row">
+            <label for="usr_naam" class="col-sm-2 col-form-label">naam</label>
+            <input
+                type="text"
+                name="usr_naam"
+                id="usr_naam"
+                value="@@usr_naam@@"
+                autocomplete="off"
+                placeholder="achternaam"
+            />
+            <p class="error">@@err_usr_naam@@</p>
+        </div>
+        <!--<button class="change-password">wijzig wachtwoord</button>
+        <div class="form-row hidden">
+            <label for="password">wachtwoord</label>
+            <input
+                type="password"
+                id="password"
+                autocomplete="off"
+                value="@@usr_password@@"
+            />
+            <p class="error">@@err_usr_password@@</p>
+        </div>
+        <div class="form-row hidden">
+            <label for="usr_password_verification">wachtwoord</label>
+            <input
+                type="password"
+                id="usr_password_verification"
+                value="@@usr_password_verification@@"
+            />
+            <p class="error">@@err_usr_password_verification@@</p>
+        </div>-->
+        <!-- submit button -->
+        <div class="form-row">
+            <button name="register">save</button>
+        </div>
+    </div>
+    <div>
+        <ul class="avatars">
+            <li class="avatar" value="default.jpg">
+                <img src="./images/avatars/default.jpg" />
+            </li>
+            <li class="avatar" value="avatar01.jpg">
+                <img src="./images/avatars/avatar01.jpg" />
+            </li>
+            <li class="avatar" value="avatar02.jpg">
+                <img src="./images/avatars/avatar02.jpg" />
+            </li>
+            <li class="avatar" value="avatar03.jpg">
+                <img src="./images/avatars/avatar03.jpg" />
+            </li>
+            <li class="avatar" value="avatar04.jpg">
+                <img src="./images/avatars/avatar04.jpg" />
+            </li>
+            <li class="avatar" value="avatar05.jpg">
+                <img src="./images/avatars/avatar05.jpg" />
+            </li>
+            <li class="avatar" value="avatar06.jpg">
+                <img src="./images/avatars/avatar06.jpg" />
+            </li>
+        </ul>
+    </div>
+</form>

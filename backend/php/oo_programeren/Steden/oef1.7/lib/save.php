@@ -7,7 +7,7 @@
     $container = $_SESSION["container"];
     $dbm = $container->getDbManager();
     $ms = $container->getMessageService();
-    $user_loader = $container->getUserLoader();
+    $userLoader = $container->getUserLoader();
 
     $table = $_POST["table"];
     $headers = $dbm->getHeaders($table);
@@ -21,11 +21,10 @@
     }
 
     # valideer de waarde van iedere key overeenkomend met de headers van de tabel
-    foreach ($headers as $key => $values) {
-        if (key_exists($key."_verification", $_POST) and $_POST[$key."_verification"] == "") $_POST[$key."_verification"] = "null";
-
-        //if (key_exists($key, $_POST) and $key != $_POST["pkey"]){
-        validate($key, $values, $dbm, $ms);
+    foreach ($_POST as $key => $value) {
+        if( !in_array($key, ["csrf", "table", "aftersql", "pkey", "email", "action", "info-msg", "register", "DB_HEADERS", "submit"]) and in_array($key, $headers)){
+            validate($key, $value, $dbm, $ms);
+        }
     }
 
     # indien een password_verification aanwezig in het form: valideer het password.
@@ -35,24 +34,26 @@
 
     # indien er errors in het form aanwezig zijn, keer terug naar het form.
     if (count($_SESSION["input_errors"]) > 0 OR count($_SESSION["errors"]) > 0){
-        exit("errors");
         exit(header('location:'.$_SERVER["HTTP_REFERER"]));
     }
 
     # statement is gelijk aan de submit-value van het form.
-    $id = $_POST["id"];
-    $object = $dbm->GetData("select * from $table where id = $id");
+    $pkey = $_POST["pkey"];
+    $id = $_POST[$pkey];
+    $object = $dbm->GetData("select * from $table where $pkey = $id");
     
     $statement = count($object) > 0 ? "update" : "insert";
 
     # maak het volledige sql-statement
-    $sql = $dbm->buildStatement($statement);
-
+    $sql = $dbm->buildStatement($statement, $pkey);
     # voer het statement uit
     if (!$dbm->execute($sql)) exit(var_dump($sql));
 
     # zet de info-message gelijk aan de de info-message uit het formulier.
     $_SESSION["infos"][] = $_POST["info-msg"];
+
+    $email = isset($_POST["usr_email"]) ? $_POST["usr_email"] : $_SESSION["user"]->getEmail();
+    $_SESSION["user"] = $userLoader->getByEmail($email);
 
     # navigeer naar de pagina gespecifieerd in het form
     header('location:'.$_POST["aftersql"]);

@@ -95,7 +95,7 @@
             return $headers;
         }
 
-        function buildStatement($statement){
+        function buildStatement($statement, $pkey){
             /**
             * functie die de sql statment zal genereren.
             * @param $statement: type van statement ("insert", "update", ...)
@@ -105,16 +105,16 @@
             */
 
             $table = $_POST["table"];
-            $id = $_POST["id"];
+            $id = $_POST[$pkey];
             $headers = $_POST["DB_HEADERS"];
             $values = [];
 
             $statement = $statement == "insert" ? "insert into $table set " : "update $table set ";
-            $where = $statement == "update $table set " ? " where id = $id" : "";
+            $where = $statement == "update $table set " ? " where $pkey = $id" : "";
 
             # overloop alle velden uit de db tabel, en valideer de overeenkomende gegevens uit $_POST
-            foreach($headers as $key => $properties){
-                if ($key == $_POST["pkey"]) continue;
+            foreach($_POST as $key => $value){
+                if (!in_array($key, array_keys($headers))) continue;
                 $value = $_POST[$key];
 
                 # vul $values aan met veld en waarde
@@ -125,6 +125,11 @@
             $this->logger->Log($sql);
 
             return $sql . $where;
+        }
+        public function getNextId($table){
+            $sql = "SELECT AUTO_INCREMENT next_id FROM information_schema.tables WHERE TABLE_SCHEMA = 'steden' and table_name = '$table'";
+
+            return $this->GetData($sql)[0]["next_id"];
         }
 
         private function getConnection(){

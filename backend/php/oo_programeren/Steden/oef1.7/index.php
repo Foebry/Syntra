@@ -20,14 +20,6 @@
         $contentManager->addSection($db="person", $title="auteurs", $limit=null, $whereAuthor);
         $contentManager->addSection($db="person", $title="zangers & zangeressen", $limit=null, $whereSinger);
     }
-    elseif ( count($_GET) == 0){
-        $whereAuthor = "where type = 'auteur'";
-        $whereSinger = "where type in ('zanger', 'zangeres')";
-        $contentManager->setTitles("Home");
-        $contentManager->addSection($db="stad", $title="populaire steden", $limit=3);
-        $contentManager->addSection($db="person", $title="Bekende auteurs", $limit=3, $whereAuthor);
-        $contentManager->addSection($db="person", $title="Bekende zangers & zangeressen", $limit=3, $whereSinger);
-    }
 
     // laad steden pagina
     elseif( isset( $_GET["steden"] ) ){
@@ -46,6 +38,10 @@
                 $contentManager->addDetail("stad", $id);
             }
         }
+        elseif( isset( $_GET["add"] ) ){
+            $contentManager->setTitles("Stad", "toevoegen");
+            $contentManager->addForm("edit.html", "stad", $old_post, []);
+        }
         else{
             $contentManager->setTitles("steden");
             $contentManager->addSection("stad");
@@ -54,7 +50,7 @@
 
     // laad mensen pagina
     elseif( isset( $_GET["people"]) ){
-
+        // mensen geboren in bepaalde stad
         if( isset( $_GET["cob"] ) ){
             $cityId = $_GET["cob"];
             $stadNaam = $contentManager->cityLoader->getById($cityId)->getName();
@@ -62,22 +58,25 @@
             $contentManager->setTitles("Bekende mensen", "geboren in $stadNaam");
             $contentManager->addSection($db="person", $title=null, $limit=null, $where);
         }
+
         elseif( isset( $_GET["id"] ) ){
             $personId = $_GET["id"];
             $name = $contentManager->personLoader->getById($personId)->getFullName();
-
+            // persoon formulier
             if ( isset( $_GET["edit"] ) ){
-                // print("<pre>");
-                // var_dump($_SESSION);
-                // print("</pre>");
                 $contentManager->setTitles($name, "edit");
                 $data = $container->getDbManager()->GetData("select * from person where id = $personId")[0];
                 $contentManager->addForm("edit.html", "person", $old_post, $data);
             }
+            // persoon detail
             else{
                 $contentManager->setTitles($name, "detail");
                 $contentManager->addDetail("person", $personId);
             }
+        }
+        elseif( isset( $_GET["add"] ) ){
+            $contentManager->setTitles("Persoon", "toevoegen");
+            $contentManager->addForm("edit.html", "person", $old_post, []);
         }
         else{
             $contentManager->setTitles("Bekende mensen");
@@ -87,19 +86,30 @@
 
     // laad profile pagina
     elseif ( isset( $_GET["profile"] ) ){
+        $id = $_SESSION["user"]->getId();
+        $data = $container->getDbManager()->getData("select usr_id, usr_voornaam, usr_naam, usr_email, usr_avatar from user where usr_id =$id")[0];
         $contentManager->setTitles("profielpagina");
+        $contentManager->addForm("profile.html", "user", $old_post, $data);
     }
 
     // laad login pagina
     elseif( isset( $_GET["login"] ) ){
         $contentManager->setTitles("Login", "om toegang te krijgen tot de volledige pagina");
-        $contentManager->addForm("login.html", "user", $old_post);
+        $contentManager->addForm("login.html", "user", $old_post, []);
     }
 
     // laad register pagina
     elseif( isset( $_GET["register"] ) ){
         $contentManager->setTitles("Registreer");
-        $contentManager->addForm("register.html", "user", $old_post);
+        $contentManager->addForm("register.html", "user", $old_post, []);
+    } 
+    else{
+        $whereAuthor = "where type = 'auteur'";
+        $whereSinger = "where type in ('zanger', 'zangeres')";
+        $contentManager->setTitles("Home");
+        $contentManager->addSection($db="stad", $title="populaire steden", $limit=3);
+        $contentManager->addSection($db="person", $title="Bekende auteurs", $limit=3, $whereAuthor);
+        $contentManager->addSection($db="person", $title="Bekende zangers & zangeressen", $limit=3, $whereSinger);
     }
 
     $contentManager->printContent();

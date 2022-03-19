@@ -5,9 +5,10 @@
         public function __construct($dbm){
             $this->dbm = $dbm;
             $this->personTypes = [
-                "actor" => "Actor",
+                "acteur" => "Actor",
                 "auteur" => "Author",
-                "zanger" => "Singer"
+                "zanger" => "Singer",
+                "zangeres" => "Singer"
             ];
         }
 

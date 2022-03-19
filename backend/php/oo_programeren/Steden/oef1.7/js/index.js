@@ -14,13 +14,16 @@ const cobValue = document.querySelector("#cob");
 const cityItems = document.querySelectorAll(".stedenList li");
 const stedenListSelect = document.querySelector('.stedenListSelect');
 const stedenList =document.querySelector(".stedenList");
+const avatars = document.querySelectorAll(".avatar");
+const changePass = document.querySelector
 
 
 closeButtons.forEach(button => button.onclick = (e) =>{
     e.target.parentElement.classList.add("hidden");
 })
 
-cobInput.onclick = (e)=>{
+if (cobInput != null) {
+    cobInput.onclick = (e)=>{
     stedenListSelect.classList.remove("hidden");
     [...cityItems]
         .filter(item => item.innerText
@@ -31,13 +34,12 @@ cobInput.onclick = (e)=>{
     
     const items = stedenListSelect.querySelectorAll("li");
     items.forEach(item => item.onclick = (e) => {
-        console.log("clicked");
         stedenListSelect.classList.add("hidden");
         cobValue.setAttribute("value", e.target.id);
         cobInput.setAttribute("value", e.target.innerText);
     });
 }
-cobInput.oninput = (e) => {
+    cobInput.oninput = (e) => {
     stedenListSelect.classList.remove("hidden");
     stedenListSelect.innerHTML = "";
     [...cityItems]
@@ -50,50 +52,59 @@ cobInput.oninput = (e) => {
     let items = stedenListSelect.querySelectorAll("li");
 
     items.forEach(item => item.onclick = (e) => {
-        console.log("clicked");
         stedenListSelect.classList.add("hidden");
         cobValue.setAttribute("value", e.target.id);
         cobInput.value = e.target.innerText;
         cobInput.innerText = e.target.innerText;
-        console.log(cobInput);
     });
 }
 cobInput.onblur = (e) => {
     setTimeout(() => {
         stedenListSelect.classList.add("hidden");
-        console.log("blurred");
     }, 300)
 }
-
-// console.log(cobInput);
-// console.log(cobValue);
-// console.log(cityItems);
+}
 
 
 profile.onclick = (e) => logout.classList.toggle("hidden");
-infoMessages.forEach( message => {
-    message.onclick = (e) =>{
-        message.classList.add("hidden");
-    }
-})
 
-nameInput.oninput = (e) => {
+
+if (nameInput != null ){
+    nameInput.oninput = (e) => {
     nameField.innerHTML = nameInput.value;
     fileNameInput.value = nameInput.value.replace(/ /g, "-");
-}
-nameInput.onchange = (e) => {
-    if( e.target.value == "" ){
-        nameField.innerHTML = nameValue;
-        nameInput.value = nameValue;
     }
-    fileNameInput.value = `${nameInput.value.replace(/ /g, "-")}.jpg`;
+    nameInput.onchange = (e) => {
+        if( e.target.value == "" ){
+            nameField.innerHTML = nameValue;
+            nameInput.value = nameValue;
+        }
+        fileNameInput.value = `${nameInput.value.replace(/ /g, "-")}.jpg`;
 
-    if (cityImage != null) cityImage.setAttribute("src", `../images/stad/${fileNameInput.value}`);
-    if (personImage != null) personImage.setAttribute("src", `../images/person/${fileNameInput.value}`);
-    
+        if (cityImage != null) cityImage.setAttribute("src", `../images/stad/${fileNameInput.value}`);
+        if (personImage != null) personImage.setAttribute("src", `../images/person/${fileNameInput.value}`);
+        
+    }
 }
-ratingSelect.onchange = (e) => {
-    console.log("ratingSelect");
-    selectValue = e.target.value;
-    ratingImg.setAttribute("src", `../images/ratings/${selectValue}-ster.jpg`);
+if (ratingSelect != null){
+    ratingSelect.onchange = (e) => {
+        console.log("ratingSelect");
+        selectValue = e.target.value;
+        ratingImg.setAttribute("src", `../images/ratings/${selectValue}-ster.jpg`);
+    }
+}
+
+if(avatars != null){
+    const profileAvatar = document.querySelector("#usr_avatar");
+    avatars.forEach(avatar => {
+        if (avatar.attributes.value.value == profileAvatar.value){
+            avatar.classList.add("avatar--active");
+        }
+        avatar.onclick = (e) => {
+            avatars.forEach(avatar => avatar.classList.remove("avatar--active"));
+            e.target.classList.add("avatar--active");
+            console.log(profileAvatar);
+            profileAvatar.setAttribute("value", e.target.attributes.value.value);
+        }
+    })
 }

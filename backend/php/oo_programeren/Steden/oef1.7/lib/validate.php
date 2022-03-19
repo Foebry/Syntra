@@ -7,7 +7,7 @@ $dbm = $container->getDbManager();
 $ms = $container->getMessageService();
 
 
-function validate($field, $values, $dbm, $ms){
+function validate($field, $value, $dbm, $ms){
     /**
     * functie die de het meegegeven veld zal valideren.
     * @param $field: kolomhoofd
@@ -16,8 +16,9 @@ function validate($field, $values, $dbm, $ms){
     * @type $values: array(string => string|int)
     */
 
-    $not_null = $_POST["DB_HEADERS"][$field]["is_null"] == "NO";
-    $unique = $_POST["DB_HEADERS"][$field]["key"] == "UNI";
+    $headers = $_POST["DB_HEADERS"];
+    $not_null = $headers[$field]["is_null"] == "NO";
+    $unique = $headers[$field]["key"] == "UNI";
     $fields = [
         "usr_password" => "Het wachtwoord",
         "usr_voornaam" => "Voornaam",
@@ -43,10 +44,10 @@ function validate($field, $values, $dbm, $ms){
             return;
         }
     }
-    if($values["datatype"] == "int"){
+    if($headers[$field]["datatype"] == "int"){
         validateInteger($_POST[$field], $field, $fields, $ms);
     }
-    elseif($values["datatype"] == "varchar"){
+    elseif($headers[$field]["datatype"] == "varchar"){
         validateString($_POST[$field], $field, $fields, $ms);
     }
 }

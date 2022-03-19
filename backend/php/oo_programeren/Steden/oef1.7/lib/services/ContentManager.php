@@ -151,32 +151,43 @@
          * 
          * @@return void
          */
-        public function addForm($formTemplate, $table, $old_post, $data) :void{
+        public function addForm($formTemplate, $table, $old_post, $data=null) :void{
             $form = file_get_contents("./templates/$formTemplate");
 
-            $id = $data["id"];
+            $id = ($data and isset($data["id"])) ? $data["id"] : $this->dbm->getNextId($table);
+
+            $headers = $this->dbm->getHeaders($table);
+            
             $geboortestadInput = "";
             $stad = "";
             if($table == "person"){
                 $geboortestadInput = '<div class="form-row"><label >geboorte stad</label><div class="col-sm-3"><input class="cob" type="text" value="@@stad@@" /></div></div>';
-                $stadId = isset($old_post["cob"]) ? $old_post["cob"] : (isset($data["cob"]) ? $data["cob"] : "");
-                $stad = $this->dbm->GetData("select name from stad where id = $stadId")[0]["name"]; 
+                $stadId = isset($old_post["cob"]) ? $old_post["cob"] : (isset($data["cob"]) ? $data["cob"] : 99);
+                $stadData = $this->dbm->GetData("select name from stad where id = $stadId");
+                $stad = isset($stadData[0]) ? $stadData[0]["name"] : ""; 
                 $form = str_replace("@@selectType@@", $this->typeSelect($old_post, $data), $form);
                 $form = str_replace("@@ref@@", "../?people&id=$id", $form);
                 $form = str_replace("@@stedenList@@", $this->stedenList(), $form);
+                $form = str_replace("@@stad@@", $stad, $form);
+                $form = str_replace("@@selectRating@@", $this->ratingSelect($table, $old_post, $data), $form);
+                $form = str_replace("@@id@@", $id, $form);
             }
-            $headers = $this->dbm->getHeaders($table);
+            elseif( in_array($table, ["stad", "person"])){
+                $form = str_replace("@@geboortestadInput@@", $geboortestadInput, $form);
+                $form = str_replace("@@ref@@", "../?steden&id=$id", $form);
+                $form = str_replace("@@selectRating@@", $this->ratingSelect($table, $old_post, $data), $form);
+                $form = str_replace("@@id@@", $id, $form);
+            }
+            
 
             $form = str_replace("@@csrf@@", $this->csrf, $form);
             $form = str_replace("@@table@@", $table, $form);
-            $form = str_replace("@@geboortestadInput@@", $geboortestadInput, $form);
-            $form = str_replace("@@stad@@", $stad, $form);
-            $form = str_replace("@@ref@@", "../?steden&id=$id", $form);
-            $form = str_replace("@@selectRating@@", $this->ratingSelect($table, $old_post, $data), $form);
             
             foreach($headers as $key => $values){
+                // indien key in old_post neem old_post anders data
                 $value = array_key_exists($key, $old_post) ? $old_post[$key] : (array_key_exists($key, $data) ? $data[$key] : "");
-                $form = str_replace("@@$key@@", $value, $form);
+
+                $form = str_replace("@@$key@@", trim($value), $form);
             }
             
             $this->content .= $form;
@@ -254,9 +265,11 @@
          * @@return void
          */
         public function addSection(string $table, $title=null, $limit=null, $where=null) :void{
+            $refs = ["stad" => "steden", "person" => "people"];
+            $page = $refs[$table];
 
-            $content = "<section><ul>";
-            if ($title) $content = "<section><div class='title'><h1>$title</h1></div><ul>";
+            $content = "<section><button class='add'><a href='./?$page&add'>voeg toe</a></button><ul>";
+            if ($title) $content = "<section><button class='add'><a href='./?$page&add'>voeg toe</a></button><div class='title'><h1>$title</h1></div><ul>";
 
             $template = "article.html";
 
@@ -301,7 +314,7 @@
             $desc = join(" ", $section);
             $templatestr = str_replace("@@desc@@", $desc, $templatestr);
 
-            if( count( $wordArr ) > 0) $link = "<a href='./?@@ref@@&id=@@id@@'>...meer info</a>";
+            if( $data["content"] > "") $link = "<a href='./?@@ref@@&id=@@id@@'>...meer info</a>";
             else $link = "<a href='./?@@ref@@&id=@@id@@&edit'>voeg info toe</a>";
 
             $templatestr = str_replace("@@link@@", $link, $templatestr);
@@ -347,7 +360,7 @@
                 $city = $this->cityLoader->getById($cob);
                 $cityName = $city->getName(false);
                 $link = "Klink <a href='./?steden&id=$cob'>hier</a> voor details over de geboortestad $cityName.";
-                if( isset( $_SESSION["user"] ) ) $edit = "<div class='buttons'><button><a href='./?people&id=$id&edit'>edit</a></button><form action='./lib/delete.php' method='POST'> <input type='hidden' name='aftersql' value='../?@@table@@' /><input type='hidden' name='table' value='@@table@@ /><input type='hidden' name='id' value='@@id@@'/><button class='delete'>delete</button></form>";
+                if( isset( $_SESSION["user"] ) ) $edit = "<div class='buttons'><button><a href='./?people&id=$id&edit'>edit</a></button><form action='./lib/delete.php' method='POST'> <input type='hidden' name='aftersql' value='../?@@table@@' /><input type='hidden' name='table' value='@@table@@' /><input type='hidden' name='id' value='@@id@@'/><button class='delete'>delete</button></form>";
             }
 
             // vervang placeholders uit detail.html
