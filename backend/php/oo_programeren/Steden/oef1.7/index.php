@@ -15,10 +15,12 @@
         $contentManager->setTitles("home", "u zocht op $search");
     }
     elseif ( count($_GET) == 0){
+        $whereAuthor = "where type = 'auteur'";
+        $whereSinger = "where type in ('zanger', 'zangeres')";
         $contentManager->setTitles("Home");
-        $contentManager->addPopularSection("stad", "populaire steden");
-        $contentManager->addPopularSection("person", "Bekende auteurs", ["auteur"]);
-        $contentManager->addPopularSection("person", "Bekende zangers & zangeressen", ["zanger", "zangeres"]);
+        $contentManager->addSection($db="stad", $title="populaire steden", $limit=3);
+        $contentManager->addSection($db="person", $title="Bekende auteurs", $limit=3, $whereAuthor);
+        $contentManager->addSection($db="person", $title="Bekende zangers & zangeressen", $limit=3, $whereSinger);
     }
 
     // laad steden pagina
@@ -26,7 +28,7 @@
 
         if ( isset( $_GET["id"] ) ){
 
-            $cityName = $contentManager->cityLoader->getById($_GET["id"])->getTitle();
+            $cityName = $contentManager->cityLoader->getById($_GET["id"])->getName();
             $contentManager->setTitles($cityName, "detail");
             $contentManager->addDetail("stad", $_GET["id"]);
         }
@@ -42,12 +44,16 @@
         
         if( isset( $_GET["cob"] ) ){
             $cityId = $_GET["cob"];
-            $stadNaam = $contentManager->cityLoader->getById($cityId)->getTitle();
+            $stadNaam = $contentManager->cityLoader->getById($cityId)->getName();
+            $where = "where cob = $cityId";
             $contentManager->setTitles("Bekende mensen", "geboren in $stadNaam");
+            $contentManager->addSection($db="person", $title=null, $limit=null, $where);
         }
         elseif( isset( $_GET["id"] ) ){
-            $contentManager->setTitles("PERSOON", "detail");
-            $contentManager->addDetail("person", $_GET["id"]);
+            $personId = $_GET["id"];
+            $name = $contentManager->personLoader->getById($personId)->getFullName();
+            $contentManager->setTitles($name, "detail");
+            $contentManager->addDetail("person", $personId);
         }
         else{
             $contentManager->setTitles("Bekende mensen");

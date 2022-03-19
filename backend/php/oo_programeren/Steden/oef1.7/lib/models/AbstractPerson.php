@@ -60,7 +60,7 @@
             $slice = array_slice($contentArr, 0, max(20, count($contentArr)));
             return join(" ", $slice);
         }
-        public function getContent() :string{
+        public function getContent(){
             return $this->content;
         }
         public function getRating() :int{

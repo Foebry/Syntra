@@ -19,9 +19,10 @@
         }
         /**
          * functie om csrf-token aan te maken.
+         * 
          * @return string
          */
-        private function generateCsrf(){
+        private function generateCsrf() :string{
 
             # genereer csrf token
             $csrf_key = bin2hex( random_bytes(32) );
@@ -32,7 +33,12 @@
             return $csrf;
         }
 
-        private function initPage(){
+        /**
+         * Genereert een blanco pagina met standaard jumbo en correcte navbar.
+         * 
+         * @@return string
+         */
+        private function initPage() :string{
             $jumbo = $this->setJumbo();
             $navbar = $this->setNavbar();
 
@@ -43,10 +49,23 @@
             return $page;
         }
 
-        private function setJumbo(){
+        /**
+         * Genereert een standaard jumbo.
+         * 
+         * @@return string
+         */
+        private function setJumbo() :string{
             return file_get_contents("./templates/jumbo.html");
         }
-        private function setNavbar(){
+
+        /**
+         * Genereert en navbar.
+         * Navbar verschilt licht tussen ingelogd vs niet-ingelogd.
+         * Admin krijgt ook een extra link naar de log.
+         * 
+         * @@return string
+         */
+        private function setNavbar() :string{
             $navbar = file_get_contents("./templates/navbar.html");
 
             if( isset( $_SESSION["user"] ) ){
@@ -64,6 +83,14 @@
             return $navbar;
         }
 
+        /**
+         * Scant pagina op placeholders.
+         * Placeholder staat tussen @@ @@;
+         * 
+         * @@param int $offset
+         * 
+         * @@return void
+         */
         private function getTagsFromPage($offset=0){
             $placeholders = [];
             # zoek naar de eerste positie waar een @ voorkomt.
@@ -86,6 +113,11 @@
             return $placeholders;
         }
 
+        /**
+         * Vervangt alle placeholders uit getTagFromPage met een lege string
+         * 
+         * @@return void
+         */
         private function removeEmptyPlaceholders(){
             # verzamel alle nog bestaande placeholders
             $tags = $this->getTagsFromPage();
@@ -97,12 +129,29 @@
             return $this->page;
         }
 
+        /**
+         * Vervangt de placeholders @@title@@ en @@subtitle@@ uit de jumbo door de parameters $h1 en $h2
+         * 
+         * @@param string $h1
+         * @@param string $h2
+         * 
+         * @@return void
+         */
         public function setTitles($h1, $h2=""){
             $this->page = str_replace("@@title@@", $h1, $this->page);
             $this->page = str_replace("@@subtitle@@", $h2, $this->page);
         }
 
-        public function addForm($formTemplate, $table, $old_post){
+        /**
+         * Genereert een formulier op basis van het doorgegeven formTemplate
+         * 
+         * @@param string $formTemplate
+         * @@param string $table
+         * @@param array $old_post
+         * 
+         * @@return void
+         */
+        public function addForm($formTemplate, $table, $old_post) :void{
             $headers = $this->dbm->getHeaders($table);
 
             $form = file_get_contents("./templates/$formTemplate");
@@ -116,106 +165,112 @@
             
             $this->content .= $form;
         }
-        public function addSection($table){
 
-            $template = "article.html";
-
-            $rows = $this->dbm->getData("SELECT * from $table");
-            $headers = $this->dbm->getHeaders($table);
-            $refTables = [
-                "stad" => "steden",
-                "person" => "people"
-            ];
+        /**
+         * Genereert een section tag met daarin een ul. 
+         * Binnen de ul een lijst van de gevraagde records.
+         * 
+         * @@param string $table
+         * @@param int|string $limit
+         * 
+         * @@return void
+         */
+        public function addSection(string $table, $title=null, $limit=null, $where=null) :void{
 
             $content = "<section><ul>";
+            if ($title) $content = "<section><div class='title'><h1>$title</h1></div><ul>";
 
-            foreach($rows as $row){
+            $template = "article.html";
 
-                $templatestr = file_get_contents("./templates/$template");
+            $limit = $limit ? "limit $limit" : "";
+            $where ?? "";
 
-                $templatestr = str_replace("@@table@@", $table, $templatestr);
-                $templatestr = str_replace("@@ref@@", $refTables[$table], $templatestr);
+            $rows = $this->dbm->getData("SELECT * from $table $where $limit");
+            $headers = $this->dbm->getHeaders($table);
 
-                foreach($headers as $key => $values){
-                    
-                    $templatestr = str_replace("@@$key@@", $row[$key], $templatestr);
-
-                    if( $key =="content" ){
-                        // vervang placeholder desc met de eerste 20 woorden van de content uit de db.
-                        $wordArr = explode(" ", $row[$key]);
-                        $section = array_slice($wordArr, 0, 20);
-                        $desc = implode(" ", $section);
-                        $templatestr = str_replace("@@desc@@", $desc, $templatestr);
-                    }
-                    if( strpos($key, "rating") != false){
-                        // zet de rating img
-                        $templatestr = str_replace("@@rating@@", $row[$key], $templatestr);
-                    }
-                }
-                $content .= $templatestr ;
+            foreach( $rows as $row ){
+                $content .= $this->addArticle($table, $row, $headers);
             }
-            $this->content .= $content."</ul></section>";
 
+            if( $content == "<section><ul>" ) $content = "<li><h1>Er zijn nog geen personen bekend. Voeg <a href='./?people&add' >hier</a> een persoon toe";
+            $this->content .= $content . "</ul></section>";
         }
-        public function addPopularSection($table, $title, $types=[]){
-            foreach($types as $key => $value) $types[$key] = "'$value'";
+        
+        /**
+         * Genereert een li met het article template.
+         * Op basis van de doorgevoerde $data.
+         * 
+         * @@param string $table
+         * @@param array $data
+         * @@param array $headers
+         * 
+         * @@return string
+         * 
+         */
+        private function addArticle(string $table, array $data, array $headers) :string{
+            $template = "article.html";
 
             $refTables = [
                 "stad" => "steden",
                 "person" => "people"
             ];
 
-            $where = count($types) > 0 ? "where type in (".implode(',', $types).")" : "";
-            $template = "article.html";
+            $templatestr = file_get_contents("./templates/$template");
 
-            $rows = $this->dbm->getData("SELECT * from $table $where limit 3");
-            $headers = $this->dbm->getHeaders($table);
+            $wordArr = explode(" ", $data["content"]);
+            $section = array_splice($wordArr, 0, 20);
+            $desc = join(" ", $section);
+            $templatestr = str_replace("@@desc@@", $desc, $templatestr);
 
-            $content = "<section class='popular popular--$table'>";
-            $content .= "<div class='title'><h1>$title</h1></div>";
-            $content .= "<ul>";
-            
-            foreach($rows as $row){
+            if( count( $wordArr ) > 0) $link = "<a href='./?@@ref@@&id=@@id@@'>...meer info</a>";
+            else $link = "<a href='./?@@ref@@&id=@@id@@&edit'>voeg info toe</a>";
 
-                $templatestr = file_get_contents("./templates/$template");
+            $templatestr = str_replace("@@link@@", $link, $templatestr);
+            $templatestr = str_replace("@@table@@", $table, $templatestr);
+            $templatestr = str_replace("@@ref@@", $refTables[$table], $templatestr);
 
-                $templatestr = str_replace("@@table@@", $table, $templatestr);
-                $templatestr = str_replace("@@ref@@", $refTables[$table], $templatestr);
 
-                foreach($headers as $key => $values){
-                    
-                    $templatestr = str_replace("@@$key@@", $row[$key], $templatestr);
+            foreach($headers as $key => $values){
 
-                    if( $key == "content" ){
-                        // vervang placeholder desc met de eerste 20 woorden van de content uit de db.
-                        $wordArr = explode(" ", $row[$key]);
-                        $section = array_slice($wordArr, 0, 20);
-                        $desc = implode(" ", $section);
-                        $templatestr = str_replace("@@desc@@", $desc, $templatestr);
-                    }
+                $templatestr = str_replace("@@$key@@", $data[$key], $templatestr);
 
-                    
-                }
-                $content .= $templatestr ;
             }
-            
-            $this->content .= $content."</ul></section>";
 
+            
+
+            return $templatestr;
+            
         }
-        public function addDetail($table, $id){
+
+        /**
+         * Genereert een detail pagina met template detail
+         * op basis van de doorgestuurde $table en $id.
+         * 
+         * @@param string $table
+         * @@param int $id
+         * 
+         * @@return void
+         */
+        public function addDetail($table, $id) :void{
             $link = "";
 
             // stadDetail
             if( $table == "stad" )  {
                 $object = $this->cityLoader->getById($id);
-                $name = $object->getTitle();
+                $name = $object->getName(false);
                 $link = "Klik <a href='./?people&cob=$id'>hier</a> voor bekende mensen die in $name geboren zijn.";
             }
             
             //persoonDetail
-            elseif( $table == "person" ) $object = $this->personLoader->getById($id);
+            elseif( $table == "person" ) {
+                $object = $this->personLoader->getById($id);
+                $cob = $object->getCoB();
+                $city = $this->cityLoader->getById($cob);
+                $cityName = $city->getName(false);
+                $link = "Klink <a href='./?steden&id=$cob'>hier</a> voor details over de geboortestad $cityName.";
+            }
 
-            // replace placeholders uit detail.html
+            // vervang placeholders uit detail.html
             $content = file_get_contents("./templates/detail.html");
             $content = str_replace("@@table@@", $table, $content);
             $content = str_replace("@@filename@@", $object->getFileName(), $content);
@@ -226,7 +281,12 @@
             $this->content .= $content;
         }
 
-        public function printContent(){
+        /**
+         * print de volledige pagina content uit.
+         * 
+         * @@return void
+         */
+        public function printContent() :void{
 
             $this->page = str_replace("@@content@@", $this->content, $this->page);
             $this->page = $this->messageService->ShowErrors($this->page);

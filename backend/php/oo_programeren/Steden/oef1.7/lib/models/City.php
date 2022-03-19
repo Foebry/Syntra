@@ -10,7 +10,7 @@
         function __construct($data){
             $this->setId($data["id"]);
             $this->setFileName($data["filename"]);
-            $this->setTitle($data["name"]);
+            $this->setName($data["name"]);
             $this->setWidth($data["width"]);
             $this->setHeight($data["height"]);
             $this->setCountryId($data["lan_id"]);
@@ -29,10 +29,10 @@
         public function getFileName() :string{
             return $this->img_filename;
         }
-        public function setTitle(string $title) :void{
+        public function setName(string $title) :void{
             $this->img_title = $title;
         }
-        public function getTitle($uppercase=True) :string{
+        public function getName($uppercase=True) :string{
             return $uppercase ? strtoupper($this->img_title) : $this->img_title;
         }
         public function setWidth(int $width) :void{
