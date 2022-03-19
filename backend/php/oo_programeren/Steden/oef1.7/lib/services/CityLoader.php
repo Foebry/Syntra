@@ -10,7 +10,7 @@
             $cities = [];
             $limit = $limit ? "limit $limit" : "";
 
-            $sql = "SELECT * from images $limit";
+            $sql = "SELECT * from stad $limit";
             $data = $this->dbm->GetData($sql);
 
             foreach($data as $row){
@@ -22,7 +22,7 @@
 
 
         function getById(int $id) :City{
-            $data = $this->dbm->GetData("Select * from images where img_id = $id");
+            $data = $this->dbm->GetData("Select * from stad where id = $id");
             return new City($data[0]);
         }
     }

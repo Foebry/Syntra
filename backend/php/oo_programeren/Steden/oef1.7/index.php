@@ -16,21 +16,23 @@
     }
     elseif ( count($_GET) == 0){
         $contentManager->setTitles("Home");
-        $contentManager->addPopularSection("images", "populaire steden");
+        $contentManager->addPopularSection("stad", "populaire steden");
+        $contentManager->addPopularSection("person", "Bekende auteurs", ["auteur"]);
+        $contentManager->addPopularSection("person", "Bekende zangers & zangeressen", ["zanger", "zangeres"]);
     }
 
     // laad steden pagina
     elseif( isset( $_GET["steden"] ) ){
 
         if ( isset( $_GET["id"] ) ){
-    
+
             $cityName = $contentManager->cityLoader->getById($_GET["id"])->getTitle();
             $contentManager->setTitles($cityName, "detail");
-            $contentManager->addDetail("images", $_GET["id"]);
+            $contentManager->addDetail("stad", $_GET["id"]);
         }
         else{
             $contentManager->setTitles("steden");
-            $contentManager->addSection("images");
+            $contentManager->addSection("stad");
         }
     }
 
@@ -45,9 +47,11 @@
         }
         elseif( isset( $_GET["id"] ) ){
             $contentManager->setTitles("PERSOON", "detail");
+            $contentManager->addDetail("person", $_GET["id"]);
         }
         else{
             $contentManager->setTitles("Bekende mensen");
+            $contentManager->addSection("person");
         }
     }
 

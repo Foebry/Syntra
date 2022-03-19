@@ -69,7 +69,8 @@
                 $dbm = $this->getDbManager();
                 $ms = $this->getMessageService();
                 $cl = $this->getCityLoader();
-                $this->contentManager = new ContentManager($dbm, $ms, $cl);
+                $pl = $this->getPersonLoader();
+                $this->contentManager = new ContentManager($dbm, $ms, $cl, $pl);
             }
             return $this->contentManager;
         }

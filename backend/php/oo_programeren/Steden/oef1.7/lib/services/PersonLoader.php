@@ -4,6 +4,11 @@
 
         public function __construct($dbm){
             $this->dbm = $dbm;
+            $this->personTypes = [
+                "actor" => "Actor",
+                "auteur" => "Author",
+                "zanger" => "Singer"
+            ];
         }
 
         function getAll($limit=null){
@@ -12,14 +17,25 @@
 
             $personList = [];
             foreach($data as $personData){
-                $personList[] = new Person($personData);
+                $personType = $personData["type"];
+                // Maak nieuwe Person aan naargelang het type van de persoon.
+                // Indien type "actor" is, wordt een nieuwe Actor aangemaakt,
+                // indien type "writer" is, wordt een nieuwe Writer aangemaakt
+                // indien type "singer" is, wordt een nieuwe Singer aangemaakt
+                $personList[] = new $this->personTypes[$personType]($personData);
             }
             return $personList;
         }
 
         function getById($id){
-            $personData = $this->dbm->GetData("SELECT * from person where per_id = $id");
+            $personData = $this->dbm->GetData("SELECT * from person where id = $id")[0];
 
-            return new Person($personData);
+            $personType = $personData["type"];
+
+            // Maak nieuwe Person aan naargelang het type van de persoon.
+            // Indien type "actor" is, wordt een nieuwe Actor aangemaakt,
+            // indien type "writer" is, wordt een nieuwe Writer aangemaakt
+            // indien type "singer" is, wordt een nieuwe Singer aangemaakt
+            return new $this->personTypes[$personType]($personData);
         }
     }

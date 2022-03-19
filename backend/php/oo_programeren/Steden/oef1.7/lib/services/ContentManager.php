@@ -8,12 +8,13 @@
         private $csrf;
         private $ms;
 
-        public function __construct($dbm, $ms, $cl){
+        public function __construct($dbm, $ms, $cl, $pl){
             $this->csrf = $this->generateCsrf();
             $this->page = $this->initPage();
             $this->dbm = $dbm;
             $this->messageService = $ms;
             $this->cityLoader = $cl;
+            $this->personLoader = $pl;
             
         }
         /**
@@ -116,13 +117,15 @@
             $this->content .= $form;
         }
         public function addSection($table){
-            $templates = [
-                "images" => "article_steden.html"
-            ];
-            $template = $templates[$table];
+
+            $template = "article.html";
 
             $rows = $this->dbm->getData("SELECT * from $table");
             $headers = $this->dbm->getHeaders($table);
+            $refTables = [
+                "stad" => "steden",
+                "person" => "people"
+            ];
 
             $content = "<section><ul>";
 
@@ -130,11 +133,14 @@
 
                 $templatestr = file_get_contents("./templates/$template");
 
+                $templatestr = str_replace("@@table@@", $table, $templatestr);
+                $templatestr = str_replace("@@ref@@", $refTables[$table], $templatestr);
+
                 foreach($headers as $key => $values){
                     
                     $templatestr = str_replace("@@$key@@", $row[$key], $templatestr);
 
-                    if( strpos($key, "content") != false){
+                    if( $key =="content" ){
                         // vervang placeholder desc met de eerste 20 woorden van de content uit de db.
                         $wordArr = explode(" ", $row[$key]);
                         $section = array_slice($wordArr, 0, 20);
@@ -151,16 +157,21 @@
             $this->content .= $content."</ul></section>";
 
         }
-        public function addPopularSection($table, $title){
-            $templates = [
-                "images" => "article_steden.html"
-            ];
-            $template = $templates[$table];
+        public function addPopularSection($table, $title, $types=[]){
+            foreach($types as $key => $value) $types[$key] = "'$value'";
 
-            $rows = $this->dbm->getData("SELECT * from $table limit 3");
+            $refTables = [
+                "stad" => "steden",
+                "person" => "people"
+            ];
+
+            $where = count($types) > 0 ? "where type in (".implode(',', $types).")" : "";
+            $template = "article.html";
+
+            $rows = $this->dbm->getData("SELECT * from $table $where limit 3");
             $headers = $this->dbm->getHeaders($table);
 
-            $content = "<section class='popular $table'>";
+            $content = "<section class='popular popular--$table'>";
             $content .= "<div class='title'><h1>$title</h1></div>";
             $content .= "<ul>";
             
@@ -168,11 +179,14 @@
 
                 $templatestr = file_get_contents("./templates/$template");
 
+                $templatestr = str_replace("@@table@@", $table, $templatestr);
+                $templatestr = str_replace("@@ref@@", $refTables[$table], $templatestr);
+
                 foreach($headers as $key => $values){
                     
                     $templatestr = str_replace("@@$key@@", $row[$key], $templatestr);
 
-                    if( strpos($key, "content") != false){
+                    if( $key == "content" ){
                         // vervang placeholder desc met de eerste 20 woorden van de content uit de db.
                         $wordArr = explode(" ", $row[$key]);
                         $section = array_slice($wordArr, 0, 20);
@@ -180,10 +194,7 @@
                         $templatestr = str_replace("@@desc@@", $desc, $templatestr);
                     }
 
-                    if( strpos($key, "rating") != false){
-                        // zet de rating img
-                        $templatestr = str_replace("@@rating@@", $row[$key], $templatestr);
-                    }
+                    
                 }
                 $content .= $templatestr ;
             }
@@ -192,25 +203,22 @@
 
         }
         public function addDetail($table, $id){
-            
             $link = "";
 
             // stadDetail
-            if( $table == "images" )  {
+            if( $table == "stad" )  {
                 $object = $this->cityLoader->getById($id);
-                $table = "cities";
                 $name = $object->getTitle();
                 $link = "Klik <a href='./?people&cob=$id'>hier</a> voor bekende mensen die in $name geboren zijn.";
             }
             
             //persoonDetail
-            elseif( $table == "people" ) $object = $this->personLoader->getById($id);
+            elseif( $table == "person" ) $object = $this->personLoader->getById($id);
 
             // replace placeholders uit detail.html
             $content = file_get_contents("./templates/detail.html");
             $content = str_replace("@@table@@", $table, $content);
             $content = str_replace("@@filename@@", $object->getFileName(), $content);
-            $content = str_replace("@@desc@@", $object->getDesc(), $content);
             $content = str_replace("@@content@@", $object->getContent(), $content);
             $content = str_replace("@@link@@", $link, $content);
             $content = str_replace("@@rating@@", $object->getRating(), $content);

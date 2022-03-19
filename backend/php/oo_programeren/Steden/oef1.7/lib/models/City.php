@@ -8,14 +8,14 @@
         private $img_id;
 
         function __construct($data){
-            $this->setId($data["img_id"]);
-            $this->setFileName($data["img_filename"]);
-            $this->setTitle($data["img_title"]);
-            $this->setWidth($data["img_width"]);
-            $this->setHeight($data["img_height"]);
-            $this->setCountryId($data["img_lan_id"]);
-            $this->setContent($data["img_content"]);
-            $this->setRating($data["img_rating"]);
+            $this->setId($data["id"]);
+            $this->setFileName($data["filename"]);
+            $this->setTitle($data["name"]);
+            $this->setWidth($data["width"]);
+            $this->setHeight($data["height"]);
+            $this->setCountryId($data["lan_id"]);
+            $this->setContent($data["content"]);
+            $this->setRating($data["rating"]);
         }
         public function setId(int $id) :void{
             $this->img_id = $id;

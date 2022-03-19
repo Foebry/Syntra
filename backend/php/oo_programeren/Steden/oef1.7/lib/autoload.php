@@ -3,6 +3,9 @@ $root = $_SERVER["DOCUMENT_ROOT"];
 
 require_once "$root/lib/models/City.php";
 require_once "$root/lib/models/User.php";
+require_once "$root/lib/models/AbstractPerson.php";
+require_once "$root/lib/models/Author.php";
+require_once "$root/lib/models/Singer.php";
 require_once "$root/lib/models/Container.php";
 require_once "$root/lib/services/Logger.php";
 require_once "$root/lib/services/DbManager.php";

@@ -2,6 +2,6 @@
 
     interface LoaderInterface{
 
-        function getById();
+        function getById(int $id);
         function getAll($limit=null);
     }
