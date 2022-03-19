@@ -23,6 +23,7 @@ function validate($field, $values, $dbm, $ms){
         "usr_voornaam" => "Voornaam",
         "usr_naam" => "Deze Naam",
         "usr_email" => "Dit e-mailadres",
+        "cob" => "geboortestad"
 
     ];
     $_POST[$field] = $_POST[$field] == "" ? "null" : $_POST[$field];
@@ -43,10 +44,10 @@ function validate($field, $values, $dbm, $ms){
         }
     }
     if($values["datatype"] == "int"){
-        validateInteger($_POST[$field], $field, $ms);
+        validateInteger($_POST[$field], $field, $fields, $ms);
     }
     elseif($values["datatype"] == "varchar"){
-        validateString($_POST[$field], $field, $ms);
+        validateString($_POST[$field], $field, $fields, $ms);
     }
 }
 
@@ -59,7 +60,7 @@ function validateCSRF(){
     return hash_equals($_POST["csrf"], $_SESSION["latest_csrf"]);
 }
 
-function validateInteger($value, $field, $ms){
+function validateInteger($value, $field, $fields, $ms){
     /**
     * functie die een integer veld zal valideren.
     * @param $value: waarde ingegeven door de gebruiker.
@@ -74,7 +75,7 @@ function validateInteger($value, $field, $ms){
     }
 }
 
-function validateString($value, $field, $ms){
+function validateString($value, $field, $fields, $ms){
     /**
     * functie die een string veld zal valideren.
     * @param $value: waarde ingegeven door de gebruiker

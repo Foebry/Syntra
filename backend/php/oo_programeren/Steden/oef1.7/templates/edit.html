@@ -1,0 +1,90 @@
+<!-- opbouwen formulier -->
+<form
+    action="./lib/save.php"
+    method="POST"
+    class="edit"
+    enctype="multipart/form-data"
+>
+    <!--meta info -->
+    <input type="hidden" id="csrf" name="csrf" value="@@csrf@@" />
+    <input type="hidden" id="table" name="table" value="@@table@@" />
+    <input type="hidden" id="aftersql" name="aftersql" value="@@ref@@" />
+    <input type="hidden" id="id" name="id" value="@@id@@" />
+    <input type="hidden" id="id" name="pkey" value="id" />
+    <input
+        type="hidden"
+        id="info-msg"
+        name="info-msg"
+        value="Successvol geüpdated"
+    />
+    <input type="hidden" id="cob" name="cob" value="@@cob@@" />
+    <ul class="hidden stedenList">
+        @@stedenList@@
+    </ul>
+
+    <div class="data">
+        <section class="inputs">
+            <!-- name veld -->
+            <div class="form-row">
+                <label for="name">naam</label>
+                <div class="col-sm-3">
+                    <input
+                        type="text"
+                        name="name"
+                        id="name"
+                        value="@@name@@"
+                        autocomplete="off"
+                    />
+                </div>
+            </div>
+            <!-- populariteit veld -->
+            <div class="form-row">
+                <label for="rating">populariteit</label>
+                <div class="col-sm-3">@@selectRating@@</div>
+            </div>
+            <!-- filename veld -->
+            <div class="form-row">
+                <label for="filename">filename</label>
+                <div class="stedenContainer">
+                    <input
+                        type="text"
+                        name="filename"
+                        id="filename"
+                        value="@@filename@@"
+                        readonly
+                    />
+                    <ul class="stedenListSelect hidden">
+                        @@stedenListSelect@@
+                    </ul>
+                </div>
+            </div>
+
+            @@geboortestadInput@@ @@selectType@@
+        </section>
+        <section class="content">
+            <div class="heading">
+                <div class="rating">
+                    <img src="../images/ratings/@@rating@@-ster.jpg" />
+                </div>
+                <div class="imgholder">
+                    <img class="image-@@table@@"
+                    src="../images/@@table@@/@@filename@@"" />
+                </div>
+            </div>
+            <p>@@link@@</p>
+        </section>
+    </div>
+
+    <!-- content vled -->
+    <div class="form-row">
+        <label for="content"></label>
+        <div class="col-sm-3">
+            <textarea name="content" id="content">
+                @@content@@
+            </textarea>
+        </div>
+    </div>
+
+    <!-- submit button -->
+    <button name="submit">submit</button>
+</form>

@@ -105,10 +105,12 @@
             */
 
             $table = $_POST["table"];
+            $id = $_POST["id"];
             $headers = $_POST["DB_HEADERS"];
             $values = [];
 
             $statement = $statement == "insert" ? "insert into $table set " : "update $table set ";
+            $where = $statement == "update $table set " ? " where id = $id" : "";
 
             # overloop alle velden uit de db tabel, en valideer de overeenkomende gegevens uit $_POST
             foreach($headers as $key => $properties){
@@ -122,7 +124,7 @@
             $sql = $statement . $values;
             $this->logger->Log($sql);
 
-            return $sql;
+            return $sql . $where;
         }
 
         private function getConnection(){

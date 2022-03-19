@@ -33,10 +33,18 @@
     elseif( isset( $_GET["steden"] ) ){
 
         if ( isset( $_GET["id"] ) ){
-
-            $cityName = $contentManager->cityLoader->getById($_GET["id"])->getName();
-            $contentManager->setTitles($cityName, "detail");
-            $contentManager->addDetail("stad", $_GET["id"]);
+            $id = $_GET["id"];
+            $cityName = $contentManager->cityLoader->getById($id)->getName();
+            
+            if ( isset( $_GET["edit"] ) ){
+                $contentManager->setTitles($cityName, "edit");
+                $data = $container->getDbManager()->GetData("select * from stad where id = $id")[0];
+                $contentManager->addForm("edit.html", "stad", $old_post, $data);
+            }
+            else{
+                $contentManager->setTitles($cityName, "detail");
+                $contentManager->addDetail("stad", $id);
+            }
         }
         else{
             $contentManager->setTitles("steden");
@@ -46,8 +54,7 @@
 
     // laad mensen pagina
     elseif( isset( $_GET["people"]) ){
-        
-        
+
         if( isset( $_GET["cob"] ) ){
             $cityId = $_GET["cob"];
             $stadNaam = $contentManager->cityLoader->getById($cityId)->getName();
@@ -58,8 +65,19 @@
         elseif( isset( $_GET["id"] ) ){
             $personId = $_GET["id"];
             $name = $contentManager->personLoader->getById($personId)->getFullName();
-            $contentManager->setTitles($name, "detail");
-            $contentManager->addDetail("person", $personId);
+
+            if ( isset( $_GET["edit"] ) ){
+                // print("<pre>");
+                // var_dump($_SESSION);
+                // print("</pre>");
+                $contentManager->setTitles($name, "edit");
+                $data = $container->getDbManager()->GetData("select * from person where id = $personId")[0];
+                $contentManager->addForm("edit.html", "person", $old_post, $data);
+            }
+            else{
+                $contentManager->setTitles($name, "detail");
+                $contentManager->addDetail("person", $personId);
+            }
         }
         else{
             $contentManager->setTitles("Bekende mensen");

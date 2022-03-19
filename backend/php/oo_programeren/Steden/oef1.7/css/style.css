@@ -236,6 +236,10 @@ header nav.logged-in {
   justify-content: space-between;
 }
 
+.hidden {
+  display: none;
+}
+
 main {
   max-width: 1200px;
   margin: 0 auto;
@@ -244,35 +248,86 @@ main .container {
   width: 98%;
   margin: 0 auto 50px;
 }
-main .container .detail .heading {
+main .container .detail,
+main .container .edit {
+  position: relative;
+}
+main .container .detail .inputs,
+main .container .edit .inputs {
+  margin: 0;
+  padding-bottom: 60px;
+}
+main .container .detail .inputs .form-row .stedenContainer,
+main .container .edit .inputs .form-row .stedenContainer {
+  position: relative;
+}
+main .container .detail .inputs .form-row .stedenListSelect,
+main .container .edit .inputs .form-row .stedenListSelect {
+  position: absolute;
+  left: 0;
+  top: 80px;
+  background-color: #e5e5e5;
+  display: block;
+  width: 100%;
+  z-index: 5;
+}
+main .container .detail .inputs .form-row .stedenListSelect li,
+main .container .edit .inputs .form-row .stedenListSelect li {
+  flex: 1 1 100%;
+  max-width: 100%;
+  display: block;
+  margin: 0 auto;
+  padding: 5px 0;
+  text-align: center;
+  white-space: nowrap;
+  width: 100%;
+  font-size: 18px;
+  line-height: 20px;
+}
+main .container .detail .inputs .form-row .stedenListSelect li:hover,
+main .container .edit .inputs .form-row .stedenListSelect li:hover {
+  background-color: #d5d5d5;
+  cursor: pointer;
+}
+main .container .detail .inputs .form-row .stedenListSelect.hidden,
+main .container .edit .inputs .form-row .stedenListSelect.hidden {
+  display: none;
+}
+main .container .detail .heading,
+main .container .edit .heading {
   display: flex;
   flex-direction: column;
   gap: 20px;
   align-items: center;
 }
-main .container .detail .heading .imgholder {
+main .container .detail .heading .imgholder,
+main .container .edit .heading .imgholder {
   width: 50%;
   margin: 0 auto 50px;
 }
-main .container .detail .heading .imgholder img {
+main .container .detail .heading .imgholder img,
+main .container .edit .heading .imgholder img {
   width: 100%;
   height: auto;
   display: block;
   aspect-ratio: 16/9;
   object-fit: cover;
 }
-main .container .detail .heading .rating {
+main .container .detail .heading .rating,
+main .container .edit .heading .rating {
   margin: 0 auto;
   display: flex;
   width: 50%;
   gap: 20px;
 }
-main .container .detail .heading .rating img {
+main .container .detail .heading .rating img,
+main .container .edit .heading .rating img {
   display: block;
   object-fit: contain;
   width: 100%;
 }
-main .container .detail .content {
+main .container .detail .content,
+main .container .edit .content {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -280,9 +335,70 @@ main .container .detail .content {
   line-height: 18px;
   font-size: 16px;
 }
-main .container .detail p {
+main .container .detail p,
+main .container .edit p {
   font-size: 20px;
   line-height: 21.5px;
+}
+main .container .detail .buttons,
+main .container .edit .buttons {
+  position: absolute;
+  top: 20px;
+  right: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+main .container .detail .buttons button,
+main .container .edit .buttons button {
+  background-color: lightgray;
+  border: none;
+  border-radius: 5px;
+  color: black;
+  font-size: 18px;
+  text-transform: uppercase;
+  line-height: 50px;
+  padding: 0;
+}
+main .container .detail .buttons button.delete,
+main .container .edit .buttons button.delete {
+  padding: 0 20px;
+}
+main .container .detail .buttons button:hover,
+main .container .edit .buttons button:hover {
+  cursor: pointer;
+}
+main .container .detail .buttons a,
+main .container .edit .buttons a {
+  display: block;
+  font-size: 18px;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: black;
+  line-height: 50px;
+  padding: 0 20px;
+}
+main .container.edit .content .imgholder {
+  width: 50%;
+  margin: 0 auto 50px;
+}
+main .container.edit .content .imgholder img {
+  width: 100%;
+  height: auto;
+  display: block;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+}
+main .container.edit .content .rating {
+  margin: 0 auto;
+  display: flex;
+  width: 50%;
+  gap: 20px;
+}
+main .container.edit .content .rating img {
+  display: block;
+  object-fit: contain;
+  width: 100%;
 }
 main p.info {
   background-color: lightgreen;
@@ -320,7 +436,8 @@ form .form-row {
   width: 100%;
   align-items: center;
 }
-form .form-row input {
+form .form-row input,
+form .form-row select {
   width: 70%;
   font-size: 18px;
   line-height: 21.5px;
@@ -387,6 +504,53 @@ form.login h2, form.register h2 {
   font-size: 36px;
   margin: 50px 0 50px 30%;
   white-space: nowrap;
+}
+form.edit {
+  position: relative;
+}
+form.edit .data {
+  display: flex;
+  gap: 50px;
+}
+form.edit .data .inputs {
+  flex: 1 1 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+form.edit .data .inputs input {
+  text-transform: lowercase;
+  text-transform: capitalize;
+  width: 100%;
+}
+form.edit .data .inputs input#filename {
+  text-transform: lowercase;
+}
+form.edit .data .inputs input[readonly] {
+  background-color: #a5a5a5;
+}
+form.edit .data .inputs select {
+  width: 100%;
+}
+form.edit textarea {
+  width: 1200px;
+  height: 300px;
+  font-family: inherit;
+  font-size: 16px;
+  line-height: 18px;
+  border: none;
+  border-radius: 5px;
+}
+form.edit button {
+  position: absolute;
+  top: 20px;
+  right: -50px;
+  background-color: lightgray;
+  padding: 10px;
+  color: black;
+}
+form.edit button:hover {
+  cursor: pointer;
 }
 form p.error {
   color: red;
