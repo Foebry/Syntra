@@ -12,7 +12,13 @@
     // laad homepage
     if( isset( $_GET["search"] ) ){
         $search = $_GET["search"];
+        $whereCity = "where name like '%$search%'";
+        $whereAuthor = "where type = 'auteur' and name like '%$search%'";
+        $whereSinger = "where type in ('zanger', 'zangeres') and name like '%$search%'";
         $contentManager->setTitles("home", "u zocht op $search");
+        $contentManager->addSection($db="stad", $title="steden", $limit=null, $whereCity);
+        $contentManager->addSection($db="person", $title="auteurs", $limit=null, $whereAuthor);
+        $contentManager->addSection($db="person", $title="zangers & zangeressen", $limit=null, $whereSinger);
     }
     elseif ( count($_GET) == 0){
         $whereAuthor = "where type = 'auteur'";

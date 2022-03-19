@@ -193,6 +193,7 @@
             }
 
             if( $content == "<section><ul>" ) $content = "<li><h1>Er zijn nog geen personen bekend. Voeg <a href='./?people&add' >hier</a> een persoon toe";
+            elseif( $content == "<section><div class='title'><h1>$title</h1></div><ul>") $content = "";
             $this->content .= $content . "</ul></section>";
         }
         
@@ -218,7 +219,7 @@
             $templatestr = file_get_contents("./templates/$template");
 
             $wordArr = explode(" ", $data["content"]);
-            $section = array_splice($wordArr, 0, 20);
+            $section = array_slice($wordArr, 0, min(20, count( $wordArr )));
             $desc = join(" ", $section);
             $templatestr = str_replace("@@desc@@", $desc, $templatestr);
 
@@ -235,8 +236,6 @@
                 $templatestr = str_replace("@@$key@@", $data[$key], $templatestr);
 
             }
-
-            
 
             return $templatestr;
             
