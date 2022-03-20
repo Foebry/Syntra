@@ -22,11 +22,17 @@
         exit(header('location:../'));
     }
 
+    $newCoB = false;
+    if( $_POST["cob"] == -1){
+        $newCoB = true;
+        $cob = $dbm->getNextId("stad");
+        $_POST["cob"] = $cob;
+    }
+
     # valideer de waarde van iedere key overeenkomend met de headers van de tabel
     foreach ($_POST as $key => $value) {
 
         if( in_array($key, array_keys($headers))){
-            print($key."<br>");
             validate($key, $value, $dbm, $ms);
         }
     }
@@ -65,6 +71,10 @@
         $ms->addMessage("infos", "Er is iets fout gegaan");
 
         exit(header("location:".$_SERVER["HTTP_REFERER"]));
+    }
+    if($newCoB){
+        $stadNaam = $_POST["cobName"];
+        $dbm->execute("insert into stad set name = '$stadNaam'");
     }
 
     $_SESSION["user"] = $userLoader->getByEmail($email);

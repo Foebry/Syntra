@@ -174,7 +174,7 @@
             }
 
             if($table == "person"){
-                $geboortestadInput = '<div class="form-row"><label >geboorte stad</label><div class="col-sm-3"><input class="cob" type="text" value="@@stad@@" /></div></div>';
+                $geboortestadInput = '<div class="form-row"><label >geboorte stad</label><div class="col-sm-3"><input class="cob" name="cobName" type="text" value="@@stad@@" /></div></div>';
                 $cob = isset($old_post["cob"]) ? $old_post["cob"] : ($data && isset($data["cob"]) ? $data["cob"] : 0);
                 $cobName = $dbm->GetData("select name from stad where id = $cob")[0]["name"];
 

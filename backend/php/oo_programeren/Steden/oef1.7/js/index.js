@@ -9,16 +9,6 @@ const avatars = document.querySelectorAll(".avatar");
 const editForm = document.querySelector("form.edit");
 
 
-
-
-const cobInput = document.querySelector("input.cob");
-const cobValue = document.querySelector("#cob");
-const cityItems = document.querySelectorAll(".stedenList li");
-const stedenListSelect = document.querySelector('.stedenListSelect');
-const stedenList =document.querySelector(".stedenList");
-const changePass = document.querySelector
-
-
 closeButtons.forEach(button => button.onclick = (e) => e.target.parentElement.classList.add("hidden"));
 
 if (nameInput) nameInput.oninput = (e) => jumboTitle.innerHTML = nameInput.value;
@@ -49,15 +39,65 @@ const resetImage = async (table, image, input) => {
 if(editForm){
     const fileNameInput = document.querySelector("input#filename");
     const image = editForm.querySelector(".imgholder img");
+
     table = image.classList[0];
     resetImage(table, image, fileNameInput);
     
     fileNameInput.onchange = () => formatValue(fileNameInput, table, image);
     editForm.onsubmit = () => formatValue(fileNameInput, table, image);
+
+    if(table == "person"){
+        const cobInput = document.querySelector("input.cob");
+        const cobValue = document.querySelector("#cob");
+        const cityItems = document.querySelectorAll(".stedenList li");
+        const citySelect = document.querySelector(".stedenListSelect");
+        const cityOptions = Array(cityItems.length).fill(0).map((_, i) => cityItems[i]);
+
+        
+        cityOptions.forEach(cityItem => cityItem.onclick = (e) => {
+            cobInput.setAttribute("value", e.target.innerHTML);
+            cobInput.value = e.target.innerHTML;
+            }
+        )
+        cobInput.oninput = (e) => showOptions(e, cityOptions);
+        cobInput.onchange = () => setTimeout(setCoB, 100);
+
+        const setCoB = () => {
+            const cityArr = cityOptions.filter(item => item.innerHTML == cobInput.value);
+            if(cityArr.length > 0) cobValue.value = cityArr[0].id;
+            else cobValue.value = -1;
+            citySelect.classList.add("hidden");
+        }
+    }
+    
 }
 
 const formatValue = async (input, table, image) => {
     input.value = input.value.trim().replace(/ /g, "-");
     resetImage(table, image, input);
 
+}
+// const setCoB = () => {
+//     console.log("change");
+//     const inputCoB = document.querySelector("input.cob");
+//     const items = document.querySelectorAll(".stedenList li");
+
+//     const options = Array(items.length).fill(0).map((_, i) => items[i]);
+
+//     console.log(inputCoB);
+//     console.log(options);
+    
+//     cityArr = options.filter(item => item.innerHTML == input.value);
+//     if(cityArr.length > 0) cobValue.value = city[0].id;
+//     else cobValue.value = -1;
+// }
+const showOptions = (e, options) => {
+    const stedenListSelect = document.querySelector('.stedenListSelect');
+
+    stedenListSelect.classList.remove("hidden");
+    stedenListSelect.innerHTML = "";
+
+    options
+    .filter(li => li.innerHTML.toLowerCase().includes(e.target.value.toLowerCase()))
+    .forEach(el => stedenListSelect.insertAdjacentElement("beforeend", el));    
 }
