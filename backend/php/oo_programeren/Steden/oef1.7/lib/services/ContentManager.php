@@ -2,19 +2,13 @@
 
     class ContentManager{
 
-        private $dbm;
         private $content;
         private $page;
         private $csrf;
-        private $ms;
 
-        public function __construct($dbm, $ms, $cl, $pl){
+        public function __construct(){
             $this->csrf = $this->generateCsrf();
-            $this->page = $this->initPage();
-            $this->dbm = $dbm;
-            $this->messageService = $ms;
-            $this->cityLoader = $cl;
-            $this->personLoader = $pl;
+            $this->initPage();
             
         }
         /**
@@ -22,7 +16,7 @@
          * 
          * @return string
          */
-        private function generateCsrf() :string{
+        public function generateCsrf() :string{
 
             # genereer csrf token
             $csrf_key = bin2hex( random_bytes(32) );
@@ -38,15 +32,15 @@
          * 
          * @@return string
          */
-        private function initPage() :string{
+        public function initPage() :void{
+            $this->content = "";
             $jumbo = $this->setJumbo();
             $navbar = $this->setNavbar();
 
             $page = file_get_contents("./templates/pageTemplate.html");
             $page = str_replace("@@jumbo@@", $jumbo, $page);
             $page = str_replace("@@navbar@@", $navbar, $page);
-
-            return $page;
+            $this->page = $page;
         }
 
         /**
@@ -77,10 +71,19 @@
                 $navbar = str_replace("@@usr_avatar@@", $avatar, $navbar);
                 $navbar = str_replace("@@usr_name@@", $name, $navbar);
 
+                if( $_SESSION["user"]->getType() == "admin"){
+                    $log = '<li class="nav-item"><a class="nav-link" href="./?log">log</a></li>';
+                    $navbar = str_replace("@@log@@", $log, $navbar);
+                }
+
             }
             $navbar = str_replace("@@csrf@@", $this->csrf, $navbar);
 
             return $navbar;
+        }
+
+        public function getCSRF() :string{
+            return $this->csrf;
         }
 
         /**
@@ -151,23 +154,24 @@
          * 
          * @@return void
          */
-        public function addForm($formTemplate, $table, $old_post, $data=null) :void{
+        public function addForm($dbm, $formTemplate, $table, $old_post, $data=null) :void{
             $form = file_get_contents("./templates/$formTemplate");
 
-            $id = ($data and isset($data["id"])) ? $data["id"] : $this->dbm->getNextId($table);
+            $id = ($data and isset($data["id"])) ? $data["id"] : $dbm->getNextId($table);
+            $usr_id = isset( $_SESSION["user"] ) ? $_SESSION["user"]->getId() : $dbm->getNextId("user");
 
-            $headers = $this->dbm->getHeaders($table);
+            $headers = $dbm->getHeaders($table);
             
             $geboortestadInput = "";
             $stad = "";
             if($table == "person"){
                 $geboortestadInput = '<div class="form-row"><label >geboorte stad</label><div class="col-sm-3"><input class="cob" type="text" value="@@stad@@" /></div></div>';
                 $stadId = isset($old_post["cob"]) ? $old_post["cob"] : (isset($data["cob"]) ? $data["cob"] : 99);
-                $stadData = $this->dbm->GetData("select name from stad where id = $stadId");
+                $stadData = $dbm->GetData("select name from stad where id = $stadId");
                 $stad = isset($stadData[0]) ? $stadData[0]["name"] : ""; 
                 $form = str_replace("@@selectType@@", $this->typeSelect($old_post, $data), $form);
                 $form = str_replace("@@ref@@", "../?people&id=$id", $form);
-                $form = str_replace("@@stedenList@@", $this->stedenList(), $form);
+                $form = str_replace("@@stedenList@@", $this->stedenList($dbm), $form);
                 $form = str_replace("@@stad@@", $stad, $form);
                 $form = str_replace("@@selectRating@@", $this->ratingSelect($table, $old_post, $data), $form);
                 $form = str_replace("@@id@@", $id, $form);
@@ -182,10 +186,13 @@
 
             $form = str_replace("@@csrf@@", $this->csrf, $form);
             $form = str_replace("@@table@@", $table, $form);
+            $form = str_replace("@@usr_id@@", $usr_id, $form);
             
             foreach($headers as $key => $values){
                 // indien key in old_post neem old_post anders data
                 $value = array_key_exists($key, $old_post) ? $old_post[$key] : (array_key_exists($key, $data) ? $data[$key] : "");
+                if($key == "rating" && $value == "") $value = "0";
+                if($key == "filename" && $value == "") $value = "default.jpg";
 
                 $form = str_replace("@@$key@@", trim($value), $form);
             }
@@ -215,7 +222,7 @@
             $select = '<select name="rating" id="rating">';
 
             foreach($niveaus[$table] as $key => $value){
-                $rating = isset($old_post["rating"]) ? $old_post["rating"] : (isset($data["rating"]) ? $data["rating"] : "");
+                $rating = isset($old_post["rating"]) ? $old_post["rating"] : (isset($data["rating"]) ? $data["rating"] : "0");
                 $selected = $rating == $key ? "selected" : "";
                 
                 $select .= "<option value=$key $selected>$value</option>";
@@ -242,8 +249,9 @@
 
             return $select .= "</select></div></div>";
         }
-        private function stedenList(){
-            $data = $this->dbm->GetData("select id, name from stad");
+
+        private function stedenList($dbm){
+            $data = $dbm->GetData("select id, name from stad");
             $list = "";
 
             foreach($data as $row){
@@ -264,20 +272,22 @@
          * 
          * @@return void
          */
-        public function addSection(string $table, $title=null, $limit=null, $where=null) :void{
+        public function addSection($dbm, string $table, $title=null, $limit=null, $where=null) :void{
             $refs = ["stad" => "steden", "person" => "people"];
             $page = $refs[$table];
 
-            $content = "<section><button class='add'><a href='./?$page&add'>voeg toe</a></button><ul>";
-            if ($title) $content = "<section><button class='add'><a href='./?$page&add'>voeg toe</a></button><div class='title'><h1>$title</h1></div><ul>";
+            $addButton = "<button class='add'><a href='./?$page&add'>voeg toe</a></button>";
+            $content = "<section>@@button@@<ul>";
+            if ($title) $content = "<section>@@button@@<div class='title'><h1>$title</h1></div><ul>";
+            if( isset($_SESSION["user"]) ) $content = str_replace("@@button@@", $addButton, $content);
 
             $template = "article.html";
 
             $limit = $limit ? "limit $limit" : "";
-            $where ?? "";
+            $where = $where ? $where . " and name != 'default'" : "where name != 'default'";
 
-            $rows = $this->dbm->getData("SELECT * from $table $where order by rating desc, name $limit");
-            $headers = $this->dbm->getHeaders($table);
+            $rows = $dbm->getData("SELECT * from $table $where order by rating desc, name $limit");
+            $headers = $dbm->getHeaders($table);
 
             foreach( $rows as $row ){
                 $content .= $this->addArticle($table, $row, $headers);
@@ -285,6 +295,8 @@
 
             if( $content == "<section><ul>" ) $content = "<li><h1>Er zijn nog geen personen bekend. Voeg <a href='./?people&add' >hier</a> een persoon toe";
             elseif( $content == "<section><div class='title'><h1>$title</h1></div><ul>") $content = "";
+            elseif( $content == "<section>$addButton<div class='title'><h1>$title</h1></div><ul>") $content = "";
+            elseif( $content == "<section>@@button@@<div class='title'><h1>$title</h1></div><ul>") $content = "";
             $this->content .= $content . "</ul></section>";
         }
         
@@ -341,13 +353,13 @@
          * 
          * @@return void
          */
-        public function addDetail($table, $id) :void{
+        public function addDetail($cityLoader, $personLoader, $table, $id) :void{
             $link = "";
             $edit = "";
 
             // stadDetail
             if( $table == "stad" )  {
-                $object = $this->cityLoader->getById($id);
+                $object = $cityLoader->getById($id);
                 $name = $object->getName(false);
                 $link = "Klik <a href='./?people&cob=$id'>hier</a> voor bekende mensen die in $name geboren zijn.";
                 if( isset( $_SESSION["user"] ) ) $edit = "<div class='buttons'><button><a href='./?steden&id=$id&edit'>edit</a></button><form action='./lib/delete.php' method='POST'><input type='hidden' name='aftersql' value='../?@@table@@' /><input type='hidden' name='table' value='@@table@@' /><input type='hidden' name='id' value='@@id@@'/><button class='delete'>delete</button></form>";
@@ -355,9 +367,9 @@
             
             //persoonDetail
             elseif( $table == "person" ) {
-                $object = $this->personLoader->getById($id);
+                $object = $personLoader->getById($id);
                 $cob = $object->getCoB();
-                $city = $this->cityLoader->getById($cob);
+                $city = $cityLoader->getById($cob);
                 $cityName = $city->getName(false);
                 $link = "Klink <a href='./?steden&id=$cob'>hier</a> voor details over de geboortestad $cityName.";
                 if( isset( $_SESSION["user"] ) ) $edit = "<div class='buttons'><button><a href='./?people&id=$id&edit'>edit</a></button><form action='./lib/delete.php' method='POST'> <input type='hidden' name='aftersql' value='../?@@table@@' /><input type='hidden' name='table' value='@@table@@' /><input type='hidden' name='id' value='@@id@@'/><button class='delete'>delete</button></form>";
@@ -382,13 +394,17 @@
          * 
          * @@return void
          */
-        public function printContent() :void{
+        public function printContent($ms) :void{
 
+            $ms->saveSession();
             $this->page = str_replace("@@content@@", $this->content, $this->page);
-            $this->page = $this->messageService->ShowErrors($this->page);
-            $this->page = $this->messageService->showInfos($this->page);
+            $this->page = $ms->ShowErrors($this->page);
+            $this->page = $ms->showInfos($this->page);
             $this->removeEmptyPlaceholders();
 
             echo $this->page;
+        }
+        public function showLog($logger){
+            $this->content .= $logger->showLog();
         }
     }

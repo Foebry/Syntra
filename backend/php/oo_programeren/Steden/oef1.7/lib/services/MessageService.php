@@ -60,6 +60,7 @@
         }
 
         public function ShowErrors($template){
+
             $errorMessages = [];
             foreach($this->errors as $error){
                 $errorMessages[] = "<p class='error'>$error</p>";

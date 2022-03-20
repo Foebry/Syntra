@@ -36,6 +36,7 @@
                         autocomplete="off"
                     />
                 </div>
+                <p class="error">@@err_name@@</p>
             </div>
             <!-- populariteit veld -->
             <div class="form-row">
@@ -53,6 +54,7 @@
                         value="@@filename@@"
                         readonly
                     />
+                    <p class="error">@@err_filename@@</p>
                     <ul class="stedenListSelect hidden">
                         @@stedenListSelect@@
                     </ul>
@@ -81,6 +83,7 @@
         <div class="col-sm-3">
             <textarea name="content" id="content">@@content@@</textarea>
         </div>
+        <p class="error">@@err_content@@</p>
     </div>
 
     <!-- submit button -->

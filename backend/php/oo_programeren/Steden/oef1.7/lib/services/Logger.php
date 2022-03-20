@@ -18,6 +18,6 @@
 
         function showLog(){
             $content = file_get_contents($this->logfile);
-            return nl2br($content);
+            return "<p>".nl2br($content)."</p>";
         }
     }

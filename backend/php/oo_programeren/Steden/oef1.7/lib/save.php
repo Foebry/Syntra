@@ -8,21 +8,25 @@
     $dbm = $container->getDbManager();
     $ms = $container->getMessageService();
     $userLoader = $container->getUserLoader();
+    $contentManager = $container->getContentManager();
 
     $table = $_POST["table"];
     $headers = $dbm->getHeaders($table);
 
     $_SESSION["old_post"] = $_POST;
 
-    # valideer csrf-token, navigeer naar status.php en zet correcte status
-    if (!validateCSRF()) {
-        $_SESSION["STATUS"][401] = "U bent niet geautoriseerd om deze bewerking uit te voeren";
-        exit(header('location:./status.php'));
+    # valideer csrf-token
+    if (!validateCSRF($contentManager)) {
+        $ms->addMessage("messages", "Fout met CSRF token");
+
+        exit(header('location:../'));
     }
 
     # valideer de waarde van iedere key overeenkomend met de headers van de tabel
     foreach ($_POST as $key => $value) {
-        if( !in_array($key, ["csrf", "table", "aftersql", "pkey", "email", "action", "info-msg", "register", "DB_HEADERS", "submit"]) and in_array($key, $headers)){
+
+        if( in_array($key, array_keys($headers))){
+            print($key."<br>");
             validate($key, $value, $dbm, $ms);
         }
     }
@@ -34,6 +38,7 @@
 
     # indien er errors in het form aanwezig zijn, keer terug naar het form.
     if (count($_SESSION["input_errors"]) > 0 OR count($_SESSION["errors"]) > 0){
+        
         exit(header('location:'.$_SERVER["HTTP_REFERER"]));
     }
 
@@ -47,7 +52,12 @@
     # maak het volledige sql-statement
     $sql = $dbm->buildStatement($statement, $pkey);
     # voer het statement uit
-    if (!$dbm->execute($sql)) exit(var_dump($sql));
+    if (!$dbm->execute($sql)) {
+
+        $ms->addMessage("infos", "Er is iets fout gegaan");
+
+        exit(header("location:".$_SERVER["HTTP_REFERER"]));
+    }
 
     # zet de info-message gelijk aan de de info-message uit het formulier.
     $_SESSION["infos"][] = $_POST["info-msg"];

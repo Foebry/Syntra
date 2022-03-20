@@ -5,6 +5,7 @@
         private $usr_naam;
         private $usr_email;
         private $usr_avatar;
+        private $usr_type;
 
         public function __construct(array $data){
             $this->usr_id = $data["usr_id"];
@@ -12,6 +13,7 @@
             $this->usr_naam = $data["usr_naam"];
             $this->usr_email = $data["usr_email"];
             $this->usr_avatar = $data["usr_avatar"];
+            $this->usr_type = $data["usr_type"];
         }
 
         public function setId(int $id){
@@ -44,6 +46,9 @@
         public function getAvatar(){
             //exit(var_dump($this));
             return $this->usr_avatar;
+        }
+        public function getType(){
+            return $this->usr_type;
         }
 
         public function getProps() :array{

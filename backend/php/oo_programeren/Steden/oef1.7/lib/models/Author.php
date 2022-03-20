@@ -6,7 +6,6 @@
 
         public function __construct($data){
             parent::__construct($data);
-            //$this->setBookCollection();
         }
 
         private function setBookCollection(){

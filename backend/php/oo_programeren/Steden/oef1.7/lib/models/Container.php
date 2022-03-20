@@ -66,12 +66,9 @@
 
         public function getContentManager(){
             if( $this->contentManager == null ){
-                $dbm = $this->getDbManager();
-                $ms = $this->getMessageService();
-                $cl = $this->getCityLoader();
-                $pl = $this->getPersonLoader();
-                $this->contentManager = new ContentManager($dbm, $ms, $cl, $pl);
+                $this->contentManager = new ContentManager();
             }
+            
             return $this->contentManager;
         }
     }

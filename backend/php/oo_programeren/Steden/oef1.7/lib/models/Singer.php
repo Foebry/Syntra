@@ -6,12 +6,11 @@
 
         public function __construct($data){
             parent::__construct($data);
-            //$this->setAlbums();
         }
 
         private function setAlbums() :void{
             $id = $this->getId();
-            $this->albums = $AlbumLoader->getBySinger($id);
+            $this->albums = $AlbumLoader->getByArtistId($id);
         }
         public function getAlbums() :array{
             return $this->albums;

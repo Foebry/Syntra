@@ -1,5 +1,5 @@
 const profile = document.querySelector("#profile");
-const logout = profile.querySelector("form");
+const logout = document.querySelector("#profile form");
 const closeButtons = document.querySelectorAll("p.info button");
 const nameField = document.querySelector(".jumbo h1");
 const nameValue = nameField.innerHTML;
@@ -58,15 +58,15 @@ if (cobInput != null) {
         cobInput.innerText = e.target.innerText;
     });
 }
-cobInput.onblur = (e) => {
-    setTimeout(() => {
-        stedenListSelect.classList.add("hidden");
-    }, 300)
-}
+    cobInput.onblur = (e) => {
+        setTimeout(() => {
+            stedenListSelect.classList.add("hidden");
+        }, 300)
+    }
 }
 
 
-profile.onclick = (e) => logout.classList.toggle("hidden");
+if (profile != null) profile.onclick = (e) => logout.classList.toggle("hidden");
 
 
 if (nameInput != null ){
@@ -88,7 +88,6 @@ if (nameInput != null ){
 }
 if (ratingSelect != null){
     ratingSelect.onchange = (e) => {
-        console.log("ratingSelect");
         selectValue = e.target.value;
         ratingImg.setAttribute("src", `../images/ratings/${selectValue}-ster.jpg`);
     }
@@ -103,7 +102,6 @@ if(avatars != null){
         avatar.onclick = (e) => {
             avatars.forEach(avatar => avatar.classList.remove("avatar--active"));
             e.target.classList.add("avatar--active");
-            console.log(profileAvatar);
             profileAvatar.setAttribute("value", e.target.attributes.value.value);
         }
     })

@@ -54,6 +54,9 @@
             */
 
             $conn = $this->getConnection();
+
+            $this->logger->Log($query);
+            
             return $conn->query($query);
         }
 

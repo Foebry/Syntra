@@ -24,13 +24,14 @@ function validate($field, $value, $dbm, $ms){
         "usr_voornaam" => "Voornaam",
         "usr_naam" => "Deze Naam",
         "usr_email" => "Dit e-mailadres",
-        "cob" => "geboortestad"
+        "cob" => "geboortestad",
+        "name" => "De naam"
 
     ];
-    $_POST[$field] = $_POST[$field] == "" ? "null" : $_POST[$field];
+    $_POST[$field] = $_POST[$field] == "" ? "" : $_POST[$field];
     # indien de ingevoerde waarde leeg is, ga na of dit veld in de databank leeg mag zijn,
     # zoniet, zet de correcte error message en return;
-    if ($not_null and $_POST[$field] == "null"){
+    if ($not_null and $_POST[$field] == ""){
         $msg = "$fields[$field] mag niet leeg zijn";
         $ms->addMessage("input_errors", $msg, $field);
         return;
@@ -52,13 +53,17 @@ function validate($field, $value, $dbm, $ms){
     }
 }
 
-function validateCSRF(){
+function validateCSRF($contentManager){
     /**
     * functie die het csrf-token zal valideren
     *
     * @return: boolean
     */
-    return hash_equals($_POST["csrf"], $_SESSION["latest_csrf"]);
+    $validCSRF = hash_equals($_POST["csrf"], $contentManager->getCSRF());
+
+    $contentManager->generateCsrf();
+    
+    return $validCSRF;
 }
 
 function validateInteger($value, $field, $fields, $ms){

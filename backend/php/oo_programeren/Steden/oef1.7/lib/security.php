@@ -17,12 +17,12 @@ function LoginCheck($dbm, $ms): bool{
     if ( count($data) == 0) {
         $msg = "Dit email adress is niet bekend.";
         $ms->addMessage("input_errors", $msg, "usr_email");
-        exit(header("location:../login.php"));
+        exit(header("location:../?login"));
     }
     if( key_exists("usr_password", $data[0]) AND !password_verify($_POST["usr_password"], $data[0]["usr_password"])){
         $msg = "Wachtwoord onjuist!";
         $ms->addMessage("input_errors", $msg, "usr_password");
-        exit(header("location:../login.php"));
+        exit(header("location:../?login"));
     };
 
     return True;
