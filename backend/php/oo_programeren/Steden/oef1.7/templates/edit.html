@@ -10,13 +10,8 @@
     <input type="hidden" id="table" name="table" value="@@table@@" />
     <input type="hidden" id="aftersql" name="aftersql" value="@@ref@@" />
     <input type="hidden" id="id" name="id" value="@@id@@" />
-    <input type="hidden" id="id" name="pkey" value="id" />
-    <input
-        type="hidden"
-        id="info-msg"
-        name="info-msg"
-        value="Successvol geüpdated"
-    />
+    <input type="hidden" id="pkey" name="pkey" value="id" />
+
     <input type="hidden" id="cob" name="cob" value="@@cob@@" />
     <ul class="hidden stedenList">
         @@stedenList@@
@@ -52,7 +47,6 @@
                         name="filename"
                         id="filename"
                         value="@@filename@@"
-                        readonly
                     />
                     <p class="error">@@err_filename@@</p>
                     <ul class="stedenListSelect hidden">
@@ -69,8 +63,10 @@
                     <img src="../images/ratings/@@rating@@-ster.jpg" />
                 </div>
                 <div class="imgholder">
-                    <img class="image-@@table@@"
-                    src="../images/@@table@@/@@filename@@"" />
+                    <img
+                        class="@@table@@"
+                        src="../images/@@table@@/@@filename@@"
+                    />
                 </div>
             </div>
             <p>@@link@@</p>

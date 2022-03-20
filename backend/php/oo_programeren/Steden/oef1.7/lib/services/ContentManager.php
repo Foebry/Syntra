@@ -151,42 +151,44 @@
          * @@param string $formTemplate
          * @@param string $table
          * @@param array $old_post
+         * @@param array|null $data
          * 
          * @@return void
          */
         public function addForm($dbm, $formTemplate, $table, $old_post, $data=null) :void{
+            $refTable=["stad"=>"steden", "person"=>"people"];
+            // inlade van template
             $form = file_get_contents("./templates/$formTemplate");
 
-            $id = ($data and isset($data["id"])) ? $data["id"] : $dbm->getNextId($table);
-            $usr_id = isset( $_SESSION["user"] ) ? $_SESSION["user"]->getId() : $dbm->getNextId("user");
+            // wanneer table person of stad is vervang @@id@@ door id van persoon / stad / volgende auto-incrementId
+            if(in_array($table, ["person", "stad"])){
+                $id = isset($old_post["id"]) ? $old_post["id"] : ($data && isset($data["id"]) ? $data["id"] : $dbm->getNextId($table));
+                $form = str_replace("@@id@@", $id, $form);
+                $form = str_replace("@@ref@@", "../?$refTable[$table]&id=$id", $form);
+                $form = str_replace("@@selectRating@@", $this->ratingSelect($table, $old_post, $data), $form);
+            }
+            // wanneer table user is vervang @@usr_id@@ door usr_id / volgende auto-incrementId
+            elseif($table == "user"){
+                $usr_id = isset( $_SESSION["user"] ) ? $_SESSION["user"]->getId() : $dbm->getNextId("user");
+                $form = str_replace("@@usr_id@@", $usr_id, $form);
+            }
 
-            $headers = $dbm->getHeaders($table);
-            
-            $geboortestadInput = "";
-            $stad = "";
             if($table == "person"){
                 $geboortestadInput = '<div class="form-row"><label >geboorte stad</label><div class="col-sm-3"><input class="cob" type="text" value="@@stad@@" /></div></div>';
-                $stadId = isset($old_post["cob"]) ? $old_post["cob"] : (isset($data["cob"]) ? $data["cob"] : 99);
-                $stadData = $dbm->GetData("select name from stad where id = $stadId");
-                $stad = isset($stadData[0]) ? $stadData[0]["name"] : ""; 
-                $form = str_replace("@@selectType@@", $this->typeSelect($old_post, $data), $form);
-                $form = str_replace("@@ref@@", "../?people&id=$id", $form);
-                $form = str_replace("@@stedenList@@", $this->stedenList($dbm), $form);
-                $form = str_replace("@@stad@@", $stad, $form);
-                $form = str_replace("@@selectRating@@", $this->ratingSelect($table, $old_post, $data), $form);
-                $form = str_replace("@@id@@", $id, $form);
-            }
-            elseif( in_array($table, ["stad", "person"])){
+                $cob = isset($old_post["cob"]) ? $old_post["cob"] : ($data && isset($data["cob"]) ? $data["cob"] : 0);
+                $cobName = $dbm->GetData("select name from stad where id = $cob")[0]["name"];
+
                 $form = str_replace("@@geboortestadInput@@", $geboortestadInput, $form);
-                $form = str_replace("@@ref@@", "../?steden&id=$id", $form);
-                $form = str_replace("@@selectRating@@", $this->ratingSelect($table, $old_post, $data), $form);
-                $form = str_replace("@@id@@", $id, $form);
+                $form = str_replace("@@cob@@", $cob, $form);
+                $form = str_replace("@@stad@@", $cobName, $form);
+                $form = str_replace("@@selectType@@", $this->typeSelect($old_post, $data), $form);
+                $form = str_replace("@@stedenList@@", $this->stedenList($dbm), $form);
             }
-            
 
             $form = str_replace("@@csrf@@", $this->csrf, $form);
             $form = str_replace("@@table@@", $table, $form);
-            $form = str_replace("@@usr_id@@", $usr_id, $form);
+            
+            $headers = $dbm->getHeaders($table);
             
             foreach($headers as $key => $values){
                 // indien key in old_post neem old_post anders data

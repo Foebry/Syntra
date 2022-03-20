@@ -14,7 +14,7 @@
 
     $dbm->execute("delete from $table where id = $id");
 
-    $ms->addMessage("infos", "verwijderen succesvol!");
+    $ms->addMessage("infos", "Succesvol verwijderd!");
 
     header("location:".$_POST["aftersql"]);
     die();

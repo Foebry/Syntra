@@ -49,20 +49,24 @@
     
     $statement = count($object) > 0 ? "update" : "insert";
 
+    # zet de info-message
+    if( $statement == "update") $_SESSION["infos"][] = "Succesvol geüpdated!";
+    elseif( $statement == "insert" ) $_SESSION["infos"][] = "Succesvol toegevoegd!";
+
+    $email = isset($_POST["usr_email"]) ? $_POST["usr_email"] : ( isset( $_SESSION["user"] ) ? $_SESSION["user"]->getEmail() : "error" );
+
+
     # maak het volledige sql-statement
     $sql = $dbm->buildStatement($statement, $pkey);
+
     # voer het statement uit
-    if (!$dbm->execute($sql)) {
+    if ($email == "error" || !$dbm->execute($sql)) {
 
         $ms->addMessage("infos", "Er is iets fout gegaan");
 
         exit(header("location:".$_SERVER["HTTP_REFERER"]));
     }
 
-    # zet de info-message gelijk aan de de info-message uit het formulier.
-    $_SESSION["infos"][] = $_POST["info-msg"];
-
-    $email = isset($_POST["usr_email"]) ? $_POST["usr_email"] : $_SESSION["user"]->getEmail();
     $_SESSION["user"] = $userLoader->getByEmail($email);
 
     # navigeer naar de pagina gespecifieerd in het form
