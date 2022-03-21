@@ -364,7 +364,7 @@
                 $object = $cityLoader->getById($id);
                 $name = $object->getName(false);
                 $link = "Klik <a href='./?people&cob=$id'>hier</a> voor bekende mensen die in $name geboren zijn.";
-                if( isset( $_SESSION["user"] ) ) $edit = "<div class='buttons'><button><a href='./?steden&id=$id&edit'>edit</a></button><form action='./lib/delete.php' method='POST'><input type='hidden' name='aftersql' value='../?@@table@@' /><input type='hidden' name='table' value='@@table@@' /><input type='hidden' name='id' value='@@id@@'/><button class='delete'>delete</button></form>";
+                if( isset( $_SESSION["user"] ) && $id != 0 ) $edit = "<div class='buttons'><button><a href='./?steden&id=$id&edit'>edit</a></button><form action='./lib/delete.php' method='POST'><input type='hidden' name='aftersql' value='../?@@table@@' /><input type='hidden' name='table' value='@@table@@' /><input type='hidden' name='id' value='@@id@@'/><button class='delete'>delete</button></form>";
             }
             
             //persoonDetail
@@ -373,7 +373,7 @@
                 $cob = $object->getCoB();
                 $city = $cityLoader->getById($cob);
                 $cityName = $city->getName(false);
-                $link = "Klink <a href='./?steden&id=$cob'>hier</a> voor details over de geboortestad $cityName.";
+                $link = "Klink <a href='./?steden&id=$cob'>hier</a> voor details over de geboortestad <span>$cityName</span>.";
                 if( isset( $_SESSION["user"] ) ) $edit = "<div class='buttons'><button><a href='./?people&id=$id&edit'>edit</a></button><form action='./lib/delete.php' method='POST'> <input type='hidden' name='aftersql' value='../?@@table@@' /><input type='hidden' name='table' value='@@table@@' /><input type='hidden' name='id' value='@@id@@'/><button class='delete'>delete</button></form>";
             }
 

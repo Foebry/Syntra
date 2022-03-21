@@ -52,7 +52,6 @@
             * functie die queries uitvoert.
             * bv. UPDATE - INSERT - DELETE - CREATE - DROP
             */
-
             $conn = $this->getConnection();
 
             $this->logger->Log($query);

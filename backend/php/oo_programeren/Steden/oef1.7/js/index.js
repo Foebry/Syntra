@@ -55,14 +55,16 @@ if(editForm){
 
         
         cityOptions.forEach(cityItem => cityItem.onclick = (e) => {
+            console.log("clicked");
             cobInput.setAttribute("value", e.target.innerHTML);
             cobInput.value = e.target.innerHTML;
             }
         )
         cobInput.oninput = (e) => showOptions(e, cityOptions);
-        cobInput.onchange = () => setTimeout(setCoB, 100);
+        cobInput.onchange = () => setTimeout(setCoB, 300);
 
         const setCoB = () => {
+            console.log("change");
             const cityArr = cityOptions.filter(item => item.innerHTML == cobInput.value);
             if(cityArr.length > 0) cobValue.value = cityArr[0].id;
             else cobValue.value = -1;

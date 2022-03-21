@@ -15,11 +15,12 @@
     $dbm = $container->getDbManager();
     $ms = $container->getMessageService();
     $userLoader = $container->getUserLoader($dbm);
+    $contentManager = $container->getContentManager();
 
     $headers = $dbm->getHeaders($table="user");
 
     # valideer csrf-token
-    if (!validateCSRF()) {
+    if (!validateCSRF($contentManager)) {
         $ms->addMessage("messages", "Fout met CSRF token");
 
         exit(header('location:../'));
