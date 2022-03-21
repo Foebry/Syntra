@@ -25,15 +25,15 @@
             $this->cob = $cob;
         }
         private function setFullName(string $name) :void{
-            $this->fullName = $name;
+            $this->fullName = html_entity_decode($name);
         }
-        private function setFileName($fileName) :void{
-            $this->fileName = $fileName;
+        private function setFileName(string $fileName) :void{
+            $this->fileName = html_entity_decode($fileName);
         }
-        private function setContent($content) :void{
-            $this->content = $content;
+        private function setContent(string $content) :void{
+            $this->content = html_entity_decode($content);
         }
-        private function setRating($rating) :void{
+        private function setRating(int $rating) :void{
             $this->rating = $rating;
         }
 

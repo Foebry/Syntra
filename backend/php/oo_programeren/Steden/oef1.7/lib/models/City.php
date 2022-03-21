@@ -24,13 +24,13 @@
             return $this->img_id;
         }
         public function setFileName(string $filename) :void{
-            $this->img_filename = $filename;
+            $this->img_filename = html_entity_decode($filename);
         }
         public function getFileName() :string{
             return $this->img_filename;
         }
         public function setName(string $title) :void{
-            $this->img_title = $title;
+            $this->img_title = html_entity_decode($title);
         }
         public function getName($uppercase=True) :string{
             return $uppercase ? strtoupper($this->img_title) : $this->img_title;
@@ -60,7 +60,7 @@
             return $this->img_lan_id;
         }
         public function setContent($content){
-            $this->content = $content;
+            $this->content = html_entity_decode($content);
         }
         public function getContent() :string{
             return $this->content;
