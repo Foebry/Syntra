@@ -3,7 +3,7 @@
     <!--meta info -->
     <input type="hidden" id="csrf" name="csrf" value="@@csrf@@" />
     <input type="hidden" id="table" name="table" value="user" />
-    <input type="hidden" id="aftersql" name="aftersql" value="../?profile" />
+    <input type="hidden" id="aftersql" name="aftersql" value="../profile" />
     <input type="hidden" id="pkey" name="pkey" value="usr_id" />
     <input type="hidden" id="usr_id" name="usr_id" value="@@usr_id@@" />
     <input type="hidden" id="action" name="action" value="profile" />
@@ -48,26 +48,7 @@
             />
             <p class="error">@@err_usr_naam@@</p>
         </div>
-        <!--<button class="change-password">wijzig wachtwoord</button>
-        <div class="form-row hidden">
-            <label for="password">wachtwoord</label>
-            <input
-                type="password"
-                id="password"
-                autocomplete="off"
-                value="@@usr_password@@"
-            />
-            <p class="error">@@err_usr_password@@</p>
-        </div>
-        <div class="form-row hidden">
-            <label for="usr_password_verification">wachtwoord</label>
-            <input
-                type="password"
-                id="usr_password_verification"
-                value="@@usr_password_verification@@"
-            />
-            <p class="error">@@err_usr_password_verification@@</p>
-        </div>-->
+
         <!-- submit button -->
         <div class="form-row">
             <button name="register">save</button>
@@ -76,25 +57,25 @@
     <div>
         <ul class="avatars">
             <li class="avatar" value="default.jpg">
-                <img src="./images/avatars/default.jpg" />
+                <img src="@@root@@/images/avatars/default.jpg" />
             </li>
             <li class="avatar" value="avatar01.jpg">
-                <img src="./images/avatars/avatar01.jpg" />
+                <img src="@@root@@/images/avatars/avatar01.jpg" />
             </li>
             <li class="avatar" value="avatar02.jpg">
-                <img src="./images/avatars/avatar02.jpg" />
+                <img src="@@root@@/images/avatars/avatar02.jpg" />
             </li>
             <li class="avatar" value="avatar03.jpg">
-                <img src="./images/avatars/avatar03.jpg" />
+                <img src="@@root@@/images/avatars/avatar03.jpg" />
             </li>
             <li class="avatar" value="avatar04.jpg">
-                <img src="./images/avatars/avatar04.jpg" />
+                <img src="@@root@@/images/avatars/avatar04.jpg" />
             </li>
             <li class="avatar" value="avatar05.jpg">
-                <img src="./images/avatars/avatar05.jpg" />
+                <img src="@@root@@/images/avatars/avatar05.jpg" />
             </li>
             <li class="avatar" value="avatar06.jpg">
-                <img src="./images/avatars/avatar06.jpg" />
+                <img src="@@root@@/images/avatars/avatar06.jpg" />
             </li>
         </ul>
     </div>

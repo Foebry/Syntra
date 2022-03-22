@@ -2,31 +2,40 @@
     <div class="site-links">
         <ul class="nav-links">
             <li class="nav-item active">
-                <a class="nav-link" href="./">home</a>
+                <a class="nav-link" href="@@root@@/">home</a>
             </li>
             <li class="nav-item">
-                <a href="./?steden" class="nav-link">steden</a>
+                <a href="@@root@@/steden" class="nav-link">steden</a>
             </li>
             <li class="nav-item">
-                <a href="./?people" class="nav-link">bekende mensen</a>
+                <a href="@@root@@/people" class="nav-link">bekende mensen</a>
             </li>
         </ul>
-        <form class="search">
+        <form class="search" action="@@root@@/search" method="POST">
             <input type="hidden" name="csrf" value="@@csrf@@" />
-            <input type="text" placeholder="Search" name="search" />
+            <input
+                type="text"
+                placeholder="Search"
+                name="search"
+                autocomplete="off"
+            />
             <button>Search</button>
         </form>
     </div>
     <div id="profile">
-        <p>@@usr_name@@</p>
+        <p><span>@@usr_name@@</span></p>
         <div class="imgholder">
-            <img src="./images/avatars/@@usr_avatar@@" alt="my avatar" />
+            <img src="@@root@@/images/avatars/@@usr_avatar@@" alt="my avatar" />
         </div>
-        <form action="./lib/login_check.php" method="POST" class="hidden">
+        <form
+            action="@@root@@/lib/login_check.php"
+            method="POST"
+            class="hidden"
+        >
             <input type="hidden" name="csrf" value="@@csrf@@" />
             <ul>
                 <li>
-                    <a href="./?profile">my profile</a>
+                    <a href="@@root@@/profile">my profile</a>
                 </li>
                 @@log@@
                 <li><button name="logout">logout</button></li>

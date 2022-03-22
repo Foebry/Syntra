@@ -7,6 +7,7 @@ const ratingSelect = document.querySelector("select#rating");
 const ratingImg = document.querySelector(".rating img");
 const avatars = document.querySelectorAll(".avatar");
 const editForm = document.querySelector("form.edit");
+const root = document.querySelector("#root").innerHTML;
 
 
 closeButtons.forEach(button => button.onclick = (e) => e.target.parentElement.classList.add("hidden"));
@@ -15,7 +16,7 @@ if (nameInput) nameInput.oninput = (e) => jumboTitle.innerHTML = nameInput.value
 
 if (profile) profile.onclick = (e) => logout.classList.toggle("hidden");
 
-if (ratingSelect) ratingSelect.onchange = (e) => ratingImg.setAttribute("src", `../images/ratings/${e.target.value}-ster.jpg`);
+if (ratingSelect) ratingSelect.onchange = (e) => ratingImg.setAttribute("src", `${root}/images/ratings/${e.target.value}-ster.jpg`);
     
 if(avatars){
     const profileAvatar = document.querySelector("#usr_avatar");
@@ -31,9 +32,9 @@ if(avatars){
     })
 }
 const resetImage = async (table, image, input) => {
-    image.src = `../images/${table}/${input.value}`;
+    image.src = `${root}/images/${table}/${input.value}`;
     const data = await fetch(`${image.src}`);
-    if(data.status == 404) image.src = `../images/${table}/default.jpg`;
+    if(data.status == 404) image.src = `${root}/images/${table}/default.jpg`;
 }
 
 if(editForm){

@@ -56,8 +56,8 @@
     $statement = count($object) > 0 ? "update" : "insert";
 
     # zet de info-message
-    if( $statement == "update") $_SESSION["infos"][] = "Succesvol geüpdated!";
-    elseif( $statement == "insert" ) $_SESSION["infos"][] = "Succesvol toegevoegd!";
+    if( $statement == "update") $_SESSION["infos"][] = $_POST["update-message"] ?? "Succesvol geüpdated!";
+    elseif( $statement == "insert" ) $_SESSION["infos"][] = $_POST["insert-message"] ?? "Succesvol toegevoegd!";
 
     $email = isset($_POST["usr_email"]) ? $_POST["usr_email"] : ( isset( $_SESSION["user"] ) ? $_SESSION["user"]->getEmail() : "error" );
 

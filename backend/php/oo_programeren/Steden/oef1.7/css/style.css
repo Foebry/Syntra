@@ -255,6 +255,9 @@ main .container .edit {
 main .container .detail p.link span {
     text-transform: capitalize;
 }
+span {
+    text-transform: capitalize;
+}
 main .container .detail .inputs,
 main .container .edit .inputs {
     margin: 0;
