@@ -12,6 +12,7 @@ project_management
 test.*
 node_modules
 groepsproject_1
+groepsproject_2
 stage
 backend/groepswerk_1
 api-extra/
@@ -20,5 +21,6 @@ moviedb/
 log/
 config.json
 vendor/
-
+frontend/javascript/Examen Javascript.pdf
+frontend/redux
 
