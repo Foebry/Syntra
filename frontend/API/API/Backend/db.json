@@ -1,0 +1,39 @@
+{
+  "products": [
+    {
+      "id": "123",
+      "name": "iphone",
+      "foto": ""
+    },
+    {
+      "id": "777",
+      "name": "Tesla",
+      "foto": ""
+    },
+    {
+      "body": {
+        "id": "789",
+        "name": "Samsung phone",
+        "image": ""
+      },
+      "id": "dAD9tas"
+    },
+    {
+      "id": "789",
+      "name": "Samsung phone",
+      "image": ""
+    }
+  ],
+  "comments": [
+    {
+      "id": "1",
+      "product_id": "123",
+      "comment": "Top iphone over Samsung"
+    },
+    {
+      "id": "2",
+      "product_id": "777",
+      "comment": "Tesla is cool"
+    }
+  ]
+}
