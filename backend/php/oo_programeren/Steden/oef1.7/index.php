@@ -135,7 +135,7 @@ elseif ($navigeer_naar_personen_geboren_in_bepaalde_stad || $navigeer_naar_stad_
     /**
      * REEQUEST_URI voor personen geboren in een bepaalde stad.
      * 
-     * -> index/steden/{stad_id}/people
+     * -> index/steden/{id}/people
      */
     if ($navigeer_naar_personen_geboren_in_bepaalde_stad) {
         $where = "where cob = $id";
@@ -145,7 +145,7 @@ elseif ($navigeer_naar_personen_geboren_in_bepaalde_stad || $navigeer_naar_stad_
     /**
      * REQUEST_URI voor stad editeren
      * 
-     * -> index/steden/{city_id}/edit
+     * -> index/steden/{id}/edit
      */
     else {
         $contentManager->setTitles($stadNaam, "edit");
@@ -168,7 +168,7 @@ elseif ($navigeer_naar_stad_toevoegen) {
 /**
  * REQUEST_URI om details stad op te vragen
  * 
- * -> index/steden/{stad_id}
+ * -> index/steden/{id}
  */
 elseif ($navigeer_naar_stad_detail) {
 
@@ -204,7 +204,7 @@ elseif ($navigeer_naar_people_pagina) {
 /**
  * REQUEST_URI om details specifieke person te wijzigen
  * 
- * -> index/people/{person_id}/edit
+ * -> index/people/{id}/edit
  */
 elseif ($navigeer_naar_person_editeren) {
 
@@ -232,7 +232,7 @@ elseif ($navigeer_naar_person_toevoegen) {
 /**
  * REQUEST_URI om details specifieke person op te vragen
  * 
- * -> index/people/{person_id}
+ * -> index/people/{id}
  */
 elseif ($navigeer_naar_person_detail) {
 

@@ -12,9 +12,9 @@ const root = document.querySelector("#root").innerHTML;
 
 closeButtons.forEach(button => button.onclick = (e) => e.target.parentElement.classList.add("hidden"));
 
-if (nameInput) nameInput.oninput = (e) => jumboTitle.innerHTML = nameInput.value;
+if (nameInput) nameInput.oninput = () => jumboTitle.innerHTML = nameInput.value;
 
-if (profile) profile.onclick = (e) => logout.classList.toggle("hidden");
+if (profile) profile.onclick = () => logout.classList.toggle("hidden");
 
 if (ratingSelect) ratingSelect.onchange = (e) => ratingImg.setAttribute("src", `${root}/images/ratings/${e.target.value}-ster.jpg`);
     
@@ -52,23 +52,21 @@ if(editForm){
         const cobValue = document.querySelector("#cob");
         const cityItems = document.querySelectorAll(".stedenList li");
         const citySelect = document.querySelector(".stedenListSelect");
-        const cityOptions = Array(cityItems.length).fill(0).map((_, i) => cityItems[i]);
+        const cityOptions = Array(cityItems.length).fill(0).map((_, i) => cityItems[i]).slice(0, 5);
 
         
         cityOptions.forEach(cityItem => cityItem.onclick = (e) => {
-            console.log("clicked");
             cobInput.setAttribute("value", e.target.innerHTML);
             cobInput.value = e.target.innerHTML;
             }
         )
         cobInput.oninput = (e) => showOptions(e, cityOptions);
         cobInput.onchange = () => setTimeout(setCoB, 300);
+        cobInput.onblur = () => setTimeout(setCoB, 300);
 
         const setCoB = () => {
-            console.log("change");
-            const cityArr = cityOptions.filter(item => item.innerHTML == cobInput.value);
-            if(cityArr.length > 0) cobValue.value = cityArr[0].id;
-            else cobValue.value = -1;
+            const cityArr = cityOptions.filter(item => item.innerHTML.toLowerCase() == cobInput.value.toLowerCase());
+            cobValue.value = cityArr.length > 0 ? cityArr[0].id : -1;
             citySelect.classList.add("hidden");
         }
     }
@@ -80,20 +78,7 @@ const formatValue = async (input, table, image) => {
     resetImage(table, image, input);
 
 }
-// const setCoB = () => {
-//     console.log("change");
-//     const inputCoB = document.querySelector("input.cob");
-//     const items = document.querySelectorAll(".stedenList li");
 
-//     const options = Array(items.length).fill(0).map((_, i) => items[i]);
-
-//     console.log(inputCoB);
-//     console.log(options);
-    
-//     cityArr = options.filter(item => item.innerHTML == input.value);
-//     if(cityArr.length > 0) cobValue.value = city[0].id;
-//     else cobValue.value = -1;
-// }
 const showOptions = (e, options) => {
     const stedenListSelect = document.querySelector('.stedenListSelect');
 

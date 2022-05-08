@@ -30,7 +30,7 @@ class ContentManager
     }
 
     /**
-     * Genereert een blanco pagina met standaard jumbo en correcte navbar.
+     * Genereert een blanco pagina met standaard jumbo en navbar voor (niet) ingelogde user / admin.
      * 
      * @@return string
      */
@@ -103,20 +103,20 @@ class ContentManager
     private function getTagsFromPage($offset = 0)
     {
         $placeholders = [];
-        # zoek naar de eerste positie waar een @ voorkomt.
-        # @ duidt de start van een placeholder aan
+        # zoek naar de eerste positie waar een @# voorkomt.
+        # @@ duidt de start van een placeholder aan
         $offset = strpos($this->page, "@@", $offset);
 
         # zolang placeholders gevonden worden, voeg deze toe aan de placeholders array
         while ($offset) {
-            # zoek naar de closing @ van de placeholder, vanaf de positie ná de opening @
+            # zoek naar de closing @@ van de placeholder, vanaf de positie ná de opening @
             $start = $offset + 2;
             $end = strpos($this->page, "@@", $start);
-            # indien geen closing @ gevonden, zijn er geen verdere placeholders en eindigd de while loop
+            # indien geen closing @@ gevonden, zijn er geen verdere placeholders en eindigd de while loop
             if ($end == 0) break;
-            # indien wel een closing @ gevonden, voeg de waarde tussen opening en closing @ toe aan de placeholders array
+            # indien wel een closing @@ gevonden, voeg de waarde tussen opening en closing @@ toe aan de placeholders array
             $placeholders[] = substr($this->page, $start, $end - $start);
-            # zet $offset gelijk aan de positie van de volgende opening @
+            # zet $offset gelijk aan de positie van de volgende opening @@
             # indien geen gevonden if $offset gelijk aan 0 (ofwel false) en eindigt de while loop
             $offset = strpos($this->page, "@@", $end + 2);
         }
@@ -184,7 +184,7 @@ class ContentManager
         }
 
         if ($table == "person") {
-            $geboortestadInput = '<div class="form-row"><label >geboorte stad</label><div class="col-sm-3"><input class="cob" name="cobName" type="text" value="@@stad@@" /></div></div>';
+            $geboortestadInput = '<div class="form-row"><label >geboorte stad</label><div class="col-sm-3"><input class="cob" name="cobName" type="text" value="@@stad@@" autocomplete="off"/></div></div>';
             $cob = isset($old_post["cob"]) ? $old_post["cob"] : ($data && isset($data["cob"]) ? $data["cob"] : 0);
             $cobName = $dbm->GetData("select name from stad where id = $cob")[0]["name"];
 
@@ -336,6 +336,7 @@ class ContentManager
 
         $templatestr = file_get_contents("./templates/$template");
 
+        // korte beschrijving aanmaken van de eerste 20 woorden van de volledige content
         $wordArr = explode(" ", $data["content"]);
         $section = array_slice($wordArr, 0, min(20, count($wordArr)));
         $desc = join(" ", $section);

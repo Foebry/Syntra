@@ -12,7 +12,7 @@ function LoginCheck($dbm, $ms): bool{
     $where = " where usr_email = '".$_POST["usr_email"]."'";
 
     $sql = "select usr_password from ".$_POST["table"]. $where;
-    $data = $dbm->getData("select usr_password from ".$_POST["table"]. $where);
+    $data = $dbm->getData($sql);
 
     if ( count($data) == 0) {
         $msg = "Dit email adress is niet bekend.";
@@ -27,5 +27,3 @@ function LoginCheck($dbm, $ms): bool{
 
     return True;
 }
-
- ?>

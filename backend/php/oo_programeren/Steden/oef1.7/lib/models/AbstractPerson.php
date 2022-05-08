@@ -24,7 +24,7 @@ abstract class AbstractPerson
     {
         $this->id = $id;
     }
-    private function setCoB(int $cob): void
+    public function setCoB(int $cob): void
     {
         $this->cob = $cob;
     }
